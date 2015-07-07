@@ -1,0 +1,112 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchMatch.Vertical">
+
+    <LinearLayout style="@style/MatchAuto.Vertical">
+
+        <cn.bingoogolapple.badgeview.BGABadgeTextView
+            android:id="@+id/btv_home_test"
+            style="@style/MatchWrap"
+            android:layout_margin="5dp"
+            android:padding="5dp"
+            android:text="BGABadgeTextView"
+            android:textColor="@android:color/black" />
+
+        <cn.bingoogolapple.badgeview.BGABadgeCheckedTextView
+            android:id="@+id/bctv_home_test"
+            style="@style/MatchWrap"
+            android:layout_margin="5dp"
+            android:padding="5dp"
+            android:text="BGABadgeCheckedTextView"
+            android:textColor="@android:color/black" />
+
+        <cn.bingoogolapple.badgeview.BGABadgeImageView
+            android:id="@+id/biv_home_test1"
+            style="@style/WrapWrap"
+            android:layout_margin="5dp"
+            android:padding="5dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <cn.bingoogolapple.badgeview.BGABadgeImageView
+            android:id="@+id/biv_home_test2"
+            style="@style/WrapWrap"
+            android:layout_margin="6dp"
+            android:padding="7dp"
+            app:badge_gravity="rightBottom"
+            app:badge_horizontalMargin="0dp"
+            app:badge_verticalMargin="0dp" />
+
+        <cn.bingoogolapple.badgeview.BGABadgeImageView
+            android:id="@+id/biv_home_test3"
+            style="@style/WrapWrap"
+            android:layout_margin="6dp"
+            android:padding="7dp"
+            app:badge_gravity="rightBottom"
+            app:badge_horizontalMargin="0dp"
+            app:badge_verticalMargin="0dp" />
+
+        <LinearLayout
+            android:id="@+id/ll_main_test"
+            style="@style/MatchWrap.Vertical">
+
+            <TextView
+                style="@style/MatchWrap"
+                android:text="测试文本1" />
+
+            <TextView
+                style="@style/MatchWrap"
+                android:text="测试文本2" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <RadioGroup
+        android:id="@+id/rg_main_tab"
+        style="@style/MatchWrap.Horizontal"
+        android:background="@drawable/layer_maintab_bg"
+        android:gravity="center_vertical">
+
+        <cn.bingoogolapple.badgeview.BGABadgeRadioButton
+            android:id="@+id/brb_main_home"
+            style="@style/RbMainTab"
+            android:checked="true"
+            android:drawableTop="@drawable/selector_tab_home"
+            android:text="首页" />
+
+        <cn.bingoogolapple.badgeview.BGABadgeRadioButton
+            android:id="@+id/brb_main_message"
+            style="@style/RbMainTab"
+            android:drawableTop="@drawable/selector_tab_message"
+            android:text="消息"
+            app:badge_gravity="rightTop"
+            app:badge_horizontalMargin="15dp"
+            app:badge_padding="6dp"
+            app:badge_verticalMargin="10dp" />
+
+        <ImageButton
+            android:id="@+id/ib_main_plus"
+            style="@style/AutoMatch"
+            android:background="@drawable/selector_tab_plusbg"
+            android:src="@drawable/selector_tab_plus" />
+
+        <cn.bingoogolapple.badgeview.BGABadgeRadioButton
+            android:id="@+id/brb_main_discover"
+            style="@style/RbMainTab"
+            android:drawableTop="@drawable/selector_tab_discover"
+            android:text="发现"
+            app:badge_bgColor="#FD8225"
+            app:badge_gravity="rightCenter"
+            app:badge_horizontalMargin="20dp"
+            app:badge_padding="5dp"
+            app:badge_textColor="@android:color/white"
+            app:badge_textSize="15sp" />
+
+        <cn.bingoogolapple.badgeview.BGABadgeRadioButton
+            android:id="@+id/brb_main_me"
+            style="@style/RbMainTab"
+            android:drawableTop="@drawable/selector_tab_me"
+            android:text="我"
+            app:badge_gravity="rightBottom"
+            app:badge_horizontalMargin="20dp"
+            app:badge_verticalMargin="10dp" />
+    </RadioGroup>
+</LinearLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BGABadgeView">
+        <!-- 标记背景色 -->
+        <attr name="badge_bgColor" format="reference|color" />
+        <!-- 标记文本的颜色 -->
+        <attr name="badge_textColor" format="reference|color" />
+        <!-- 标记文本字体大小 -->
+        <attr name="badge_textSize" format="reference|dimension" />
+        <!-- 标记背景与宿主控件上下边缘间距离 -->
+        <attr name="badge_verticalMargin" format="reference|dimension" />
+        <!-- 标记背景与宿主控件左右边缘间距离 -->
+        <attr name="badge_horizontalMargin" format="reference|dimension" />
+        <!-- 标记文本边缘与标记背景边缘间的距离 -->
+        <attr name="badge_padding" format="reference|dimension" />
+        <!-- 标记在宿主控件中的位置 -->
+        <attr name="badge_gravity" format="enum">
+            <enum name="rightTop" value="0" />
+            <enum name="rightCenter" value="1" />
+            <enum name="rightBottom" value="2" />
+        </attr>
+    </declare-styleable>
+</resources>
