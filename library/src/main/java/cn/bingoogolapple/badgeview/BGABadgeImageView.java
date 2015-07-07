@@ -26,10 +26,6 @@ public class BGABadgeImageView extends ImageView implements BGABadgeable {
     }
 
     @Override
-    public void beforeDrawBadge(Canvas canvas) {
-    }
-
-    @Override
     public void showCriclePointBadge() {
         mBadgeViewHeler.showCirclePointBadge();
     }

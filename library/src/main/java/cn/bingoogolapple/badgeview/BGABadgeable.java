@@ -1,7 +1,6 @@
 package cn.bingoogolapple.badgeview;
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -10,31 +9,24 @@ import android.graphics.Canvas;
  */
 public interface BGABadgeable {
     /**
-     * 在绘制标记前调用，暂时用不到，预留着
-     *
-     * @param canvas
-     */
-    void beforeDrawBadge(Canvas canvas);
-
-    /**
-     * 显示圆点标记
+     * 显示圆点徽章
      */
     void showCriclePointBadge();
 
     /**
-     * 显示文字标记
+     * 显示文字徽章
      *
      * @param badgeText
      */
     void showTextBadge(String badgeText);
 
     /**
-     * 隐藏标记
+     * 隐藏徽章
      */
     void hiddenBadge();
 
     /**
-     * 显示图像标记
+     * 显示图像徽章
      *
      * @param bitmap
      */

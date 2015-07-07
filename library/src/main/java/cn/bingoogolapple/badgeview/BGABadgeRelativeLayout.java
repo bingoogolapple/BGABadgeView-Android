@@ -6,9 +6,6 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
-import cn.bingoogolapple.badgeview.BGABadgeViewHelper;
-import cn.bingoogolapple.badgeview.BGABadgeable;
-
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
  * 创建时间:15/7/7 14:07
@@ -26,10 +23,6 @@ public class BGABadgeRelativeLayout extends RelativeLayout implements BGABadgeab
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
         mBadgeViewHeler.drawBadge(canvas);
-    }
-
-    @Override
-    public void beforeDrawBadge(Canvas canvas) {
     }
 
     @Override

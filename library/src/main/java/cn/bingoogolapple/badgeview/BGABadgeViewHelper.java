@@ -22,35 +22,35 @@ public class BGABadgeViewHelper {
     private BGABadgeable mBadgeable;
     private Paint mBadgePaint;
     /**
-     * 标记背景色
+     * 徽章背景色
      */
     private int mBadgeBgColor;
     /**
-     * 标记文本的颜色
+     * 徽章文本的颜色
      */
     private int mBadgeTextColor;
     /**
-     * 标记文本字体大小
+     * 徽章文本字体大小
      */
     private int mBadgeTextSize;
     /**
-     * 标记背景与宿主控件上下边缘间距离
+     * 徽章背景与宿主控件上下边缘间距离
      */
     int mBadgeVerticalMargin;
     /**
-     * 标记背景与宿主控件左右边缘间距离
+     * 徽章背景与宿主控件左右边缘间距离
      */
     private int mBadgeHorizontalMargin;
     /***
-     * 标记文本边缘与标记背景边缘间的距离
+     * 徽章文本边缘与徽章背景边缘间的距离
      */
     private int mBadgePadding;
     /**
-     * 标记文本
+     * 徽章文本
      */
     private String mBadgeText;
     /**
-     * 标记文本所占区域大小
+     * 徽章文本所占区域大小
      */
     private Rect mBadgeNumberRect;
     /**
@@ -58,7 +58,7 @@ public class BGABadgeViewHelper {
      */
     private boolean mIsShowBadge;
     /**
-     * 标记在宿主控件中的位置
+     * 徽章在宿主控件中的位置
      */
     private BadgeGravity mBadgeGravity;
 
@@ -126,7 +126,6 @@ public class BGABadgeViewHelper {
     }
 
     public void drawBadge(Canvas canvas) {
-        mBadgeable.beforeDrawBadge(canvas);
         if (mIsShowBadge) {
             if (mBitmap != null) {
                 drawDrawableBadge(canvas);
@@ -137,7 +136,7 @@ public class BGABadgeViewHelper {
     }
 
     /**
-     * 绘制图像标记
+     * 绘制图像徽章
      *
      * @param canvas
      */
@@ -161,7 +160,7 @@ public class BGABadgeViewHelper {
     }
 
     /**
-     * 绘制文字标记
+     * 绘制文字徽章
      *
      * @param canvas
      */
@@ -173,7 +172,7 @@ public class BGABadgeViewHelper {
         }
         // 获取文本宽所占宽高
         mBadgePaint.getTextBounds(badgeText, 0, badgeText.length(), mBadgeNumberRect);
-        // 计算标记背景的宽高
+        // 计算徽章背景的宽高
         float badgeHeight = mBadgeNumberRect.height() + mBadgePadding * 2;
         float badgeWidth;
         // 当mBadgeText的长度为1时，计算出来的高度会比宽度大，此时设置宽度等于高度
@@ -183,7 +182,7 @@ public class BGABadgeViewHelper {
             badgeWidth = mBadgeNumberRect.width() + mBadgePadding * 2;
         }
 
-        // 计算标记背景上下的值
+        // 计算徽章背景上下的值
         float badgeTop = mBadgeVerticalMargin;
         float badgeBottom = mBadgeable.getHeight() - mBadgeVerticalMargin;
         switch (mBadgeGravity) {
@@ -201,23 +200,23 @@ public class BGABadgeViewHelper {
                 break;
         }
 
-        // 计算标记背景左右的值
+        // 计算徽章背景左右的值
         float badgeRight = mBadgeable.getWidth() - mBadgeHorizontalMargin;
         float badgeLeft = badgeRight - badgeWidth;
 
-        // 设置标记背景色
+        // 设置徽章背景色
         mBadgePaint.setColor(mBadgeBgColor);
-        // 绘制标记背景
+        // 绘制徽章背景
         canvas.drawRoundRect(new RectF(badgeLeft, badgeTop, badgeRight, badgeBottom), badgeHeight / 2, badgeHeight / 2, mBadgePaint);
 
         if (!TextUtils.isEmpty(mBadgeText)) {
-            // 设置标记文本颜色
+            // 设置徽章文本颜色
             mBadgePaint.setColor(mBadgeTextColor);
-            // initDefaultAttrs方法中设置了mBadgeText居中，此处的x为标记背景的中心点y
+            // initDefaultAttrs方法中设置了mBadgeText居中，此处的x为徽章背景的中心点y
             float x = badgeLeft + badgeWidth / 2;
             // 注意：绘制文本时的y是指文本底部，而不是文本的中间
             float y = badgeBottom - mBadgePadding;
-            // 绘制标记文本
+            // 绘制徽章文本
             canvas.drawText(badgeText, x, y, mBadgePaint);
         }
     }

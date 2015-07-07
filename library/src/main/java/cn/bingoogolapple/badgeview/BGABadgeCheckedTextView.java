@@ -26,10 +26,6 @@ public class BGABadgeCheckedTextView extends AppCompatCheckedTextView implements
     }
 
     @Override
-    public void beforeDrawBadge(Canvas canvas) {
-    }
-
-    @Override
     public void showCriclePointBadge() {
         mBadgeViewHeler.showCirclePointBadge();
     }

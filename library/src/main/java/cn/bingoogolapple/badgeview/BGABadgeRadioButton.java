@@ -26,10 +26,6 @@ public class BGABadgeRadioButton extends AppCompatRadioButton implements BGABadg
     }
 
     @Override
-    public void beforeDrawBadge(Canvas canvas) {
-    }
-
-    @Override
     public void showCriclePointBadge() {
         mBadgeViewHeler.showCirclePointBadge();
     }
