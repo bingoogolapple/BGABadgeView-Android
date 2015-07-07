@@ -21,14 +21,14 @@
             android:textColor="@android:color/black" />
 
         <cn.bingoogolapple.badgeview.BGABadgeImageView
-            android:id="@+id/biv_home_test1"
+            android:id="@+id/biv_home_normal"
             style="@style/WrapWrap"
             android:layout_margin="5dp"
             android:padding="5dp"
             android:src="@mipmap/ic_launcher" />
 
         <cn.bingoogolapple.badgeview.BGABadgeImageView
-            android:id="@+id/biv_home_test2"
+            android:id="@+id/biv_home_rounded"
             style="@style/WrapWrap"
             android:layout_margin="6dp"
             android:padding="7dp"
@@ -37,26 +37,13 @@
             app:badge_verticalMargin="0dp" />
 
         <cn.bingoogolapple.badgeview.BGABadgeImageView
-            android:id="@+id/biv_home_test3"
+            android:id="@+id/biv_home_circle"
             style="@style/WrapWrap"
             android:layout_margin="6dp"
             android:padding="7dp"
             app:badge_gravity="rightBottom"
             app:badge_horizontalMargin="0dp"
             app:badge_verticalMargin="0dp" />
-
-        <LinearLayout
-            android:id="@+id/ll_main_test"
-            style="@style/MatchWrap.Vertical">
-
-            <TextView
-                style="@style/MatchWrap"
-                android:text="测试文本1" />
-
-            <TextView
-                style="@style/MatchWrap"
-                android:text="测试文本2" />
-        </LinearLayout>
     </LinearLayout>
 
     <RadioGroup
