@@ -14,6 +14,9 @@ import cn.bingoogolapple.badgeview.BGABadgeCheckedTextView;
 import cn.bingoogolapple.badgeview.BGABadgeImageView;
 import cn.bingoogolapple.badgeview.BGABadgeRadioButton;
 import cn.bingoogolapple.badgeview.BGABadgeTextView;
+import cn.bingoogolapple.badgeview.BGABadgeFrameLayout;
+import cn.bingoogolapple.badgeview.BGABadgeLinearLayout;
+import cn.bingoogolapple.badgeview.BGABadgeRelativeLayout;
 
 public class MainActivity extends AppCompatActivity {
     private BGABadgeTextView mTestBtv;
@@ -22,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
     private BGABadgeImageView mNormalBiv;
     private BGABadgeImageView mRoundedBiv;
     private BGABadgeImageView mCircleBiv;
+
+    private BGABadgeLinearLayout mTestBll;
+    private BGABadgeRelativeLayout mTestBrl;
+    private BGABadgeFrameLayout mTestBfl;
 
     private BGABadgeRadioButton mHomeBrb;
     private BGABadgeRadioButton mMessageBrb;
@@ -45,6 +52,10 @@ public class MainActivity extends AppCompatActivity {
         mRoundedBiv = getViewById(R.id.biv_home_rounded);
         mCircleBiv = getViewById(R.id.biv_home_circle);
 
+        mTestBll = getViewById(R.id.bll_main_test);
+        mTestBrl = getViewById(R.id.brl_main_test);
+        mTestBfl = getViewById(R.id.bfl_main_test);
+
         mHomeBrb = getViewById(R.id.brb_main_home);
         mMessageBrb = getViewById(R.id.brb_main_message);
         mDiscoverBrb = getViewById(R.id.brb_main_discover);
@@ -65,13 +76,16 @@ public class MainActivity extends AppCompatActivity {
         mRoundedBiv.setImageDrawable(roundedDrawable);
         mRoundedBiv.showDrawableBadge(avatorBadgeBitmap);
 
-
         Bitmap avatorBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.avator);
         RoundedBitmapDrawable circleDrawable = RoundedBitmapDrawableFactory.create(getResources(), avatorBitmap);
         circleDrawable.getPaint().setAntiAlias(true);
         circleDrawable.setCornerRadius(Math.max(avatorBitmap.getWidth(), avatorBitmap.getHeight()) / 2.0f);
         mCircleBiv.setImageDrawable(circleDrawable);
         mCircleBiv.showDrawableBadge(avatorBadgeBitmap);
+
+        mTestBll.showDrawableBadge(avatorBadgeBitmap);
+        mTestBrl.showTextBadge("LoveAndroid");
+        mTestBfl.showTextBadge("王浩");
 
         new Handler().postDelayed(new Runnable() {
             @Override

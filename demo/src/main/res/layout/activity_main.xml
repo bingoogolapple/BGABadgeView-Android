@@ -20,30 +20,74 @@
             android:text="BGABadgeCheckedTextView"
             android:textColor="@android:color/black" />
 
-        <cn.bingoogolapple.badgeview.BGABadgeImageView
-            android:id="@+id/biv_home_normal"
-            style="@style/WrapWrap"
-            android:layout_margin="5dp"
-            android:padding="5dp"
-            android:src="@mipmap/ic_launcher" />
+        <cn.bingoogolapple.badgeview.BGABadgeLinearLayout
+            android:id="@+id/bll_main_test"
+            style="@style/MatchWrap.Horizontal"
+            android:gravity="center_vertical"
+            android:padding="15dp">
 
-        <cn.bingoogolapple.badgeview.BGABadgeImageView
-            android:id="@+id/biv_home_rounded"
-            style="@style/WrapWrap"
-            android:layout_margin="6dp"
-            android:padding="7dp"
-            app:badge_gravity="rightBottom"
-            app:badge_horizontalMargin="0dp"
-            app:badge_verticalMargin="0dp" />
+            <cn.bingoogolapple.badgeview.BGABadgeImageView
+                android:id="@+id/biv_home_normal"
+                style="@style/WrapWrap"
+                android:padding="5dp"
+                android:src="@mipmap/avator" />
 
-        <cn.bingoogolapple.badgeview.BGABadgeImageView
-            android:id="@+id/biv_home_circle"
-            style="@style/WrapWrap"
-            android:layout_margin="6dp"
-            android:padding="7dp"
-            app:badge_gravity="rightBottom"
-            app:badge_horizontalMargin="0dp"
-            app:badge_verticalMargin="0dp" />
+            <cn.bingoogolapple.badgeview.BGABadgeImageView
+                android:id="@+id/biv_home_rounded"
+                style="@style/WrapWrap"
+                android:layout_margin="3dp"
+                android:padding="7dp"
+                app:badge_gravity="rightBottom"
+                app:badge_horizontalMargin="0dp"
+                app:badge_verticalMargin="0dp" />
+
+            <cn.bingoogolapple.badgeview.BGABadgeImageView
+                android:id="@+id/biv_home_circle"
+                style="@style/WrapWrap"
+                android:padding="7dp"
+                app:badge_gravity="rightBottom"
+                app:badge_horizontalMargin="0dp"
+                app:badge_verticalMargin="0dp" />
+
+            <TextView
+                style="@style/WrapWrap"
+                android:text="BadgeLinearLayout" />
+
+        </cn.bingoogolapple.badgeview.BGABadgeLinearLayout>
+
+        <cn.bingoogolapple.badgeview.BGABadgeRelativeLayout
+            android:id="@+id/brl_main_test"
+            style="@style/MatchWrap"
+            android:padding="10dp"
+            app:badge_padding="7dp">
+
+            <TextView
+                style="@style/WrapWrap"
+                android:text="测试BRL" />
+
+            <TextView
+                style="@style/WrapWrap"
+                android:layout_centerInParent="true"
+                android:text="测试BGABadgeRelativeLayout" />
+
+        </cn.bingoogolapple.badgeview.BGABadgeRelativeLayout>
+
+        <cn.bingoogolapple.badgeview.BGABadgeFrameLayout
+            android:id="@+id/bfl_main_test"
+            style="@style/MatchWrap"
+            android:padding="10dp"
+            app:badge_padding="7dp">
+
+            <TextView
+                style="@style/WrapWrap"
+                android:text="测试BFL" />
+
+            <TextView
+                style="@style/WrapWrap"
+                android:layout_marginLeft="100dp"
+                android:text="测试BGABadgeFrameLayout" />
+
+        </cn.bingoogolapple.badgeview.BGABadgeFrameLayout>
     </LinearLayout>
 
     <RadioGroup
@@ -66,7 +110,7 @@
             android:text="消息"
             app:badge_gravity="rightTop"
             app:badge_horizontalMargin="15dp"
-            app:badge_padding="6dp"
+            app:badge_padding="3dp"
             app:badge_verticalMargin="10dp" />
 
         <ImageButton
@@ -81,7 +125,6 @@
             android:drawableTop="@drawable/selector_tab_discover"
             android:text="发现"
             app:badge_bgColor="#FD8225"
-            app:badge_gravity="rightCenter"
             app:badge_horizontalMargin="20dp"
             app:badge_padding="5dp"
             app:badge_textColor="@android:color/white"
