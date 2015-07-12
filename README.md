@@ -1,6 +1,6 @@
-:heartpulse:BGABadgeView-Android v1.0.0:heartpulse:
+:heartpulse:BGABadgeView-Android:heartpulse:
 ============
-
+[ ![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-badgeview/images/download.svg) ](https://bintray.com/bingoogolapple/maven/bga-badgeview/_latestVersion)
 >关于我<br/>
 >微博：<a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a>&nbsp;&nbsp;&nbsp;&nbsp;主页：<a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>&nbsp;&nbsp;&nbsp;&nbsp;邮箱：<a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a>
 
@@ -18,8 +18,8 @@
 
 ```groovy
 dependencies {
-    compile 'com.android.support:appcompat-v7:22.2.0'
-    compile 'cn.bingoogolapple:bga-badgeview:1.0.0@aar'
+    compile 'com.android.support:appcompat-v7:latestVersion'
+    compile 'cn.bingoogolapple:bga-badgeview:latestVersion@aar'
 }
 ```
 
