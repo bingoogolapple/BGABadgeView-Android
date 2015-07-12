@@ -19,7 +19,7 @@ package cn.bingoogolapple.badgeview;
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
  * 创建时间:15/7/12 下午6:33
- * 描述:拖动大于BGABadgeViewHelper.mMoveHiddenThreshold后抬起手指徽章消失的的代理
+ * 描述:拖动大于BGABadgeViewHelper.mMoveHiddenThreshold后抬起手指徽章消失的
  */
 public interface BGADragDismissDelegate {
 

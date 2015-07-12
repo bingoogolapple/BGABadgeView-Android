@@ -12,12 +12,12 @@ import java.util.Random;
 public class MessageModel {
     public String title;
     public String detail;
-    public int count;
+    public int newMsgCount;
 
-    public MessageModel(String title, String detail, int count) {
+    public MessageModel(String title, String detail, int newMsgCount) {
         this.title = title;
         this.detail = detail;
-        this.count = count;
+        this.newMsgCount = newMsgCount;
     }
 
     public static List<MessageModel> getTestDatas() {

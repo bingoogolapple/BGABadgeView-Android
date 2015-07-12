@@ -16,12 +16,17 @@
 
 package cn.bingoogolapple.badgeview;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.graphics.PorterDuff;
 import android.graphics.RectF;
+import android.support.v4.view.ViewCompat;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -69,7 +74,6 @@ class BGADragBadgeView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
         if (mBadgeViewHelper.getBitmap() != null) {
             drawDrawableBadge(canvas);
         } else {
@@ -136,10 +140,47 @@ class BGADragBadgeView extends View {
 
                 break;
             case MotionEvent.ACTION_UP:
-                mWindowManager.removeView(this);
+                if (mBadgeViewHelper.satisfyMoveDismissCondition(event)) {
+                    startDismissAnim();
+                } else {
+                    mWindowManager.removeView(this);
+                }
                 break;
         }
         return true;
+    }
+
+    private void startDismissAnim() {
+        ValueAnimator animator = ValueAnimator.ofFloat(0.0f, 1.0f);
+        animator.setDuration(1000);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float value = (float) animation.getAnimatedValue();
+                ViewCompat.setAlpha(BGADragBadgeView.this, 1.0f - value);
+                ViewCompat.setScaleX(BGADragBadgeView.this, 1.0f + value);
+                ViewCompat.setScaleY(BGADragBadgeView.this, 1.0f + value);
+            }
+        });
+        animator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mWindowManager.removeView(BGADragBadgeView.this);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
+        });
+        animator.start();
     }
 
     public static int getStatusBarHeight(Context context) {

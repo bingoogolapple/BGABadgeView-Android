@@ -197,7 +197,6 @@ public class BGABadgeViewHelper {
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (mIsDraging) {
-                    mBadgeable.getParent().requestDisallowInterceptTouchEvent(true);
                     mDropBadgeView.onTouchEvent(event);
                     return true;
                 }
@@ -206,16 +205,14 @@ public class BGABadgeViewHelper {
             case MotionEvent.ACTION_CANCEL:
                 if (mIsDraging) {
                     mDropBadgeView.onTouchEvent(event);
-
-                    float moveLength = PointF.length(event.getRawX() - mDownPointF.x, event.getRawY() - mDownPointF.y);
-                    if (moveLength > mMoveHiddenThreshold) {
+                    mIsDraging = false;
+                    if (satisfyMoveDismissCondition(event)) {
                         hiddenBadge();
 
                         if (mDelegage != null) {
                             mDelegage.onDismiss(mBadgeable);
                         }
                     } else {
-                        mIsDraging = false;
                         mBadgeable.postInvalidate();
                     }
                     return true;
@@ -225,6 +222,10 @@ public class BGABadgeViewHelper {
                 break;
         }
         return mBadgeable.callSuperOnTouchEvent(event);
+    }
+
+    public boolean satisfyMoveDismissCondition(MotionEvent event) {
+        return PointF.length(event.getRawX() - mDownPointF.x, event.getRawY() - mDownPointF.y) > mMoveHiddenThreshold;
     }
 
     public void drawBadge(Canvas canvas) {

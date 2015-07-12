@@ -72,4 +72,6 @@ public interface BGABadgeable {
     void postInvalidate();
 
     ViewParent getParent();
+
+    int getId();
 }
