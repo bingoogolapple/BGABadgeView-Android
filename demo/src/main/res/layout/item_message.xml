@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cn.bingoogolapple.badgeview.BGABadgeLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchWrap.Vertical"
+    app:badge_horizontalMargin="10dp"
+    app:badge_dragable="true"
+    android:background="@drawable/selector_item"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/tv_item_message_title"
+        style="@style/MatchWrap"
+        android:text="标题"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_item_message_detail"
+        style="@style/MatchWrap"
+        android:layout_marginTop="5dp"
+        android:text="详细内容"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="14sp" />
+
+</cn.bingoogolapple.badgeview.BGABadgeLinearLayout>

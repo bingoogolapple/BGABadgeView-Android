@@ -1,4 +1,4 @@
-package cn.bingoogolapple.badgeview.demo;
+package cn.bingoogolapple.badgeview.demo.activity;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,15 +8,23 @@ import android.support.annotation.IdRes;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import cn.bingoogolapple.badgeview.BGABadgeCheckedTextView;
-import cn.bingoogolapple.badgeview.BGABadgeImageView;
-import cn.bingoogolapple.badgeview.BGABadgeRadioButton;
-import cn.bingoogolapple.badgeview.BGABadgeTextView;
 import cn.bingoogolapple.badgeview.BGABadgeFrameLayout;
+import cn.bingoogolapple.badgeview.BGABadgeImageView;
 import cn.bingoogolapple.badgeview.BGABadgeLinearLayout;
+import cn.bingoogolapple.badgeview.BGABadgeRadioButton;
 import cn.bingoogolapple.badgeview.BGABadgeRelativeLayout;
+import cn.bingoogolapple.badgeview.BGABadgeTextView;
+import cn.bingoogolapple.badgeview.BGABadgeable;
+import cn.bingoogolapple.badgeview.BGADragDismissDelegate;
+import cn.bingoogolapple.badgeview.demo.R;
+import cn.bingoogolapple.badgeview.demo.adapter.MessageAdapter;
+import cn.bingoogolapple.badgeview.demo.model.MessageModel;
 
 public class MainActivity extends AppCompatActivity {
     private BGABadgeTextView mTestBtv;
@@ -30,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
     private BGABadgeRelativeLayout mTestBrl;
     private BGABadgeFrameLayout mTestBfl;
 
+    private RecyclerView mRecyclerView;
+    private MessageAdapter mMessageAdapter;
+
     private BGABadgeRadioButton mHomeBrb;
     private BGABadgeRadioButton mMessageBrb;
     private BGABadgeRadioButton mDiscoverBrb;
@@ -42,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         initView();
         testBadgeView();
+        testRecyclerView();
     }
 
     private void initView() {
@@ -56,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
         mTestBrl = getViewById(R.id.brl_main_test);
         mTestBfl = getViewById(R.id.bfl_main_test);
 
+        mRecyclerView = getViewById(R.id.recyclerview);
+
         mHomeBrb = getViewById(R.id.brb_main_home);
         mMessageBrb = getViewById(R.id.brb_main_message);
         mDiscoverBrb = getViewById(R.id.brb_main_discover);
@@ -63,10 +77,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void testBadgeView() {
-        mTestBtv.showCriclePointBadge();
+        mTestBtv.showCirclePointBadge();
         mTestBctv.showTextBadge("BGA");
 
-        mNormalBiv.showCriclePointBadge();
+        mNormalBiv.showCirclePointBadge();
 
         Bitmap avatorBadgeBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.avatar_vip);
 
@@ -97,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                mRoundedBiv.showCriclePointBadge();
+                mRoundedBiv.showCirclePointBadge();
             }
         }, 6000);
 
@@ -111,14 +125,29 @@ public class MainActivity extends AppCompatActivity {
         mHomeBrb.showTextBadge("10");
         mMessageBrb.showTextBadge("1");
         mDiscoverBrb.showTextBadge("...");
-        mMeBrb.showTextBadge("1");
+        mMeBrb.showDrawableBadge(BitmapFactory.decodeResource(getResources(), R.mipmap.avatar_vip));
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 mHomeBrb.showTextBadge("1");
-                mMeBrb.showCriclePointBadge();
             }
         }, 5000);
+
+
+
+        mHomeBrb.setDragDismissDelegage(new BGADragDismissDelegate() {
+            @Override
+            public void onDismiss(BGABadgeable badgeable) {
+                Toast.makeText(MainActivity.this, "消息单选按钮徽章拖动消失", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void testRecyclerView() {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        mMessageAdapter = new MessageAdapter(this);
+        mRecyclerView.setAdapter(mMessageAdapter);
+        mMessageAdapter.setDatas(MessageModel.getTestDatas());
     }
 
     /**
