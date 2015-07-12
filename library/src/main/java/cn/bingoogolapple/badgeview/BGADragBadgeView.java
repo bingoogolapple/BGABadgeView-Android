@@ -16,21 +16,20 @@
 
 package cn.bingoogolapple.badgeview;
 
-import android.animation.Animator;
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
-import android.graphics.PorterDuff;
 import android.graphics.RectF;
 import android.support.v4.view.ViewCompat;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.ValueAnimator;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -45,11 +44,13 @@ class BGADragBadgeView extends View {
     private WindowManager.LayoutParams mLayoutParams;
     private int mStartX;
     private int mStartY;
+    private ValueAnimator mAnimator;
 
     public BGADragBadgeView(Context context, BGABadgeViewHelper badgeViewHelper) {
         super(context);
         mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         mBadgeViewHelper = badgeViewHelper;
+        mAnimator = new ValueAnimator();
         initBadgePaint();
         initLayoutParams();
     }
@@ -69,12 +70,14 @@ class BGADragBadgeView extends View {
         mLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         mLayoutParams.format = PixelFormat.TRANSLUCENT;
         mLayoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        mLayoutParams.width = mWindowManager.getDefaultDisplay().getWidth();
+        mLayoutParams.height = mWindowManager.getDefaultDisplay().getHeight();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (mBadgeViewHelper.getBitmap() != null) {
+        if (mBadgeViewHelper.isShowDrawable()) {
             drawDrawableBadge(canvas);
         } else {
             drawTextBadge(canvas);
@@ -82,20 +85,20 @@ class BGADragBadgeView extends View {
     }
 
     private void drawDrawableBadge(Canvas canvas) {
-        canvas.drawBitmap(mBadgeViewHelper.getBitmap(), 0, 0, mBadgePaint);
+        canvas.drawBitmap(mBadgeViewHelper.getBitmap(), mStartX, mStartY, mBadgePaint);
     }
 
     private void drawTextBadge(Canvas canvas) {
         // 设置徽章背景色
         mBadgePaint.setColor(mBadgeViewHelper.getBadgeBgColor());
         // 绘制徽章背景
-        canvas.drawRoundRect(new RectF(0, 0, mBadgeViewHelper.getBadgeRectF().width(), mBadgeViewHelper.getBadgeRectF().height()), mBadgeViewHelper.getBadgeRectF().height() / 2, mBadgeViewHelper.getBadgeRectF().height() / 2, mBadgePaint);
+        canvas.drawRoundRect(new RectF(mStartX, mStartY, mStartX + mBadgeViewHelper.getBadgeRectF().width(), mStartY + mBadgeViewHelper.getBadgeRectF().height()), mBadgeViewHelper.getBadgeRectF().height() / 2, mBadgeViewHelper.getBadgeRectF().height() / 2, mBadgePaint);
 
         // 设置徽章文本颜色
         mBadgePaint.setColor(mBadgeViewHelper.getBadgeTextColor());
-        float x = mBadgeViewHelper.getBadgeRectF().width() / 2;
+        float x = mStartX + mBadgeViewHelper.getBadgeRectF().width() / 2;
         // 注意：绘制文本时的y是指文本底部，而不是文本的中间
-        float y = mBadgeViewHelper.getBadgeRectF().height() - mBadgeViewHelper.getBadgePadding();
+        float y = mStartY + mBadgeViewHelper.getBadgeRectF().height() - mBadgeViewHelper.getBadgePadding();
         // 绘制徽章文本
         String badgeText = mBadgeViewHelper.getBadgeText() == null ? "" : mBadgeViewHelper.getBadgeText();
         canvas.drawText(badgeText, x, y, mBadgePaint);
@@ -103,47 +106,46 @@ class BGADragBadgeView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        int badgeWidth = (int) mBadgeViewHelper.getBadgeRectF().width();
+        int badgeHeight = (int) mBadgeViewHelper.getBadgeRectF().height();
+
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                mLayoutParams.width = (int) mBadgeViewHelper.getBadgeRectF().width();
-                mLayoutParams.height = (int) mBadgeViewHelper.getBadgeRectF().height();
-
-                mStartX = (int) event.getRawX() - mLayoutParams.width / 2;
-                mStartY = (int) event.getRawY() - mLayoutParams.height / 2 - getStatusBarHeight(getContext());
-                mLayoutParams.x = mStartX;
-                mLayoutParams.y = mStartY;
-                mWindowManager.addView(this, mLayoutParams);
-                postInvalidate();
+                if (!mAnimator.isRunning()) {
+                    mStartX = (int) event.getRawX() - badgeWidth / 2;
+                    mStartY = (int) event.getRawY() - badgeHeight / 2 - getStatusBarHeight(getContext());
+                    mWindowManager.addView(this, mLayoutParams);
+                    postInvalidate();
+                }
                 break;
             case MotionEvent.ACTION_MOVE:
-                int newX = (int) event.getRawX() - mLayoutParams.width / 2;
-                int newY = (int) event.getRawY() - mLayoutParams.height / 2 - getStatusBarHeight(getContext());
-                int dx = newX - mStartX;
-                int dy = newY - mStartY;
-                mLayoutParams.x += dx;
-                mLayoutParams.y += dy;
-                if (mLayoutParams.x < 0) {
-                    mLayoutParams.x = 0;
+                if (!mAnimator.isRunning()) {
+                    int newX = (int) event.getRawX() - badgeWidth / 2;
+                    int newY = (int) event.getRawY() - badgeHeight / 2 - getStatusBarHeight(getContext());
+                    if (newX < 0) {
+                        newX = 0;
+                    }
+                    if (newY < 0) {
+                        newY = 0;
+                    }
+                    if (newX > mWindowManager.getDefaultDisplay().getWidth() - badgeWidth) {
+                        newX = mWindowManager.getDefaultDisplay().getWidth() - badgeWidth;
+                    }
+                    if (newY > mWindowManager.getDefaultDisplay().getHeight() - badgeHeight) {
+                        newY = mWindowManager.getDefaultDisplay().getHeight() - badgeHeight;
+                    }
+                    mStartX = newX;
+                    mStartY = newY;
+                    postInvalidate();
                 }
-                if (mLayoutParams.y < 0) {
-                    mLayoutParams.y = 0;
-                }
-                if (mLayoutParams.x > mWindowManager.getDefaultDisplay().getWidth()) {
-                    mLayoutParams.x = mWindowManager.getDefaultDisplay().getWidth();
-                }
-                if (mLayoutParams.y > mWindowManager.getDefaultDisplay().getHeight()) {
-                    mLayoutParams.y = mWindowManager.getDefaultDisplay().getHeight();
-                }
-                mWindowManager.updateViewLayout(this, mLayoutParams);
-                mStartX = newX;
-                mStartY = newY;
-
                 break;
             case MotionEvent.ACTION_UP:
-                if (mBadgeViewHelper.satisfyMoveDismissCondition(event)) {
-                    startDismissAnim();
-                } else {
-                    mWindowManager.removeView(this);
+                if (!mAnimator.isRunning()) {
+                    if (mBadgeViewHelper.satisfyMoveDismissCondition(event)) {
+                        startDismissAnim();
+                    } else {
+                        mWindowManager.removeView(this);
+                    }
                 }
                 break;
         }
@@ -151,25 +153,24 @@ class BGADragBadgeView extends View {
     }
 
     private void startDismissAnim() {
-        ValueAnimator animator = ValueAnimator.ofFloat(0.0f, 1.0f);
-        animator.setDuration(1000);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        mAnimator.setFloatValues(1.0f, 0.0f);
+        mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                float value = (float) animation.getAnimatedValue();
-                ViewCompat.setAlpha(BGADragBadgeView.this, 1.0f - value);
-                ViewCompat.setScaleX(BGADragBadgeView.this, 1.0f + value);
-                ViewCompat.setScaleY(BGADragBadgeView.this, 1.0f + value);
+                float alpha = (float) animation.getAnimatedValue();
+                ViewCompat.setAlpha(BGADragBadgeView.this, alpha);
             }
         });
-        animator.addListener(new Animator.AnimatorListener() {
+        mAnimator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                mWindowManager.removeView(BGADragBadgeView.this);
+                if (getParent() != null) {
+                    mWindowManager.removeView(BGADragBadgeView.this);
+                }
             }
 
             @Override
@@ -180,7 +181,7 @@ class BGADragBadgeView extends View {
             public void onAnimationRepeat(Animator animation) {
             }
         });
-        animator.start();
+        mAnimator.start();
     }
 
     public static int getStatusBarHeight(Context context) {

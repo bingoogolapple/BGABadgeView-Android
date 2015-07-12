@@ -19,6 +19,7 @@
             <enum name="rightCenter" value="1" />
             <enum name="rightBottom" value="2" />
         </attr>
+        <!-- 是否可以拖拽删除徽章 -->
         <attr name="badge_dragable" format="boolean" />
     </declare-styleable>
 </resources>

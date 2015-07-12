@@ -53,7 +53,7 @@ public class BGABadgeLinearLayout extends LinearLayout implements BGABadgeable {
     }
 
     @Override
-    public void showCriclePointBadge() {
+    public void showCirclePointBadge() {
         mBadgeViewHeler.showCirclePointBadge();
     }
 

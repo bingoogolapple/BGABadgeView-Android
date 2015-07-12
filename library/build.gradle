@@ -12,6 +12,7 @@ android {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.nineoldandroids:library:2.4.0'
 }
 
 apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/project/library/android-artifacts.gradle'

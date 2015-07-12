@@ -10,15 +10,17 @@
 * 微信消息界面用户新消息
 * 微信消息界面订阅号新消息
 * 使用v4包中的RoundedBitmapDrawable制作圆角头像
+* 拖拽删除徽章(目前还实现水滴拖拽效果和爆炸效果，只是抬起手指时渐变消失)
 
 ### 效果图
-![Demo](https://raw.githubusercontent.com/bingoogolapple/BGABadgeView-Android/master/screenshots/badge.png)
+![Demo](http://7xk9dj.com1.z0.glb.clouddn.com/badge/screenshots/badge.gif)
 
 ### Gradle依赖
 
 ```groovy
 dependencies {
     compile 'com.android.support:appcompat-v7:latestVersion'
+    compile 'com.nineoldandroids:library:2.4.0'
     compile 'cn.bingoogolapple:bga-badgeview:latestVersion@aar'
 }
 ```
@@ -41,7 +43,7 @@ BGABadgeFrameLayout | 列表item右侧消息条数
 /**
  * 显示圆点徽章
  */
-void showCriclePointBadge();
+void showCirclePointBadge();
 
 /**
  * 显示文字徽章
@@ -61,6 +63,13 @@ void hiddenBadge();
  * @param bitmap
  */
 void showDrawableBadge(Bitmap bitmap);
+
+/**
+ * 设置拖动删除徽章的代理
+ *
+ * @param delegate
+ */
+void setDragDismissDelegage(BGADragDismissDelegate delegate);
 ```
 
 ### 自定义属性说明
@@ -74,6 +83,13 @@ badge_verticalMargin         | 徽章背景与宿主控件上下边缘间距离 
 badge_horizontalMargin         | 徽章背景与宿主控件左右边缘间距离        | 4dp
 badge_padding         | 徽章文本边缘与徽章背景边缘间的距离        | 4dp
 badge_gravity         | 徽章在宿主控件中的位置        | BGABadgeImageView和BGABadgeRadioButton是右上方，其他控件是右边垂直居中
+badge_dragable         | 是否开启拖拽删除徽章        | false
+
+# 如果要使用拖拽删除徽章功能,请在AndroidManifest.xml中添加下面的权限
+
+```xml
+<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+```
 
 ### 扩展自己的BadgeView
 

@@ -53,7 +53,7 @@ public class BGABadgeImageView extends ImageView implements BGABadgeable {
     }
 
     @Override
-    public void showCriclePointBadge() {
+    public void showCirclePointBadge() {
         mBadgeViewHeler.showCirclePointBadge();
     }
 

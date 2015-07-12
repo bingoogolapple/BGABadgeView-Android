@@ -29,7 +29,7 @@ public interface BGABadgeable {
     /**
      * 显示圆点徽章
      */
-    void showCriclePointBadge();
+    void showCirclePointBadge();
 
     /**
      * 显示文字徽章

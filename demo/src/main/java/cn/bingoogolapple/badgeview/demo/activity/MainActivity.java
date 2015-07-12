@@ -77,10 +77,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void testBadgeView() {
-        mTestBtv.showCriclePointBadge();
+        mTestBtv.showCirclePointBadge();
         mTestBctv.showTextBadge("BGA");
 
-        mNormalBiv.showCriclePointBadge();
+        mNormalBiv.showCirclePointBadge();
 
         Bitmap avatorBadgeBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.avatar_vip);
 
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                mRoundedBiv.showCriclePointBadge();
+                mRoundedBiv.showCirclePointBadge();
             }
         }, 6000);
 
@@ -125,14 +125,14 @@ public class MainActivity extends AppCompatActivity {
         mHomeBrb.showTextBadge("10");
         mMessageBrb.showTextBadge("1");
         mDiscoverBrb.showTextBadge("...");
-        mMeBrb.showTextBadge("1");
+        mMeBrb.showDrawableBadge(BitmapFactory.decodeResource(getResources(), R.mipmap.avatar_vip));
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 mHomeBrb.showTextBadge("1");
-                mMeBrb.showCriclePointBadge();
             }
         }, 5000);
+
 
 
         mHomeBrb.setDragDismissDelegage(new BGADragDismissDelegate() {

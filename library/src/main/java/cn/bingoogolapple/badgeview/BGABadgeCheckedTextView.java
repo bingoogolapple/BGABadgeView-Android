@@ -53,7 +53,7 @@ public class BGABadgeCheckedTextView extends AppCompatCheckedTextView implements
     }
 
     @Override
-    public void showCriclePointBadge() {
+    public void showCirclePointBadge() {
         mBadgeViewHeler.showCirclePointBadge();
     }
 

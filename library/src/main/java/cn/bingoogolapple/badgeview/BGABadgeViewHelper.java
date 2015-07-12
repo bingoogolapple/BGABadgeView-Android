@@ -104,9 +104,10 @@ public class BGABadgeViewHelper {
      */
     private int mMoveHiddenThreshold;
     /**
-     *
+     * 拖动大于BGABadgeViewHelper.mMoveHiddenThreshold后抬起手指徽章消失的代理
      */
     private BGADragDismissDelegate mDelegage;
+    private boolean mIsShowDrawable = false;
 
     public BGABadgeViewHelper(BGABadgeable badgeable, Context context, AttributeSet attrs, BadgeGravity defaultBadgeGravity) {
         mBadgeable = badgeable;
@@ -142,7 +143,7 @@ public class BGABadgeViewHelper {
 
         mIsDraging = false;
 
-        mDragable = true;
+        mDragable = false;
 
         mDownPointF = new PointF();
 
@@ -230,7 +231,7 @@ public class BGABadgeViewHelper {
 
     public void drawBadge(Canvas canvas) {
         if (mIsShowBadge && !mIsDraging) {
-            if (mBitmap != null) {
+            if (mIsShowDrawable) {
                 drawDrawableBadge(canvas);
             } else {
                 drawTextBadge(canvas);
@@ -330,7 +331,7 @@ public class BGABadgeViewHelper {
     }
 
     public void showTextBadge(String badgeText) {
-        mBitmap = null;
+        mIsShowDrawable = false;
         mBadgeText = badgeText;
         mIsShowBadge = true;
         mBadgeable.postInvalidate();
@@ -338,14 +339,18 @@ public class BGABadgeViewHelper {
 
     public void hiddenBadge() {
         mIsShowBadge = false;
-        mBitmap = null;
         mBadgeable.postInvalidate();
     }
 
     public void showDrawable(Bitmap bitmap) {
         mBitmap = bitmap;
+        mIsShowDrawable = true;
         mIsShowBadge = true;
         mBadgeable.postInvalidate();
+    }
+
+    public boolean isShowDrawable() {
+        return mIsShowDrawable;
     }
 
     public RectF getBadgeRectF() {

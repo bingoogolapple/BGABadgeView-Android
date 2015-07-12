@@ -20,7 +20,7 @@
             android:padding="5dp"
             android:text="BGABadgeCheckedTextView"
             android:textColor="@android:color/black"
-            app:badge_dragable="false" />
+            app:badge_dragable="true" />
 
         <cn.bingoogolapple.badgeview.BGABadgeLinearLayout
             android:id="@+id/bll_main_test"
@@ -47,6 +47,7 @@
                 android:id="@+id/biv_home_circle"
                 style="@style/WrapWrap"
                 android:padding="7dp"
+                app:badge_dragable="true"
                 app:badge_gravity="rightBottom"
                 app:badge_horizontalMargin="0dp"
                 app:badge_verticalMargin="0dp" />
@@ -109,7 +110,8 @@
             style="@style/RbMainTab"
             android:checked="true"
             android:drawableTop="@drawable/selector_tab_home"
-            android:text="首页" />
+            android:text="首页"
+            app:badge_dragable="true" />
 
         <cn.bingoogolapple.badgeview.BGABadgeRadioButton
             android:id="@+id/brb_main_message"
@@ -144,7 +146,7 @@
             android:drawableTop="@drawable/selector_tab_me"
             android:text="我"
             app:badge_gravity="rightBottom"
-            app:badge_horizontalMargin="20dp"
+            app:badge_horizontalMargin="10dp"
             app:badge_verticalMargin="10dp" />
     </RadioGroup>
 </LinearLayout>
