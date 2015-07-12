@@ -7,7 +7,7 @@
         <cn.bingoogolapple.badgeview.BGABadgeTextView
             android:id="@+id/btv_home_test"
             style="@style/MatchWrap"
-            android:layout_margin="5dp"
+            android:layout_marginTop="5dp"
             android:padding="5dp"
             android:text="BGABadgeTextView"
             android:textColor="@android:color/black" />
@@ -15,7 +15,7 @@
         <cn.bingoogolapple.badgeview.BGABadgeCheckedTextView
             android:id="@+id/bctv_home_test"
             style="@style/MatchWrap"
-            android:layout_margin="5dp"
+            android:layout_marginTop="5dp"
             android:padding="5dp"
             android:text="BGABadgeCheckedTextView"
             android:textColor="@android:color/black" />
@@ -23,8 +23,8 @@
         <cn.bingoogolapple.badgeview.BGABadgeLinearLayout
             android:id="@+id/bll_main_test"
             style="@style/MatchWrap.Horizontal"
-            android:gravity="center_vertical"
-            android:padding="15dp">
+            android:padding="5dp"
+            android:gravity="center_vertical">
 
             <cn.bingoogolapple.badgeview.BGABadgeImageView
                 android:id="@+id/biv_home_normal"
@@ -58,7 +58,7 @@
         <cn.bingoogolapple.badgeview.BGABadgeRelativeLayout
             android:id="@+id/brl_main_test"
             style="@style/MatchWrap"
-            android:padding="10dp"
+            android:padding="5dp"
             app:badge_padding="7dp">
 
             <TextView
@@ -75,7 +75,7 @@
         <cn.bingoogolapple.badgeview.BGABadgeFrameLayout
             android:id="@+id/bfl_main_test"
             style="@style/MatchWrap"
-            android:padding="10dp"
+            android:padding="5dp"
             app:badge_padding="7dp">
 
             <TextView
@@ -88,6 +88,12 @@
                 android:text="测试BGABadgeFrameLayout" />
 
         </cn.bingoogolapple.badgeview.BGABadgeFrameLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:scrollbars="none"
+            android:layout_marginTop="5dp"
+            style="@style/MatchMatch" />
     </LinearLayout>
 
     <RadioGroup

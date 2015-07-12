@@ -15,6 +15,11 @@ android {
 dependencies {
     compile 'com.android.support:appcompat-v7:22.2.0'
 
-//    compile project(':library')
-    compile 'cn.bingoogolapple:bga-badgeview:1.0.0@aar'
+
+    compile project(':library')
+//    compile 'cn.bingoogolapple:bga-badgeview:1.0.0@aar'
+
+
+    compile 'com.android.support:recyclerview-v7:22.2.0'
+    compile 'cn.bingoogolapple:bga-adapter:1.0.2@aar'
 }
