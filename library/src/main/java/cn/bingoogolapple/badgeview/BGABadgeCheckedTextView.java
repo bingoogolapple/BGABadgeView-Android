@@ -21,6 +21,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.support.v7.widget.AppCompatCheckedTextView;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -33,6 +34,16 @@ public class BGABadgeCheckedTextView extends AppCompatCheckedTextView implements
     public BGABadgeCheckedTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mBadgeViewHeler = new BGABadgeViewHelper(this, context, attrs, BGABadgeViewHelper.BadgeGravity.RightCenter);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return mBadgeViewHeler.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean callSuperOnTouchEvent(MotionEvent event) {
+        return super.onTouchEvent(event);
     }
 
     @Override
@@ -61,4 +72,8 @@ public class BGABadgeCheckedTextView extends AppCompatCheckedTextView implements
         mBadgeViewHeler.showDrawable(bitmap);
     }
 
+    @Override
+    public void setDragDismissDelegage(BGADragDismissDelegate delegate) {
+        mBadgeViewHeler.setDragDismissDelegage(delegate);
+    }
 }

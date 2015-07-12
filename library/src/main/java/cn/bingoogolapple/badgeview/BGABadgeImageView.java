@@ -20,6 +20,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.widget.ImageView;
 
 /**
@@ -33,6 +34,16 @@ public class BGABadgeImageView extends ImageView implements BGABadgeable {
     public BGABadgeImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mBadgeViewHeler = new BGABadgeViewHelper(this, context, attrs, BGABadgeViewHelper.BadgeGravity.RightTop);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return mBadgeViewHeler.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean callSuperOnTouchEvent(MotionEvent event) {
+        return super.onTouchEvent(event);
     }
 
     @Override
@@ -61,4 +72,8 @@ public class BGABadgeImageView extends ImageView implements BGABadgeable {
         mBadgeViewHeler.showDrawable(bitmap);
     }
 
+    @Override
+    public void setDragDismissDelegage(BGADragDismissDelegate delegate) {
+        mBadgeViewHeler.setDragDismissDelegage(delegate);
+    }
 }

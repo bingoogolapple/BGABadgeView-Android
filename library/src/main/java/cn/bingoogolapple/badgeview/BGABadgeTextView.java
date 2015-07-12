@@ -1,12 +1,12 @@
 /**
  * Copyright 2015 bingoogolapple
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,6 +21,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -33,6 +34,16 @@ public class BGABadgeTextView extends AppCompatTextView implements BGABadgeable 
     public BGABadgeTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mBadgeViewHeler = new BGABadgeViewHelper(this, context, attrs, BGABadgeViewHelper.BadgeGravity.RightCenter);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return mBadgeViewHeler.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean callSuperOnTouchEvent(MotionEvent event) {
+        return super.onTouchEvent(event);
     }
 
     @Override
@@ -61,4 +72,8 @@ public class BGABadgeTextView extends AppCompatTextView implements BGABadgeable 
         mBadgeViewHeler.showDrawable(bitmap);
     }
 
+    @Override
+    public void setDragDismissDelegage(BGADragDismissDelegate delegate) {
+        mBadgeViewHeler.setDragDismissDelegage(delegate);
+    }
 }

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/MatchWrap.Vertical"
     app:badge_horizontalMargin="10dp"
+    android:background="@drawable/selector_item"
     android:padding="10dp">
 
     <TextView

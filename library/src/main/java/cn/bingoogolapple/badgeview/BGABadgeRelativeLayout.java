@@ -20,6 +20,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.widget.RelativeLayout;
 
 /**
@@ -33,6 +34,16 @@ public class BGABadgeRelativeLayout extends RelativeLayout implements BGABadgeab
     public BGABadgeRelativeLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         mBadgeViewHeler = new BGABadgeViewHelper(this, context, attrs, BGABadgeViewHelper.BadgeGravity.RightCenter);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return mBadgeViewHeler.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean callSuperOnTouchEvent(MotionEvent event) {
+        return super.onTouchEvent(event);
     }
 
     @Override
@@ -59,5 +70,10 @@ public class BGABadgeRelativeLayout extends RelativeLayout implements BGABadgeab
     @Override
     public void showDrawableBadge(Bitmap bitmap) {
         mBadgeViewHeler.showDrawable(bitmap);
+    }
+
+    @Override
+    public void setDragDismissDelegage(BGADragDismissDelegate delegate) {
+        mBadgeViewHeler.setDragDismissDelegage(delegate);
     }
 }

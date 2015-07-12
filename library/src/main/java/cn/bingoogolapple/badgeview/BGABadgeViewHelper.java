@@ -1,12 +1,12 @@
 /**
  * Copyright 2015 bingoogolapple
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,11 +22,13 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.MotionEvent;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -52,7 +54,7 @@ public class BGABadgeViewHelper {
     /**
      * 徽章背景与宿主控件上下边缘间距离
      */
-    int mBadgeVerticalMargin;
+    private int mBadgeVerticalMargin;
     /**
      * 徽章背景与宿主控件左右边缘间距离
      */
@@ -77,16 +79,46 @@ public class BGABadgeViewHelper {
      * 徽章在宿主控件中的位置
      */
     private BadgeGravity mBadgeGravity;
+    /**
+     * 整个徽章所占区域
+     */
+    private RectF mBadgeRectF;
+    /**
+     * 是否可拖动
+     */
+    private boolean mDragable;
+    /**
+     * 拖动时的徽章控件
+     */
+    private BGADragBadgeView mDropBadgeView;
+    /**
+     * 是否正在拖动
+     */
+    private boolean mIsDraging;
+    /**
+     * 按下的点
+     */
+    private PointF mDownPointF;
+    /**
+     * 拖动mMoveHiddenThreshold距离后抬起手指徽章消失
+     */
+    private int mMoveHiddenThreshold;
+    /**
+     *
+     */
+    private BGADragDismissDelegate mDelegage;
 
     public BGABadgeViewHelper(BGABadgeable badgeable, Context context, AttributeSet attrs, BadgeGravity defaultBadgeGravity) {
         mBadgeable = badgeable;
         initDefaultAttrs(context, defaultBadgeGravity);
         initCustomAttrs(context, attrs);
         afterInitDefaultAndCustomAttrs();
+        mDropBadgeView = new BGADragBadgeView(context, this);
     }
 
     private void initDefaultAttrs(Context context, BadgeGravity defaultBadgeGravity) {
         mBadgeNumberRect = new Rect();
+        mBadgeRectF = new RectF();
         mBadgeBgColor = Color.RED;
         mBadgeTextColor = Color.WHITE;
         mBadgeTextSize = sp2px(context, 10);
@@ -107,6 +139,14 @@ public class BGABadgeViewHelper {
         mBadgeText = null;
 
         mBitmap = null;
+
+        mIsDraging = false;
+
+        mDragable = true;
+
+        mDownPointF = new PointF();
+
+        mMoveHiddenThreshold = dp2px(context, 60);
     }
 
     private void initCustomAttrs(Context context, AttributeSet attrs) {
@@ -134,6 +174,8 @@ public class BGABadgeViewHelper {
         } else if (attr == R.styleable.BGABadgeView_badge_gravity) {
             int ordinal = typedArray.getInt(attr, mBadgeGravity.ordinal());
             mBadgeGravity = BadgeGravity.values()[ordinal];
+        } else if (attr == R.styleable.BGABadgeView_badge_dragable) {
+            mDragable = typedArray.getBoolean(attr, mDragable);
         }
     }
 
@@ -141,8 +183,52 @@ public class BGABadgeViewHelper {
         mBadgePaint.setTextSize(mBadgeTextSize);
     }
 
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if (mDragable && mIsShowBadge && mBadgeRectF.contains(event.getX(), event.getY())) {
+                    mDownPointF.set(event.getRawX(), event.getRawY());
+                    mIsDraging = true;
+                    mBadgeable.getParent().requestDisallowInterceptTouchEvent(true);
+                    mDropBadgeView.onTouchEvent(event);
+                    mBadgeable.postInvalidate();
+                    return true;
+                }
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (mIsDraging) {
+                    mBadgeable.getParent().requestDisallowInterceptTouchEvent(true);
+                    mDropBadgeView.onTouchEvent(event);
+                    return true;
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                if (mIsDraging) {
+                    mDropBadgeView.onTouchEvent(event);
+
+                    float moveLength = PointF.length(event.getRawX() - mDownPointF.x, event.getRawY() - mDownPointF.y);
+                    if (moveLength > mMoveHiddenThreshold) {
+                        hiddenBadge();
+
+                        if (mDelegage != null) {
+                            mDelegage.onDismiss(mBadgeable);
+                        }
+                    } else {
+                        mIsDraging = false;
+                        mBadgeable.postInvalidate();
+                    }
+                    return true;
+                }
+                break;
+            default:
+                break;
+        }
+        return mBadgeable.callSuperOnTouchEvent(event);
+    }
+
     public void drawBadge(Canvas canvas) {
-        if (mIsShowBadge) {
+        if (mIsShowBadge && !mIsDraging) {
             if (mBitmap != null) {
                 drawDrawableBadge(canvas);
             } else {
@@ -157,22 +243,24 @@ public class BGABadgeViewHelper {
      * @param canvas
      */
     private void drawDrawableBadge(Canvas canvas) {
-        float badgeLeft = mBadgeable.getWidth() - mBadgeHorizontalMargin - mBitmap.getWidth();
-        float badgeTop = mBadgeVerticalMargin;
+        mBadgeRectF.left = mBadgeable.getWidth() - mBadgeHorizontalMargin - mBitmap.getWidth();
+        mBadgeRectF.top = mBadgeVerticalMargin;
         switch (mBadgeGravity) {
             case RightTop:
-                badgeTop = mBadgeVerticalMargin;
+                mBadgeRectF.top = mBadgeVerticalMargin;
                 break;
             case RightCenter:
-                badgeTop = (mBadgeable.getHeight() - mBitmap.getHeight()) / 2;
+                mBadgeRectF.top = (mBadgeable.getHeight() - mBitmap.getHeight()) / 2;
                 break;
             case RightBottom:
-                badgeTop = mBadgeable.getHeight() - mBitmap.getHeight() - mBadgeVerticalMargin;
+                mBadgeRectF.top = mBadgeable.getHeight() - mBitmap.getHeight() - mBadgeVerticalMargin;
                 break;
             default:
                 break;
         }
-        canvas.drawBitmap(mBitmap, badgeLeft, badgeTop, mBadgePaint);
+        canvas.drawBitmap(mBitmap, mBadgeRectF.left, mBadgeRectF.top, mBadgePaint);
+        mBadgeRectF.right = mBadgeRectF.left + mBitmap.getWidth();
+        mBadgeRectF.bottom = mBadgeRectF.top + mBitmap.getHeight();
     }
 
     /**
@@ -183,14 +271,13 @@ public class BGABadgeViewHelper {
     private void drawTextBadge(Canvas canvas) {
         String badgeText = "";
         if (!TextUtils.isEmpty(mBadgeText)) {
-            badgeText = String.valueOf(mBadgeText);
-
+            badgeText = mBadgeText;
         }
         // 获取文本宽所占宽高
         mBadgePaint.getTextBounds(badgeText, 0, badgeText.length(), mBadgeNumberRect);
         // 计算徽章背景的宽高
-        float badgeHeight = mBadgeNumberRect.height() + mBadgePadding * 2;
-        float badgeWidth;
+        int badgeHeight = mBadgeNumberRect.height() + mBadgePadding * 2;
+        int badgeWidth;
         // 当mBadgeText的长度为1时，计算出来的高度会比宽度大，此时设置宽度等于高度
         if (badgeText.length() == 1) {
             badgeWidth = badgeHeight;
@@ -199,39 +286,39 @@ public class BGABadgeViewHelper {
         }
 
         // 计算徽章背景上下的值
-        float badgeTop = mBadgeVerticalMargin;
-        float badgeBottom = mBadgeable.getHeight() - mBadgeVerticalMargin;
+        mBadgeRectF.top = mBadgeVerticalMargin;
+        mBadgeRectF.bottom = mBadgeable.getHeight() - mBadgeVerticalMargin;
         switch (mBadgeGravity) {
             case RightTop:
-                badgeBottom = badgeTop + badgeHeight;
+                mBadgeRectF.bottom = mBadgeRectF.top + badgeHeight;
                 break;
             case RightCenter:
-                badgeTop = (mBadgeable.getHeight() - badgeHeight) / 2;
-                badgeBottom = badgeTop + badgeHeight;
+                mBadgeRectF.top = (mBadgeable.getHeight() - badgeHeight) / 2;
+                mBadgeRectF.bottom = mBadgeRectF.top + badgeHeight;
                 break;
             case RightBottom:
-                badgeTop = badgeBottom - badgeHeight;
+                mBadgeRectF.top = mBadgeRectF.bottom - badgeHeight;
                 break;
             default:
                 break;
         }
 
         // 计算徽章背景左右的值
-        float badgeRight = mBadgeable.getWidth() - mBadgeHorizontalMargin;
-        float badgeLeft = badgeRight - badgeWidth;
+        mBadgeRectF.right = mBadgeable.getWidth() - mBadgeHorizontalMargin;
+        mBadgeRectF.left = mBadgeRectF.right - badgeWidth;
 
         // 设置徽章背景色
         mBadgePaint.setColor(mBadgeBgColor);
         // 绘制徽章背景
-        canvas.drawRoundRect(new RectF(badgeLeft, badgeTop, badgeRight, badgeBottom), badgeHeight / 2, badgeHeight / 2, mBadgePaint);
+        canvas.drawRoundRect(mBadgeRectF, badgeHeight / 2, badgeHeight / 2, mBadgePaint);
 
         if (!TextUtils.isEmpty(mBadgeText)) {
             // 设置徽章文本颜色
             mBadgePaint.setColor(mBadgeTextColor);
             // initDefaultAttrs方法中设置了mBadgeText居中，此处的x为徽章背景的中心点y
-            float x = badgeLeft + badgeWidth / 2;
+            float x = mBadgeRectF.left + badgeWidth / 2;
             // 注意：绘制文本时的y是指文本底部，而不是文本的中间
-            float y = badgeBottom - mBadgePadding;
+            float y = mBadgeRectF.bottom - mBadgePadding;
             // 绘制徽章文本
             canvas.drawText(badgeText, x, y, mBadgePaint);
         }
@@ -260,11 +347,43 @@ public class BGABadgeViewHelper {
         mBadgeable.postInvalidate();
     }
 
-    private static int dp2px(Context context, float dpValue) {
+    public RectF getBadgeRectF() {
+        return mBadgeRectF;
+    }
+
+    public int getBadgePadding() {
+        return mBadgePadding;
+    }
+
+    public String getBadgeText() {
+        return mBadgeText;
+    }
+
+    public int getBadgeBgColor() {
+        return mBadgeBgColor;
+    }
+
+    public int getBadgeTextColor() {
+        return mBadgeTextColor;
+    }
+
+    public int getBadgeTextSize() {
+        return mBadgeTextSize;
+    }
+
+    public Bitmap getBitmap() {
+        return mBitmap;
+    }
+
+    public void setDragDismissDelegage(BGADragDismissDelegate delegage) {
+        mDelegage = delegage;
+    }
+
+    public static int dp2px(Context context, float dpValue) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, context.getResources().getDisplayMetrics());
     }
 
-    private static int sp2px(Context context, float spValue) {
+    public static int sp2px(Context context, float spValue) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue, context.getResources().getDisplayMetrics());
     }
 

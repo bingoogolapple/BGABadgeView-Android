@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import cn.bingoogolapple.badgeview.BGABadgeCheckedTextView;
 import cn.bingoogolapple.badgeview.BGABadgeFrameLayout;
@@ -19,6 +20,8 @@ import cn.bingoogolapple.badgeview.BGABadgeLinearLayout;
 import cn.bingoogolapple.badgeview.BGABadgeRadioButton;
 import cn.bingoogolapple.badgeview.BGABadgeRelativeLayout;
 import cn.bingoogolapple.badgeview.BGABadgeTextView;
+import cn.bingoogolapple.badgeview.BGABadgeable;
+import cn.bingoogolapple.badgeview.BGADragDismissDelegate;
 import cn.bingoogolapple.badgeview.demo.R;
 import cn.bingoogolapple.badgeview.demo.adapter.MessageAdapter;
 import cn.bingoogolapple.badgeview.demo.model.MessageModel;
@@ -130,6 +133,14 @@ public class MainActivity extends AppCompatActivity {
                 mMeBrb.showCriclePointBadge();
             }
         }, 5000);
+
+
+        mHomeBrb.setDragDismissDelegage(new BGADragDismissDelegate() {
+            @Override
+            public void onDismiss(BGABadgeable badgeable) {
+                Toast.makeText(MainActivity.this, "消息单选按钮徽章拖动消失", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void testRecyclerView() {

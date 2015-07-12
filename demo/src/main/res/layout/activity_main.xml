@@ -10,7 +10,8 @@
             android:layout_marginTop="5dp"
             android:padding="5dp"
             android:text="BGABadgeTextView"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            app:badge_padding="5dp" />
 
         <cn.bingoogolapple.badgeview.BGABadgeCheckedTextView
             android:id="@+id/bctv_home_test"
@@ -18,13 +19,14 @@
             android:layout_marginTop="5dp"
             android:padding="5dp"
             android:text="BGABadgeCheckedTextView"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            app:badge_dragable="false" />
 
         <cn.bingoogolapple.badgeview.BGABadgeLinearLayout
             android:id="@+id/bll_main_test"
             style="@style/MatchWrap.Horizontal"
-            android:padding="5dp"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:padding="5dp">
 
             <cn.bingoogolapple.badgeview.BGABadgeImageView
                 android:id="@+id/biv_home_normal"
@@ -91,9 +93,9 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerview"
-            android:scrollbars="none"
+            style="@style/MatchMatch"
             android:layout_marginTop="5dp"
-            style="@style/MatchMatch" />
+            android:scrollbars="none" />
     </LinearLayout>
 
     <RadioGroup
