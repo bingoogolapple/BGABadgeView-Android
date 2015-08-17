@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void testRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        mMessageAdapter = new MessageAdapter(this);
+        mMessageAdapter = new MessageAdapter(mRecyclerView);
         mRecyclerView.setAdapter(mMessageAdapter);
         mMessageAdapter.setDatas(MessageModel.getTestDatas());
     }
