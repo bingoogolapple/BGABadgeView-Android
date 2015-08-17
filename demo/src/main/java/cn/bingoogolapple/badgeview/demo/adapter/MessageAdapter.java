@@ -1,6 +1,6 @@
 package cn.bingoogolapple.badgeview.demo.adapter;
 
-import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import cn.bingoogolapple.androidcommon.adapter.BGARecyclerViewAdapter;
@@ -17,8 +17,8 @@ import cn.bingoogolapple.badgeview.demo.model.MessageModel;
  * 描述:
  */
 public class MessageAdapter extends BGARecyclerViewAdapter<MessageModel> {
-    public MessageAdapter(Context context) {
-        super(context, R.layout.item_message);
+    public MessageAdapter(RecyclerView recyclerView) {
+        super(recyclerView, R.layout.item_message);
     }
 
     @Override
