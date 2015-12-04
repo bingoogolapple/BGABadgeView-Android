@@ -17,8 +17,6 @@ import cn.bingoogolapple.badgeview.demo.model.MessageModel;
  * 描述:
  */
 public class MessageAdapter extends BGARecyclerViewAdapter<MessageModel> {
-    private boolean mDragDismissEnable;
-
     public MessageAdapter(RecyclerView recyclerView) {
         super(recyclerView, R.layout.item_message);
     }
@@ -31,23 +29,15 @@ public class MessageAdapter extends BGARecyclerViewAdapter<MessageModel> {
         BGABadgeLinearLayout rootView = (BGABadgeLinearLayout) holderHelper.getConvertView();
         if (message.newMsgCount > 0) {
             rootView.showTextBadge("" + message.newMsgCount);
-
-            if (mDragDismissEnable) {
-                rootView.setDragDismissDelegage(new BGADragDismissDelegate() {
-                    @Override
-                    public void onDismiss(BGABadgeable badgeable) {
-                        message.newMsgCount = 0;
-                        Toast.makeText(mContext, message.title + "的徽章消失", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
+            rootView.setDragDismissDelegage(new BGADragDismissDelegate() {
+                @Override
+                public void onDismiss(BGABadgeable badgeable) {
+                    message.newMsgCount = 0;
+                    Toast.makeText(mContext, message.title + "的徽章消失", Toast.LENGTH_SHORT).show();
+                }
+            });
         } else {
             rootView.hiddenBadge();
         }
-    }
-
-    public void setDragDismissEnable(boolean enable) {
-        mDragDismissEnable = enable;
-        notifyDataSetChanged();
     }
 }

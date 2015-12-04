@@ -31,6 +31,10 @@ import android.widget.LinearLayout;
 public class BGABadgeLinearLayout extends LinearLayout implements BGABadgeable {
     private BGABadgeViewHelper mBadgeViewHeler;
 
+    public BGABadgeLinearLayout(Context context) {
+        this(context, null);
+    }
+
     public BGABadgeLinearLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         mBadgeViewHeler = new BGABadgeViewHelper(this, context, attrs, BGABadgeViewHelper.BadgeGravity.RightCenter);

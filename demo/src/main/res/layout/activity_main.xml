@@ -13,14 +13,6 @@
             android:textColor="@android:color/black"
             app:badge_padding="5dp" />
 
-        <cn.bingoogolapple.badgeview.BGABadgeCheckedTextView
-            android:id="@+id/bctv_home_test"
-            style="@style/MatchWrap"
-            android:layout_marginTop="5dp"
-            android:padding="5dp"
-            android:text="BGABadgeCheckedTextView"
-            android:textColor="@android:color/black" />
-
         <cn.bingoogolapple.badgeview.BGABadgeLinearLayout
             android:id="@+id/bll_main_test"
             style="@style/MatchWrap.Horizontal"
@@ -46,6 +38,7 @@
                 android:id="@+id/biv_home_circle"
                 style="@style/WrapWrap"
                 android:padding="7dp"
+                app:badge_dragable="true"
                 app:badge_gravity="rightBottom"
                 app:badge_horizontalMargin="0dp"
                 app:badge_verticalMargin="0dp" />
@@ -94,7 +87,6 @@
             android:id="@+id/recyclerview"
             style="@style/MatchMatch"
             android:layout_marginTop="5dp"
-            android:overScrollMode="never"
             android:scrollbars="none" />
     </LinearLayout>
 
@@ -109,7 +101,8 @@
             style="@style/RbMainTab"
             android:checked="true"
             android:drawableTop="@drawable/selector_tab_home"
-            android:text="首页" />
+            android:text="首页"
+            app:badge_dragable="true" />
 
         <cn.bingoogolapple.badgeview.BGABadgeRadioButton
             android:id="@+id/brb_main_message"

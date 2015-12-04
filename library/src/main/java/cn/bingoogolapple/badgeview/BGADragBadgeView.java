@@ -22,7 +22,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.RectF;
-import android.support.v4.view.ViewCompat;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,6 +29,7 @@ import android.view.WindowManager;
 
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.ValueAnimator;
+import com.nineoldandroids.view.ViewHelper;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -69,7 +69,7 @@ class BGADragBadgeView extends View {
         mLayoutParams.gravity = Gravity.LEFT + Gravity.TOP;
         mLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         mLayoutParams.format = PixelFormat.TRANSLUCENT;
-        mLayoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        mLayoutParams.type = WindowManager.LayoutParams.TYPE_TOAST;
         mLayoutParams.width = mWindowManager.getDefaultDisplay().getWidth();
         mLayoutParams.height = mWindowManager.getDefaultDisplay().getHeight();
     }
@@ -158,7 +158,8 @@ class BGADragBadgeView extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float alpha = (float) animation.getAnimatedValue();
-                ViewCompat.setAlpha(BGADragBadgeView.this, alpha);
+
+                ViewHelper.setAlpha(BGADragBadgeView.this, alpha);
             }
         });
         mAnimator.addListener(new Animator.AnimatorListener() {

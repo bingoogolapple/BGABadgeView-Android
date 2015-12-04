@@ -1,6 +1,7 @@
 :heartpulse:BGABadgeView-Android:heartpulse:
 ============
 
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-BGABadgeView-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/2106)
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-badgeview/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-badgeview)
 
@@ -13,13 +14,12 @@
 * 拖拽删除徽章(目前还没实现水滴拖拽效果和爆炸效果，只是抬起手指时渐变消失)
 
 ### 效果图
-![Demo](http://7xk9dj.com1.z0.glb.clouddn.com/badge/screenshots/badge.gif)
+![Demo](http://7xk9dj.com1.z0.glb.clouddn.com/badge/screenshots/badge1.gif)
 
 ### Gradle依赖
 
 ```groovy
 dependencies {
-    compile 'com.android.support:appcompat-v7:latestVersion'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'cn.bingoogolapple:bga-badgeview:latestVersion@aar'
 }
@@ -84,12 +84,6 @@ badge_horizontalMargin         | 徽章背景与宿主控件左右边缘间距�
 badge_padding         | 徽章文本边缘与徽章背景边缘间的距离        | 4dp
 badge_gravity         | 徽章在宿主控件中的位置        | BGABadgeImageView和BGABadgeRadioButton是右上方，其他控件是右边垂直居中
 badge_dragable         | 是否开启拖拽删除徽章        | false
-
-# 如果要使用拖拽删除徽章功能,请在AndroidManifest.xml中添加下面的权限
-
-```xml
-<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-```
 
 ### 扩展自己的BadgeView
 

@@ -31,8 +31,16 @@ import android.widget.ImageView;
 public class BGABadgeImageView extends ImageView implements BGABadgeable {
     private BGABadgeViewHelper mBadgeViewHeler;
 
+    public BGABadgeImageView(Context context) {
+        this(context, null);
+    }
+
     public BGABadgeImageView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
+    }
+
+    public BGABadgeImageView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
         mBadgeViewHeler = new BGABadgeViewHelper(this, context, attrs, BGABadgeViewHelper.BadgeGravity.RightTop);
     }
 

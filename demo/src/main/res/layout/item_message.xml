@@ -4,6 +4,7 @@
     style="@style/MatchWrap.Vertical"
     android:background="@drawable/selector_item"
     android:padding="10dp"
+    app:badge_dragable="true"
     app:badge_horizontalMargin="10dp">
 
     <TextView
