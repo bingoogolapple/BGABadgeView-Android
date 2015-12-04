@@ -2,10 +2,9 @@
 <cn.bingoogolapple.badgeview.BGABadgeLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/MatchWrap.Vertical"
-    app:badge_horizontalMargin="10dp"
-    app:badge_dragable="true"
     android:background="@drawable/selector_item"
-    android:padding="10dp">
+    android:padding="10dp"
+    app:badge_horizontalMargin="10dp">
 
     <TextView
         android:id="@+id/tv_item_message_title"

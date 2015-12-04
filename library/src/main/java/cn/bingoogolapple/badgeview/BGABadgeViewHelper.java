@@ -84,10 +84,6 @@ public class BGABadgeViewHelper {
      */
     private RectF mBadgeRectF;
     /**
-     * 是否可拖动
-     */
-    private boolean mDragable;
-    /**
      * 拖动时的徽章控件
      */
     private BGADragBadgeView mDropBadgeView;
@@ -143,8 +139,6 @@ public class BGABadgeViewHelper {
 
         mIsDraging = false;
 
-        mDragable = false;
-
         mDownPointF = new PointF();
 
         mMoveHiddenThreshold = dp2px(context, 60);
@@ -175,8 +169,6 @@ public class BGABadgeViewHelper {
         } else if (attr == R.styleable.BGABadgeView_badge_gravity) {
             int ordinal = typedArray.getInt(attr, mBadgeGravity.ordinal());
             mBadgeGravity = BadgeGravity.values()[ordinal];
-        } else if (attr == R.styleable.BGABadgeView_badge_dragable) {
-            mDragable = typedArray.getBoolean(attr, mDragable);
         }
     }
 
@@ -187,7 +179,7 @@ public class BGABadgeViewHelper {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if (mDragable && mIsShowBadge && mBadgeRectF.contains(event.getX(), event.getY())) {
+                if (mDelegage != null && mIsShowBadge && mBadgeRectF.contains(event.getX(), event.getY())) {
                     mDownPointF.set(event.getRawX(), event.getRawY());
                     mIsDraging = true;
                     mBadgeable.getParent().requestDisallowInterceptTouchEvent(true);
@@ -209,10 +201,7 @@ public class BGABadgeViewHelper {
                     mIsDraging = false;
                     if (satisfyMoveDismissCondition(event)) {
                         hiddenBadge();
-
-                        if (mDelegage != null) {
-                            mDelegage.onDismiss(mBadgeable);
-                        }
+                        mDelegage.onDismiss(mBadgeable);
                     } else {
                         mBadgeable.postInvalidate();
                     }

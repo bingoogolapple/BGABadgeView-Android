@@ -1,8 +1,8 @@
 :heartpulse:BGABadgeView-Android:heartpulse:
 ============
-[ ![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-badgeview/images/download.svg) ](https://bintray.com/bingoogolapple/maven/bga-badgeview/_latestVersion)
->关于我<br/>
->微博：<a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a>&nbsp;&nbsp;&nbsp;&nbsp;主页：<a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>&nbsp;&nbsp;&nbsp;&nbsp;邮箱：<a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a>
+
+[![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-badgeview/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-badgeview)
 
 **demo中演示了:**
 * 微博底部tab显示最新微博条数
@@ -95,7 +95,11 @@ badge_dragable         | 是否开启拖拽删除徽章        | false
 
 继承特定的控件，实现[BGABadgeable](https://github.com/bingoogolapple/BGABadgeView-Android/blob/master/library/src/main/java/cn/bingoogolapple/badgeview/BGABadgeable.java)接口中相应的方法，并调用[BGABadgeViewHelper](https://github.com/bingoogolapple/BGABadgeView-Android/blob/master/library/src/main/java/cn/bingoogolapple/badgeview/BGABadgeViewHelper.java)中相应的方法，自定义控件实现方式请参考[BGABadgeRadioButton](https://github.com/bingoogolapple/BGABadgeView-Android/blob/master/library/src/main/java/cn/bingoogolapple/badgeview/BGABadgeRadioButton.java)，自定义组合控件实现方式请参考[BGABadgeLinearLayout](https://github.com/bingoogolapple/BGABadgeView-Android/blob/master/library/src/main/java/cn/bingoogolapple/badgeview/BGABadgeLinearLayout.java)
 
-### 代码是最好的老师，更多详细用法请查看[demo](https://github.com/bingoogolapple/BGABadgeView-Android/tree/master/demo):feet:
+### 关于我
+
+| 新浪微博 | 个人主页 | 邮箱 | BGA系列开源库QQ群 |
+| ------------ | ------------- | ------------ | ------------ |
+| <a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a> | <a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>  | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://7xk9dj.com1.z0.glb.clouddn.com/BGA_CODE_CLUB.png?imageView2/2/w/200) |
 
 ## License
 
