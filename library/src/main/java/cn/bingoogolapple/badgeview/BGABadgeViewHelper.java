@@ -27,7 +27,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.MotionEvent;
 
 /**
@@ -122,7 +121,7 @@ public class BGABadgeViewHelper {
         mBadgeRectF = new RectF();
         mBadgeBgColor = Color.RED;
         mBadgeTextColor = Color.WHITE;
-        mBadgeTextSize = sp2px(context, 10);
+        mBadgeTextSize = BGABadgeViewUtil.sp2px(context, 10);
 
         mBadgePaint = new Paint();
         mBadgePaint.setAntiAlias(true);
@@ -130,9 +129,9 @@ public class BGABadgeViewHelper {
         // 设置mBadgeText居中，保证mBadgeText长度为1时，文本也能居中
         mBadgePaint.setTextAlign(Paint.Align.CENTER);
 
-        mBadgePadding = dp2px(context, 4);
-        mBadgeVerticalMargin = dp2px(context, 4);
-        mBadgeHorizontalMargin = dp2px(context, 4);
+        mBadgePadding = BGABadgeViewUtil.dp2px(context, 4);
+        mBadgeVerticalMargin = BGABadgeViewUtil.dp2px(context, 4);
+        mBadgeHorizontalMargin = BGABadgeViewUtil.dp2px(context, 4);
 
         mBadgeGravity = defaultBadgeGravity;
         mIsShowBadge = false;
@@ -147,7 +146,7 @@ public class BGABadgeViewHelper {
 
         mDownPointF = new PointF();
 
-        mMoveHiddenThreshold = dp2px(context, 60);
+        mMoveHiddenThreshold = BGABadgeViewUtil.dp2px(context, 60);
     }
 
     private void initCustomAttrs(Context context, AttributeSet attrs) {
@@ -383,14 +382,6 @@ public class BGABadgeViewHelper {
 
     public void setDragDismissDelegage(BGADragDismissDelegate delegage) {
         mDelegage = delegage;
-    }
-
-    public static int dp2px(Context context, float dpValue) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, context.getResources().getDisplayMetrics());
-    }
-
-    public static int sp2px(Context context, float spValue) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue, context.getResources().getDisplayMetrics());
     }
 
     public enum BadgeGravity {

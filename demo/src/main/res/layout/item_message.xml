@@ -5,7 +5,8 @@
     android:background="@drawable/selector_item"
     android:padding="10dp"
     app:badge_dragable="true"
-    app:badge_horizontalMargin="10dp">
+    app:badge_horizontalMargin="10dp"
+    app:badge_padding="6dp">
 
     <TextView
         android:id="@+id/tv_item_message_title"

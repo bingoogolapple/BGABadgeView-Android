@@ -29,7 +29,6 @@ dependencies {
 
 类名 | 应用场景
 :----------- | :-----------
-BGABadgeCheckedTextView | 微博首页微博类型弹出窗口中的item
 BGABadgeRadioButton | 微博首页底部导航
 BGABadgeImageView | 微博列表用户头像
 BGABadgeTextView | 其实这个可以用BGABadgeCheckedTextView代替
