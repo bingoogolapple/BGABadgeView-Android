@@ -12,7 +12,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import cn.bingoogolapple.badgeview.BGABadgeFrameLayout;
 import cn.bingoogolapple.badgeview.BGABadgeImageView;
@@ -25,6 +24,7 @@ import cn.bingoogolapple.badgeview.BGADragDismissDelegate;
 import cn.bingoogolapple.badgeview.demo.R;
 import cn.bingoogolapple.badgeview.demo.adapter.MessageAdapter;
 import cn.bingoogolapple.badgeview.demo.model.MessageModel;
+import cn.bingoogolapple.badgeview.demo.util.ToastUtil;
 
 public class MainActivity extends AppCompatActivity {
     private BGABadgeTextView mTestBtv;
@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ToastUtil.init(this);
 
         initView();
         testBadgeView();
@@ -139,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         mHomeBrb.setDragDismissDelegage(new BGADragDismissDelegate() {
             @Override
             public void onDismiss(BGABadgeable badgeable) {
-                Toast.makeText(MainActivity.this, "消息单选按钮徽章拖动消失", Toast.LENGTH_SHORT).show();
+                ToastUtil.show("消息单选按钮徽章拖动消失");
             }
         });
 
@@ -148,16 +149,16 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.brb_main_home:
-                        show("首页");
+                        ToastUtil.show("首页");
                         break;
                     case R.id.brb_main_message:
-                        show("消息");
+                        ToastUtil.show("消息");
                         break;
                     case R.id.brb_main_discover:
-                        show("发现");
+                        ToastUtil.show("发现");
                         break;
                     case R.id.brb_main_me:
-                        show("我");
+                        ToastUtil.show("我");
                         break;
                 }
             }
@@ -180,9 +181,5 @@ public class MainActivity extends AppCompatActivity {
      */
     protected <VT extends View> VT getViewById(@IdRes int id) {
         return (VT) findViewById(id);
-    }
-
-    private void show(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 }

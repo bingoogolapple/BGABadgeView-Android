@@ -11,10 +11,12 @@
 * 微信消息界面用户新消息
 * 微信消息界面订阅号新消息
 * 使用v4包中的RoundedBitmapDrawable制作圆角头像
-* 拖拽删除徽章(目前还没实现水滴拖拽效果和爆炸效果，只是抬起手指时渐变消失)
+* 拖拽删除徽章(目前还没实现水滴拖拽效果)
+
+### 爆炸效果参考的 [ExplosionField](https://github.com/tyrantgit/ExplosionField) 改成了只有一个View的情况,只刷新徽章附近的区域
 
 ### 效果图
-![Demo](http://7xk9dj.com1.z0.glb.clouddn.com/badge/screenshots/badge1.gif)
+![Demo](http://7xk9dj.com1.z0.glb.clouddn.com/badge/screenshots/badge105.gif)
 
 ### Gradle依赖
 

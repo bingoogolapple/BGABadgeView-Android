@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_toast_msg"
+    style="@style/WrapWrap"
+    android:background="@drawable/shape_toast"
+    android:drawableLeft="@mipmap/toast"
+    android:drawablePadding="5dp"
+    android:gravity="center_vertical"
+    android:padding="8dp"
+    android:text="操作失败"
+    android:textColor="@android:color/white"
+    android:textSize="14sp" />

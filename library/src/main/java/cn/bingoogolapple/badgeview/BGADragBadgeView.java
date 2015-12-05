@@ -76,15 +76,18 @@ class BGADragBadgeView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-        if (mExplosionAnimator == null) {
-            if (mBadgeViewHelper.isShowDrawable()) {
-                drawDrawableBadge(canvas);
+        try {
+            if (mExplosionAnimator == null) {
+                if (mBadgeViewHelper.isShowDrawable()) {
+                    drawDrawableBadge(canvas);
+                } else {
+                    drawTextBadge(canvas);
+                }
             } else {
-                drawTextBadge(canvas);
+                mExplosionAnimator.draw(canvas);
             }
-        } else {
-            mExplosionAnimator.draw(canvas);
+        } catch (Exception e) {
+            removeSelf();
         }
     }
 
@@ -112,19 +115,16 @@ class BGADragBadgeView extends View {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if (mExplosionAnimator == null) {
+                if (mExplosionAnimator == null && getParent() == null) {
                     mStartX = (int) (event.getRawX() - mBadgeViewHelper.getBadgeRectF().width() / 2);
                     mStartY = (int) (event.getRawY() - mBadgeViewHelper.getBadgeRectF().height() / 2) - BGABadgeViewUtil.getStatusBarHeight(getContext());
 
-                    if (this.getParent() != null) {
-                        mWindowManager.removeView(this);
-                    }
                     mWindowManager.addView(this, mLayoutParams);
                     postInvalidate();
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (mExplosionAnimator == null) {
+                if (mExplosionAnimator == null && getParent() != null) {
                     mStartX = getNewX(event);
                     mStartY = getNewY(event);
                     postInvalidate();
@@ -132,12 +132,14 @@ class BGADragBadgeView extends View {
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                if (mExplosionAnimator == null) {
-                    if (mBadgeViewHelper.satisfyMoveDismissCondition(event)) {
+                if (mExplosionAnimator == null && getParent() != null && mBadgeViewHelper.satisfyMoveDismissCondition(event)) {
+                    try {
                         startDismissAnim(getNewX(event), getNewY(event));
-                    } else if (getParent() != null) {
-                        mWindowManager.removeView(this);
+                    } catch (Exception e) {
+                        removeSelf();
                     }
+                } else {
+                    removeSelf();
                 }
                 break;
         }
@@ -173,22 +175,30 @@ class BGADragBadgeView extends View {
         int badgeHeight = (int) mBadgeViewHelper.getBadgeRectF().height();
         Rect rect = new Rect(newX - badgeWidth / 2, newY - badgeHeight / 2, newX + badgeWidth / 2, newY + badgeHeight / 2);
 
-        mExplosionAnimator = new BGAExplosionAnimator(this, getBitmap(rect), rect);
+        Bitmap badgeBitmap = BGABadgeViewUtil.createBitmapSafely(this, rect, 1);
+        if (badgeBitmap == null) {
+            removeSelf();
+        }
+
+        mExplosionAnimator = new BGAExplosionAnimator(this, rect, badgeBitmap);
         mExplosionAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                if (getParent() != null) {
-                    mWindowManager.removeView(BGADragBadgeView.this);
-                    mExplosionAnimator = null;
-                }
+                removeSelf();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                removeSelf();
             }
         });
         mExplosionAnimator.start();
     }
 
-    private Bitmap getBitmap(Rect rect) {
-        setDrawingCacheEnabled(true);
-        return Bitmap.createBitmap(getDrawingCache(), rect.left < 0 ? 0 : rect.left, rect.top < 0 ? 0 : rect.top, rect.width(), rect.height());
+    private void removeSelf() {
+        if (getParent() != null) {
+            mWindowManager.removeView(this);
+            mExplosionAnimator = null;
+        }
     }
-
 }

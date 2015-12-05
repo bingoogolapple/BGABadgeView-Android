@@ -1,7 +1,6 @@
 package cn.bingoogolapple.badgeview.demo.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
 
 import cn.bingoogolapple.androidcommon.adapter.BGARecyclerViewAdapter;
 import cn.bingoogolapple.androidcommon.adapter.BGAViewHolderHelper;
@@ -10,6 +9,7 @@ import cn.bingoogolapple.badgeview.BGABadgeable;
 import cn.bingoogolapple.badgeview.BGADragDismissDelegate;
 import cn.bingoogolapple.badgeview.demo.R;
 import cn.bingoogolapple.badgeview.demo.model.MessageModel;
+import cn.bingoogolapple.badgeview.demo.util.ToastUtil;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -33,7 +33,7 @@ public class MessageAdapter extends BGARecyclerViewAdapter<MessageModel> {
                 @Override
                 public void onDismiss(BGABadgeable badgeable) {
                     message.newMsgCount = 0;
-                    Toast.makeText(mContext, message.title + "的徽章消失", Toast.LENGTH_SHORT).show();
+                    ToastUtil.show(message.title + "的徽章消失");
                 }
             });
         } else {
