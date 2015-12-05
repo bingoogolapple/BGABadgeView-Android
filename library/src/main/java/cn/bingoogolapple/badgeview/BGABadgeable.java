@@ -16,7 +16,9 @@
 
 package cn.bingoogolapple.badgeview;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.ViewParent;
 
@@ -74,4 +76,8 @@ public interface BGABadgeable {
     ViewParent getParent();
 
     int getId();
+
+    boolean getGlobalVisibleRect(Rect r);
+
+    Context getContext();
 }

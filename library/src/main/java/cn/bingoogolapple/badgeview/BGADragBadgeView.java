@@ -20,16 +20,20 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.PixelFormat;
+import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.OvershootInterpolator;
 
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorListenerAdapter;
+import com.nineoldandroids.animation.ValueAnimator;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -46,12 +50,64 @@ class BGADragBadgeView extends View {
     private int mStartY;
     private BGAExplosionAnimator mExplosionAnimator;
 
+    /**
+     * 针圆切线的切点
+     */
+    private PointF[] mStickPoints = new PointF[]{
+            new PointF(0, 0),
+            new PointF(0, 0)
+    };
+    /**
+     * 拖拽圆切线的切点
+     */
+    private PointF[] mDragPoints = new PointF[]{
+            new PointF(0, 0),
+            new PointF(0, 0)
+    };
+    /**
+     * 控制点
+     */
+    private PointF mControlPoint = new PointF(0, 0);
+    /**
+     * 拖拽圆中心点
+     */
+    private PointF mDragCenter = new PointF(0, 0);
+    /**
+     * 拖拽圆半径
+     */
+    private float mDragRadius;
+
+    /**
+     * 针圆中心点
+     */
+    private PointF mStickCenter;
+    /**
+     * 针圆半径
+     */
+    private float mStickRadius;
+    /**
+     * 拖拽圆最大半径
+     */
+    private int mMaxDragRadius;
+    /**
+     * 拖拽圆半径和针圆半径的差值
+     */
+    private int mDragStickRadiusDifference;
+    /**
+     * 拖动mDismissThreshold距离后抬起手指徽章消失
+     */
+    private int mDismissThreshold;
+
+    private boolean mDismissAble;
+    private boolean mIsDisappear;
+
     public BGADragBadgeView(Context context, BGABadgeViewHelper badgeViewHelper) {
         super(context);
         mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         mBadgeViewHelper = badgeViewHelper;
         initBadgePaint();
         initLayoutParams();
+        initStick();
     }
 
     private void initBadgePaint() {
@@ -73,14 +129,23 @@ class BGADragBadgeView extends View {
         mLayoutParams.height = mWindowManager.getDefaultDisplay().getHeight();
     }
 
+    private void initStick() {
+        mMaxDragRadius = BGABadgeViewUtil.dp2px(getContext(), 10);
+        mDragStickRadiusDifference = BGABadgeViewUtil.dp2px(getContext(), 1);
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         try {
             if (mExplosionAnimator == null) {
                 if (mBadgeViewHelper.isShowDrawable()) {
+                    mBadgePaint.setColor(mBadgeViewHelper.getBitmap().getPixel(mBadgeViewHelper.getBitmap().getWidth() / 2, mBadgeViewHelper.getBitmap().getHeight() / 2));
+                    drawStick(canvas);
                     drawDrawableBadge(canvas);
                 } else {
+                    mBadgePaint.setColor(mBadgeViewHelper.getBadgeBgColor());
+                    drawStick(canvas);
                     drawTextBadge(canvas);
                 }
             } else {
@@ -111,63 +176,95 @@ class BGADragBadgeView extends View {
         canvas.drawText(badgeText, x, y, mBadgePaint);
     }
 
+    public void setStickCenter(float x, float y) {
+        mStickCenter = new PointF(x, y);
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if (mExplosionAnimator == null && getParent() == null) {
-                    mStartX = (int) (event.getRawX() - mBadgeViewHelper.getBadgeRectF().width() / 2);
-                    mStartY = (int) (event.getRawY() - mBadgeViewHelper.getBadgeRectF().height() / 2) - BGABadgeViewUtil.getStatusBarHeight(getContext());
+
+                    mDragRadius = Math.min(mBadgeViewHelper.getBadgeRectF().width() / 2, mMaxDragRadius);
+                    mStickRadius = mDragRadius - mDragStickRadiusDifference;
+                    mDismissThreshold = (int) (mStickRadius * 10);
+
+
+                    mDismissAble = false;
+                    mIsDisappear = false;
 
                     mWindowManager.addView(this, mLayoutParams);
-                    postInvalidate();
+                    updateDragPosition(event.getRawX(), event.getRawY());
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (mExplosionAnimator == null && getParent() != null) {
-                    mStartX = getNewX(event);
-                    mStartY = getNewY(event);
-                    postInvalidate();
+                    updateDragPosition(event.getRawX(), event.getRawY());
+
+                    // 处理断开事件
+                    if (BGABadgeViewUtil.getDistanceBetween2Points(mDragCenter, mStickCenter) > mDismissThreshold) {
+                        mDismissAble = true;
+                        postInvalidate();
+                    }
                 }
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                if (mExplosionAnimator == null && getParent() != null && mBadgeViewHelper.satisfyMoveDismissCondition(event)) {
-                    try {
-                        startDismissAnim(getNewX(event), getNewY(event));
-                    } catch (Exception e) {
+                updateDragPosition(event.getRawX(), event.getRawY());
+                // 处理断开事件
+                if (BGABadgeViewUtil.getDistanceBetween2Points(mDragCenter, mStickCenter) > mDismissThreshold) {
+                    mDismissAble = true;
+                }
+
+                if (mDismissAble) {
+                    // 拖拽点超出过范围
+                    if (mExplosionAnimator == null && getParent() != null && BGABadgeViewUtil.getDistanceBetween2Points(mDragCenter, mStickCenter) > mDismissThreshold) {
+                        // 现在也超出范围,消失
+                        mIsDisappear = true;
+                        startDismissAnim(getNewStartX(event.getRawX()), getNewStartY(event.getRawY()));
+                    } else {
+                        // 现在没有超出范围,放回去
                         removeSelf();
+                        mBadgeViewHelper.endDragWithoutDismiss();
                     }
                 } else {
-                    removeSelf();
+                    //	拖拽点没超出过范围,弹回去
+                    final PointF startReleaseDragCenter = new PointF(mDragCenter.x, mDragCenter.y);
+                    ValueAnimator springAnim = ValueAnimator.ofFloat(1.0f);
+                    springAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator mAnim) {
+                            // 0.0 -> 1.0f
+                            float percent = mAnim.getAnimatedFraction();
+                            PointF p = BGABadgeViewUtil.getPointByPercent(startReleaseDragCenter, mStickCenter, percent);
+                            updateDragPosition(p.x, p.y);
+                        }
+                    });
+                    springAnim.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            removeSelf();
+                            mBadgeViewHelper.endDragWithoutDismiss();
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+                            removeSelf();
+                            mBadgeViewHelper.endDragWithoutDismiss();
+                        }
+                    });
+
+                    springAnim.setInterpolator(new OvershootInterpolator(4));
+                    springAnim.setRepeatCount(1);
+                    springAnim.setRepeatMode(ValueAnimator.INFINITE);
+                    springAnim.setDuration(BGAExplosionAnimator.ANIM_DURATION / 2);
+                    springAnim.start();
                 }
                 break;
         }
         return true;
-    }
-
-    private int getNewX(MotionEvent event) {
-        int badgeWidth = (int) mBadgeViewHelper.getBadgeRectF().width();
-        int newX = (int) event.getRawX() - badgeWidth / 2;
-        if (newX < 0) {
-            newX = 0;
-        }
-        if (newX > mWindowManager.getDefaultDisplay().getWidth() - badgeWidth) {
-            newX = mWindowManager.getDefaultDisplay().getWidth() - badgeWidth;
-        }
-        return newX;
-    }
-
-    private int getNewY(MotionEvent event) {
-        int badgeHeight = (int) mBadgeViewHelper.getBadgeRectF().height();
-        int newY = (int) event.getRawY() - badgeHeight / 2 - BGABadgeViewUtil.getStatusBarHeight(getContext());
-        if (newY < 0) {
-            newY = 0;
-        }
-        if (newY > mWindowManager.getDefaultDisplay().getHeight() - badgeHeight) {
-            newY = mWindowManager.getDefaultDisplay().getHeight() - badgeHeight;
-        }
-        return newY;
     }
 
     private void startDismissAnim(int newX, int newY) {
@@ -178,6 +275,8 @@ class BGADragBadgeView extends View {
         Bitmap badgeBitmap = BGABadgeViewUtil.createBitmapSafely(this, rect, 1);
         if (badgeBitmap == null) {
             removeSelf();
+            mBadgeViewHelper.endDragWithDismiss();
+            return;
         }
 
         mExplosionAnimator = new BGAExplosionAnimator(this, rect, badgeBitmap);
@@ -185,11 +284,13 @@ class BGADragBadgeView extends View {
             @Override
             public void onAnimationEnd(Animator animation) {
                 removeSelf();
+                mBadgeViewHelper.endDragWithDismiss();
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
                 removeSelf();
+                mBadgeViewHelper.endDragWithDismiss();
             }
         });
         mExplosionAnimator.start();
@@ -200,5 +301,109 @@ class BGADragBadgeView extends View {
             mWindowManager.removeView(this);
             mExplosionAnimator = null;
         }
+    }
+
+    private void drawStick(Canvas canvas) {
+        float currentStickRadius = getCurrentStickRadius();
+
+        // 2. 获取直线与圆的交点
+        float yOffset = mStickCenter.y - mDragCenter.y;
+        float xOffset = mStickCenter.x - mDragCenter.x;
+        Double lineK = null;
+        if (xOffset != 0) {
+            lineK = (double) (yOffset / xOffset);
+        }
+        // 通过几何图形工具获取交点坐标
+        mDragPoints = BGABadgeViewUtil.getIntersectionPoints(mDragCenter, mDragRadius, lineK);
+        mStickPoints = BGABadgeViewUtil.getIntersectionPoints(mStickCenter, currentStickRadius, lineK);
+
+        // 3. 获取控制点坐标
+        mControlPoint = BGABadgeViewUtil.getMiddlePoint(mDragCenter, mStickCenter);
+
+        // 保存画布状态
+        canvas.save();
+        canvas.translate(0, -BGABadgeViewUtil.getStatusBarHeight(getContext()));
+
+        if (!mIsDisappear) {
+            if (!mDismissAble) {
+
+                // 3. 画连接部分
+                Path path = new Path();
+                // 跳到点1
+                path.moveTo(mStickPoints[0].x, mStickPoints[0].y);
+                // 画曲线1 -> 2
+                path.quadTo(mControlPoint.x, mControlPoint.y, mDragPoints[0].x, mDragPoints[0].y);
+                // 画直线2 -> 3
+                path.lineTo(mDragPoints[1].x, mDragPoints[1].y);
+                // 画曲线3 -> 4
+                path.quadTo(mControlPoint.x, mControlPoint.y, mStickPoints[1].x, mStickPoints[1].y);
+                path.close();
+                canvas.drawPath(path, mBadgePaint);
+
+                // 2. 画固定圆
+                canvas.drawCircle(mStickCenter.x, mStickCenter.y, currentStickRadius, mBadgePaint);
+            }
+
+            // 1. 画拖拽圆
+            canvas.drawCircle(mDragCenter.x, mDragCenter.y, mDragRadius, mBadgePaint);
+        }
+
+        // 恢复上次的保存状态
+        canvas.restore();
+    }
+
+    /**
+     * 获取针圆实时半径
+     *
+     * @return
+     */
+    private float getCurrentStickRadius() {
+        /**
+         * distance 0 -> mDismissThreshold
+         * percent 0.0f -> 1.0f
+         * currentStickRadius mStickRadius * 100% -> mStickRadius * 20%
+         */
+        float distance = BGABadgeViewUtil.getDistanceBetween2Points(mDragCenter, mStickCenter);
+        distance = Math.min(distance, mDismissThreshold);
+        float percent = distance / mDismissThreshold;
+        return BGABadgeViewUtil.evaluate(percent, mStickRadius, mStickRadius * 0.2f);
+    }
+
+    /**
+     * 修改拖拽位置
+     *
+     * @param rawX
+     * @param rawY
+     */
+    private void updateDragPosition(float rawX, float rawY) {
+        mStartX = getNewStartX(rawX);
+        mStartY = getNewStartY(rawY);
+
+        mDragCenter.set(rawX, rawY);
+        postInvalidate();
+    }
+
+    private int getNewStartX(float rawX) {
+        int badgeWidth = (int) mBadgeViewHelper.getBadgeRectF().width();
+        int newX = (int) rawX - badgeWidth / 2;
+        if (newX < 0) {
+            newX = 0;
+        }
+        if (newX > mWindowManager.getDefaultDisplay().getWidth() - badgeWidth) {
+            newX = mWindowManager.getDefaultDisplay().getWidth() - badgeWidth;
+        }
+        return newX;
+    }
+
+    private int getNewStartY(float rawY) {
+        int badgeHeight = (int) mBadgeViewHelper.getBadgeRectF().height();
+        int newY = (int) rawY - badgeHeight / 2 - BGABadgeViewUtil.getStatusBarHeight(getContext());
+        if (newY < 0) {
+            newY = 0;
+        }
+        if (newY > mWindowManager.getDefaultDisplay().getHeight() - badgeHeight) {
+            newY = mWindowManager.getDefaultDisplay().getHeight() - badgeHeight;
+        }
+        return newY;
     }
 }

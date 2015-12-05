@@ -22,7 +22,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.text.TextUtils;
@@ -95,14 +94,6 @@ public class BGABadgeViewHelper {
      */
     private boolean mIsDraging;
     /**
-     * 按下的点
-     */
-    private PointF mDownPointF;
-    /**
-     * 拖动mMoveHiddenThreshold距离后抬起手指徽章消失
-     */
-    private int mMoveHiddenThreshold;
-    /**
      * 拖动大于BGABadgeViewHelper.mMoveHiddenThreshold后抬起手指徽章消失的代理
      */
     private BGADragDismissDelegate mDelegage;
@@ -143,10 +134,6 @@ public class BGABadgeViewHelper {
         mIsDraging = false;
 
         mDragable = false;
-
-        mDownPointF = new PointF();
-
-        mMoveHiddenThreshold = BGABadgeViewUtil.dp2px(context, 60);
     }
 
     private void initCustomAttrs(Context context, AttributeSet attrs) {
@@ -187,9 +174,13 @@ public class BGABadgeViewHelper {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if (mDragable && mIsShowBadge && mBadgeRectF.contains(event.getX(), event.getY())) {
-                    mDownPointF.set(event.getRawX(), event.getRawY());
                     mIsDraging = true;
                     mBadgeable.getParent().requestDisallowInterceptTouchEvent(true);
+
+                    Rect badgeableRect = new Rect();
+                    mBadgeable.getGlobalVisibleRect(badgeableRect);
+                    mDropBadgeView.setStickCenter(badgeableRect.left + mBadgeRectF.left + mBadgeRectF.width() / 2, badgeableRect.top + mBadgeRectF.top + mBadgeRectF.height() / 2);
+
                     mDropBadgeView.onTouchEvent(event);
                     mBadgeable.postInvalidate();
                     return true;
@@ -206,15 +197,6 @@ public class BGABadgeViewHelper {
                 if (mIsDraging) {
                     mDropBadgeView.onTouchEvent(event);
                     mIsDraging = false;
-                    if (satisfyMoveDismissCondition(event)) {
-                        hiddenBadge();
-
-                        if (mDelegage != null) {
-                            mDelegage.onDismiss(mBadgeable);
-                        }
-                    } else {
-                        mBadgeable.postInvalidate();
-                    }
                     return true;
                 }
                 break;
@@ -224,8 +206,15 @@ public class BGABadgeViewHelper {
         return mBadgeable.callSuperOnTouchEvent(event);
     }
 
-    public boolean satisfyMoveDismissCondition(MotionEvent event) {
-        return PointF.length(event.getRawX() - mDownPointF.x, event.getRawY() - mDownPointF.y) > mMoveHiddenThreshold;
+    public void endDragWithDismiss() {
+        hiddenBadge();
+        if (mDelegage != null) {
+            mDelegage.onDismiss(mBadgeable);
+        }
+    }
+
+    public void endDragWithoutDismiss() {
+        mBadgeable.postInvalidate();
     }
 
     public void drawBadge(Canvas canvas) {
