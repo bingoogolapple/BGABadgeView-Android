@@ -11,8 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
+import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemClickListener;
 import cn.bingoogolapple.badgeview.BGABadgeFrameLayout;
 import cn.bingoogolapple.badgeview.BGABadgeImageView;
 import cn.bingoogolapple.badgeview.BGABadgeLinearLayout;
@@ -168,6 +170,12 @@ public class MainActivity extends AppCompatActivity {
     private void testRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mMessageAdapter = new MessageAdapter(mRecyclerView);
+        mMessageAdapter.setOnRVItemClickListener(new BGAOnRVItemClickListener() {
+            @Override
+            public void onRVItemClick(ViewGroup viewGroup, View view, int position) {
+                ToastUtil.show("点击了条目 " + mMessageAdapter.getItem(position).title);
+            }
+        });
         mRecyclerView.setAdapter(mMessageAdapter);
         mMessageAdapter.setDatas(MessageModel.getTestDatas());
     }
