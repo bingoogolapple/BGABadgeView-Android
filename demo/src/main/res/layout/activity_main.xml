@@ -32,6 +32,7 @@
                 style="@style/WrapWrap"
                 android:layout_margin="3dp"
                 android:padding="7dp"
+                app:badge_bgColor="@color/colorPrimary"
                 app:badge_dragable="true"
                 app:badge_gravity="rightBottom"
                 app:badge_horizontalMargin="0dp"

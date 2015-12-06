@@ -19,6 +19,7 @@ package cn.bingoogolapple.badgeview;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PixelFormat;
@@ -139,7 +140,11 @@ class BGADragBadgeView extends View {
         try {
             if (mExplosionAnimator == null) {
                 if (mBadgeViewHelper.isShowDrawable()) {
-                    mBadgePaint.setColor(mBadgeViewHelper.getBitmap().getPixel(mBadgeViewHelper.getBitmap().getWidth() / 2, mBadgeViewHelper.getBitmap().getHeight() / 2));
+                    if (mBadgeViewHelper.getBadgeBgColor() == Color.RED) {
+                        mBadgePaint.setColor(mBadgeViewHelper.getBitmap().getPixel(mBadgeViewHelper.getBitmap().getWidth() / 2, mBadgeViewHelper.getBitmap().getHeight() / 2));
+                    } else {
+                        mBadgePaint.setColor(mBadgeViewHelper.getBadgeBgColor());
+                    }
                     drawStick(canvas);
                     drawDrawableBadge(canvas);
                 } else {
