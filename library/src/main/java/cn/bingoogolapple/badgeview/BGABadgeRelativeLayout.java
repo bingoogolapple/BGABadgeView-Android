@@ -84,4 +84,9 @@ public class BGABadgeRelativeLayout extends RelativeLayout implements BGABadgeab
     public void setDragDismissDelegage(BGADragDismissDelegate delegate) {
         mBadgeViewHeler.setDragDismissDelegage(delegate);
     }
+
+    @Override
+    public boolean isShowBadge() {
+        return mBadgeViewHeler.isShowBadge();
+    }
 }

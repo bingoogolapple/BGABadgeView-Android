@@ -84,4 +84,9 @@ public class BGABadgeTextView extends TextView implements BGABadgeable {
     public void setDragDismissDelegage(BGADragDismissDelegate delegate) {
         mBadgeViewHeler.setDragDismissDelegage(delegate);
     }
+
+    @Override
+    public boolean isShowBadge() {
+        return mBadgeViewHeler.isShowBadge();
+    }
 }
