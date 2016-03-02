@@ -67,6 +67,13 @@ public interface BGABadgeable {
      */
     void setDragDismissDelegage(BGADragDismissDelegate delegate);
 
+    /**
+     * 是否显示Badge
+     *
+     * @return
+     */
+    boolean isShowBadge();
+
     int getWidth();
 
     int getHeight();

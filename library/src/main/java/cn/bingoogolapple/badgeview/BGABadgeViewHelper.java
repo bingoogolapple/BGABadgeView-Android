@@ -330,6 +330,10 @@ public class BGABadgeViewHelper {
         mBadgeable.postInvalidate();
     }
 
+    public boolean isShowBadge() {
+        return mIsShowBadge;
+    }
+
     public void showDrawable(Bitmap bitmap) {
         mBitmap = bitmap;
         mIsShowDrawable = true;
