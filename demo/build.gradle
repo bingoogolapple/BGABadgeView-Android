@@ -19,7 +19,7 @@ dependencies {
     compile project(':library')
 
 //    compile 'com.nineoldandroids:library:2.4.0'
-//    compile 'cn.bingoogolapple:bga-badgeview:1.0.6@aar'
+//    compile 'cn.bingoogolapple:bga-badgeview:1.0.7@aar'
 
 
     compile 'com.android.support:recyclerview-v7:23.2.0'

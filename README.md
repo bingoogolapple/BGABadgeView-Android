@@ -71,6 +71,13 @@ void showDrawableBadge(Bitmap bitmap);
  * @param delegate
  */
 void setDragDismissDelegage(BGADragDismissDelegate delegate);
+
+/**
+ * 是否显示徽章
+ *
+ * @return
+ */
+boolean isShowBadge();
 ```
 
 ### 自定义属性说明

@@ -68,7 +68,7 @@ public interface BGABadgeable {
     void setDragDismissDelegage(BGADragDismissDelegate delegate);
 
     /**
-     * 是否显示Badge
+     * 是否显示徽章
      *
      * @return
      */
