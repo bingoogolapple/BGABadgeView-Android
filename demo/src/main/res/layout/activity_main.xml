@@ -109,6 +109,7 @@
             android:drawableTop="@drawable/selector_tab_home"
             android:text="首页"
             app:badge_dragable="true"
+            app:badge_is_resume_travel="true"
             app:badge_padding="6dp" />
 
         <cn.bingoogolapple.badgeview.BGABadgeRadioButton
