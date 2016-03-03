@@ -27,6 +27,7 @@ import android.graphics.RectF;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -85,6 +86,11 @@ public class BGABadgeViewHelper {
      * 是否可拖动
      */
     private boolean mDragable;
+    /**
+     * 拖拽徽章超出轨迹范围后，再次放回到轨迹范围时，是否恢复轨迹
+     */
+    private boolean mIsResumeTravel;
+
     /**
      * 拖动时的徽章控件
      */
@@ -163,6 +169,8 @@ public class BGABadgeViewHelper {
             mBadgeGravity = BadgeGravity.values()[ordinal];
         } else if (attr == R.styleable.BGABadgeView_badge_dragable) {
             mDragable = typedArray.getBoolean(attr, mDragable);
+        } else if (attr == R.styleable.BGABadgeView_badge_is_resume_travel) {
+            mIsResumeTravel = typedArray.getBoolean(attr, mIsResumeTravel);
         }
     }
 
@@ -375,6 +383,14 @@ public class BGABadgeViewHelper {
 
     public void setDragDismissDelegage(BGADragDismissDelegate delegage) {
         mDelegage = delegage;
+    }
+
+    public View getRootView() {
+        return mBadgeable.getRootView();
+    }
+
+    public boolean isResumeTravel() {
+        return mIsResumeTravel;
     }
 
     public enum BadgeGravity {

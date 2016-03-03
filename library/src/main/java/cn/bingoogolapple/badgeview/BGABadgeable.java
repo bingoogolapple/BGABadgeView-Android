@@ -20,6 +20,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewParent;
 
 /**
@@ -87,4 +88,6 @@ public interface BGABadgeable {
     boolean getGlobalVisibleRect(Rect r);
 
     Context getContext();
+
+    View getRootView();
 }

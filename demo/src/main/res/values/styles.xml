@@ -5,6 +5,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <!-- toolbar（actionbar）背景颜色 -->
         <item name="colorPrimary">@color/colorPrimary</item>
+
+        <!--<item name="android:windowFullscreen">true</item>-->
     </style>
 
     <style name="AppTheme" parent="AppBaseTheme"></style>

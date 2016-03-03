@@ -126,8 +126,8 @@ class BGADragBadgeView extends View {
         mLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         mLayoutParams.format = PixelFormat.TRANSLUCENT;
         mLayoutParams.type = WindowManager.LayoutParams.TYPE_TOAST;
-        mLayoutParams.width = mWindowManager.getDefaultDisplay().getWidth();
-        mLayoutParams.height = mWindowManager.getDefaultDisplay().getHeight();
+        mLayoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+        mLayoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
     }
 
     private void initStick() {
@@ -200,7 +200,7 @@ class BGADragBadgeView extends View {
 
         // 保存画布状态
         canvas.save();
-        canvas.translate(0, -BGABadgeViewUtil.getStatusBarHeight(getContext()));
+        canvas.translate(0, -BGABadgeViewUtil.getStatusBarHeight(mBadgeViewHelper.getRootView()));
 
         if (!mIsDragDisappear) {
             if (!mDismissAble) {
@@ -283,6 +283,7 @@ class BGADragBadgeView extends View {
             mIsDragDisappear = false;
 
             mWindowManager.addView(this, mLayoutParams);
+
             updateDragPosition(event.getRawX(), event.getRawY());
         }
     }
@@ -294,6 +295,9 @@ class BGADragBadgeView extends View {
             // 处理断开事件
             if (BGABadgeViewUtil.getDistanceBetween2Points(mDragCenter, mStickCenter) > mDismissThreshold) {
                 mDismissAble = true;
+                postInvalidate();
+            } else if (mBadgeViewHelper.isResumeTravel()) {
+                mDismissAble = false;
                 postInvalidate();
             }
         }
@@ -435,14 +439,9 @@ class BGADragBadgeView extends View {
 
     private int getNewStartY(float rawY) {
         int badgeHeight = (int) mBadgeViewHelper.getBadgeRectF().height();
-        int newY = (int) rawY - badgeHeight / 2 - BGABadgeViewUtil.getStatusBarHeight(getContext());
-        if (newY < 0) {
-            newY = 0;
-        }
-        if (newY > mWindowManager.getDefaultDisplay().getHeight() - badgeHeight) {
-            newY = mWindowManager.getDefaultDisplay().getHeight() - badgeHeight;
-        }
-        return newY;
+        int minNewY = (int) rawY - badgeHeight / 2 - BGABadgeViewUtil.getStatusBarHeight(mBadgeViewHelper.getRootView());
+        int maxNewY = mWindowManager.getDefaultDisplay().getHeight() - BGABadgeViewUtil.getNavigationBarHeight(getContext()) - badgeHeight;
+        return Math.min(Math.max(0, minNewY), maxNewY);
     }
 
     private void removeSelfWithException() {
