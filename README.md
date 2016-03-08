@@ -5,6 +5,8 @@
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-badgeview/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-badgeview)
 
+### [English Document](https://github.com/bingoogolapple/BGABadgeView-Android/blob/master/README-en.md)
+
 **demo中演示了:**
 * 微博底部tab显示最新微博条数
 * 微博列表用户头像显示显示右下角vip徽章
