@@ -75,6 +75,8 @@ public interface BGABadgeable {
      */
     boolean isShowBadge();
 
+    BGABadgeViewHelper getBadgeViewHelper();
+
     int getWidth();
 
     int getHeight();

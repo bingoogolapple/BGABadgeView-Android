@@ -89,4 +89,9 @@ public class BGABadgeTextView extends TextView implements BGABadgeable {
     public boolean isShowBadge() {
         return mBadgeViewHeler.isShowBadge();
     }
+
+    @Override
+    public BGABadgeViewHelper getBadgeViewHelper() {
+        return mBadgeViewHeler;
+    }
 }
