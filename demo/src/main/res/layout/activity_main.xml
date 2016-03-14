@@ -4,8 +4,21 @@
 
     <LinearLayout style="@style/MatchAuto.Vertical">
 
+        <RelativeLayout
+            style="@style/MatchWrap"
+            android:padding="10dp">
+
+            <cn.bingoogolapple.badgeview.BGABadgeView
+                android:id="@+id/bv_main_test"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="5dp" />
+        </RelativeLayout>
+
         <cn.bingoogolapple.badgeview.BGABadgeTextView
-            android:id="@+id/btv_home_test"
+            android:id="@+id/btv_main_test"
             style="@style/MatchWrap"
             android:layout_marginTop="5dp"
             android:padding="5dp"
@@ -22,13 +35,13 @@
             app:badge_dragable="true">
 
             <cn.bingoogolapple.badgeview.BGABadgeImageView
-                android:id="@+id/biv_home_normal"
+                android:id="@+id/biv_main_normal"
                 style="@style/WrapWrap"
                 android:padding="5dp"
                 android:src="@mipmap/avator" />
 
             <cn.bingoogolapple.badgeview.BGABadgeImageView
-                android:id="@+id/biv_home_rounded"
+                android:id="@+id/biv_main_rounded"
                 style="@style/WrapWrap"
                 android:layout_margin="3dp"
                 android:padding="7dp"
@@ -39,7 +52,7 @@
                 app:badge_verticalMargin="0dp" />
 
             <cn.bingoogolapple.badgeview.BGABadgeImageView
-                android:id="@+id/biv_home_circle"
+                android:id="@+id/biv_main_circle"
                 style="@style/WrapWrap"
                 android:padding="7dp"
                 app:badge_dragable="true"

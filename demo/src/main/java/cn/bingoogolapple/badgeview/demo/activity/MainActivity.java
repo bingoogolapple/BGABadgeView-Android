@@ -2,6 +2,7 @@ package cn.bingoogolapple.badgeview.demo.activity;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.IdRes;
@@ -21,6 +22,7 @@ import cn.bingoogolapple.badgeview.BGABadgeLinearLayout;
 import cn.bingoogolapple.badgeview.BGABadgeRadioButton;
 import cn.bingoogolapple.badgeview.BGABadgeRelativeLayout;
 import cn.bingoogolapple.badgeview.BGABadgeTextView;
+import cn.bingoogolapple.badgeview.BGABadgeView;
 import cn.bingoogolapple.badgeview.BGABadgeable;
 import cn.bingoogolapple.badgeview.BGADragDismissDelegate;
 import cn.bingoogolapple.badgeview.demo.R;
@@ -29,6 +31,8 @@ import cn.bingoogolapple.badgeview.demo.model.MessageModel;
 import cn.bingoogolapple.badgeview.demo.util.ToastUtil;
 
 public class MainActivity extends AppCompatActivity {
+    private BGABadgeView mTestBv;
+
     private BGABadgeTextView mTestBtv;
 
     private BGABadgeImageView mNormalBiv;
@@ -62,11 +66,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        mTestBtv = getViewById(R.id.btv_home_test);
+        mTestBv = getViewById(R.id.bv_main_test);
 
-        mNormalBiv = getViewById(R.id.biv_home_normal);
-        mRoundedBiv = getViewById(R.id.biv_home_rounded);
-        mCircleBiv = getViewById(R.id.biv_home_circle);
+        mTestBtv = getViewById(R.id.btv_main_test);
+
+        mNormalBiv = getViewById(R.id.biv_main_normal);
+        mRoundedBiv = getViewById(R.id.biv_main_rounded);
+        mCircleBiv = getViewById(R.id.biv_main_circle);
 
         mTestBll = getViewById(R.id.bll_main_test);
         mTestBrl = getViewById(R.id.brl_main_test);
@@ -82,6 +88,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void testBadgeView() {
+        mTestBv.showTextBadge("9");
+        mTestBv.getBadgeViewHelper().setBadgeTextSizeSp(15);
+        mTestBv.getBadgeViewHelper().setBadgePaddingDp(8);
+        mTestBv.getBadgeViewHelper().setBadgeTextColorInt(Color.parseColor("#ff5c5e"));
+        mTestBv.getBadgeViewHelper().setBadgeBgColorInt(Color.parseColor("#70d551"));
+        mTestBv.getBadgeViewHelper().setDragable(true);
+        mTestBv.getBadgeViewHelper().setBadgePaddingDp(5);
+
         mTestBtv.showCirclePointBadge();
 
         mNormalBiv.showCirclePointBadge();

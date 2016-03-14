@@ -89,4 +89,9 @@ public class BGABadgeImageView extends ImageView implements BGABadgeable {
     public boolean isShowBadge() {
         return mBadgeViewHeler.isShowBadge();
     }
+
+    @Override
+    public BGABadgeViewHelper getBadgeViewHelper() {
+        return mBadgeViewHeler;
+    }
 }

@@ -178,6 +178,62 @@ public class BGABadgeViewHelper {
         mBadgePaint.setTextSize(mBadgeTextSize);
     }
 
+    public void setBadgeBgColorInt(int badgeBgColor) {
+        mBadgeBgColor = badgeBgColor;
+        mBadgeable.postInvalidate();
+    }
+
+    public void setBadgeTextColorInt(int badgeTextColor) {
+        mBadgeTextColor = badgeTextColor;
+        mBadgeable.postInvalidate();
+    }
+
+    public void setBadgeTextSizeSp(int badgetextSize) {
+        if (badgetextSize >= 0) {
+            mBadgeTextSize = BGABadgeViewUtil.sp2px(mBadgeable.getContext(), badgetextSize);
+            mBadgePaint.setTextSize(mBadgeTextSize);
+            mBadgeable.postInvalidate();
+        }
+    }
+
+    public void setBadgeVerticalMarginDp(int badgeVerticalMargin) {
+        if (badgeVerticalMargin >= 0) {
+            mBadgeVerticalMargin = BGABadgeViewUtil.dp2px(mBadgeable.getContext(), badgeVerticalMargin);
+            mBadgeable.postInvalidate();
+        }
+    }
+
+    public void setBadgeHorizontalMarginDp(int badgeHorizontalMargin) {
+        if (badgeHorizontalMargin >= 0) {
+            mBadgeHorizontalMargin = BGABadgeViewUtil.dp2px(mBadgeable.getContext(), badgeHorizontalMargin);
+            mBadgeable.postInvalidate();
+        }
+    }
+
+    public void setBadgePaddingDp(int badgePadding) {
+        if (badgePadding >= 0) {
+            mBadgePadding = BGABadgeViewUtil.dp2px(mBadgeable.getContext(), badgePadding);
+            mBadgeable.postInvalidate();
+        }
+    }
+
+    public void setBadgeGravity(BadgeGravity badgeGravity) {
+        if (badgeGravity != null) {
+            mBadgeGravity = badgeGravity;
+            mBadgeable.postInvalidate();
+        }
+    }
+
+    public void setDragable(boolean dragable) {
+        mDragable = dragable;
+        mBadgeable.postInvalidate();
+    }
+
+    public void setIsResumeTravel(boolean isResumeTravel) {
+        mIsResumeTravel = isResumeTravel;
+        mBadgeable.postInvalidate();
+    }
+
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:

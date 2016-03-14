@@ -7,6 +7,8 @@
 
 ### [English Document](https://github.com/bingoogolapple/BGABadgeView-Android/blob/master/README-en.md)
 
+### [react-native-bga-badge-view](https://github.com/bingoogolapple/react-native-bga-badge-view)
+
 **demo中演示了:**
 * 微博底部tab显示最新微博条数
 * 微博列表用户头像显示显示右下角vip徽章

@@ -90,4 +90,9 @@ public class BGABadgeFrameLayout extends FrameLayout implements BGABadgeable {
     public boolean isShowBadge() {
         return mBadgeViewHeler.isShowBadge();
     }
+
+    @Override
+    public BGABadgeViewHelper getBadgeViewHelper() {
+        return mBadgeViewHeler;
+    }
 }

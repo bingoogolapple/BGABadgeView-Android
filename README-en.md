@@ -5,6 +5,10 @@
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-badgeview/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-badgeview)
 
+### [中文文档](https://github.com/bingoogolapple/BGABadgeView-Android/blob/master/README.md)
+
+### [react-native-bga-badge-view](https://github.com/bingoogolapple/react-native-bga-badge-view)
+
 **The demo shows:**
 * The latest message number of weibo at the bottom tab
 * The VIP badge located in lower-right Corner of User’s Photo in the weibo user list
