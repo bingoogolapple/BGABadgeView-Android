@@ -439,9 +439,9 @@ class BGADragBadgeView extends View {
 
     private int getNewStartY(float rawY) {
         int badgeHeight = (int) mBadgeViewHelper.getBadgeRectF().height();
-        int minNewY = (int) rawY - badgeHeight / 2 - BGABadgeViewUtil.getStatusBarHeight(mBadgeViewHelper.getRootView());
-        int maxNewY = mWindowManager.getDefaultDisplay().getHeight() - BGABadgeViewUtil.getNavigationBarHeight(getContext()) - badgeHeight;
-        return Math.min(Math.max(0, minNewY), maxNewY);
+        int maxNewY = getHeight() - badgeHeight;
+        int newStartY = (int) rawY - badgeHeight / 2 - BGABadgeViewUtil.getStatusBarHeight(mBadgeViewHelper.getRootView());
+        return Math.min(Math.max(0, newStartY), maxNewY);
     }
 
     private void removeSelfWithException() {
