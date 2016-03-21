@@ -19,8 +19,8 @@ dependencies {
 
 
 
-    compile project(':library')
+//    compile project(':library')
 
-//    compile 'com.nineoldandroids:library:2.4.0'
-//    compile 'cn.bingoogolapple:bga-badgeview:1.1.0@aar'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'cn.bingoogolapple:bga-badgeview:1.1.0@aar'
 }
