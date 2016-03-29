@@ -20,7 +20,7 @@
 ### 爆炸效果参考的 [ExplosionField](https://github.com/tyrantgit/ExplosionField) 改成了只有一个View的情况,只刷新徽章附近的区域
 
 ### 效果图
-![Demo](http://7xk9dj.com1.z0.glb.clouddn.com/badge/screenshots/badge106.gif)
+![Demo](http://7xk9dj.com1.z0.glb.clouddn.com/badge/badge-v111.gif)
 
 ### Gradle依赖
 
@@ -96,7 +96,9 @@ badge_horizontalMargin         | 徽章背景与宿主控件左右边缘间距�
 badge_padding         | 徽章文本边缘与徽章背景边缘间的距离        | 4dp
 badge_gravity         | 徽章在宿主控件中的位置        | BGABadgeImageView和BGABadgeRadioButton是右上方，其他控件是右边垂直居中
 badge_dragable         | 是否开启拖拽删除徽章        | false
-badge_is_resume_travel         | 拖拽徽章超出轨迹范围后，再次放回到轨迹范围时，是否恢复轨迹        | false
+badge_isResumeTravel         | 拖拽徽章超出轨迹范围后，再次放回到轨迹范围时，是否恢复轨迹        | false
+badge_borderWidth         | 徽章描边宽度        | 0dp
+badge_borderColor         | 徽章描边颜色        | Color.WHITE
 
 ### 扩展自己的BadgeView
 

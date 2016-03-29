@@ -96,7 +96,9 @@ badge_horizontalMargin         | The distance in pixels from the edge of badge�
 badge_padding         | Badge’s padding        | 4dp
 badge_gravity         | Badge’s gravity, it’s layout direction        | For BGABadgeImageView and BGABadgeRadioButton, upper right.For others, the default is the right side of the vertical center
 badge_dragable         | The badge can be drag or not        | false
-badge_is_resume_travel         | When the badge is dragged out of path, if it can resume the path in case of put back        | false
+badge_isResumeTravel         | When the badge is dragged out of path, if it can resume the path in case of put back        | false
+badge_borderWidth         | Border width of badge        | 0dp
+badge_borderColor         | Border color of badge        | Color.WHITE
 
 ### Extend your own BadgeView
 

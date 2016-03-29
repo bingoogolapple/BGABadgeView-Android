@@ -29,6 +29,7 @@ import cn.bingoogolapple.badgeview.demo.R;
 import cn.bingoogolapple.badgeview.demo.adapter.MessageAdapter;
 import cn.bingoogolapple.badgeview.demo.model.MessageModel;
 import cn.bingoogolapple.badgeview.demo.util.ToastUtil;
+import cn.bingoogolapple.badgeview.demo.widget.BadgeFloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
     private BGABadgeView mTestBv;
@@ -52,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
     private BGABadgeRadioButton mMessageBrb;
     private BGABadgeRadioButton mDiscoverBrb;
     private BGABadgeRadioButton mMeBrb;
+
+    private BadgeFloatingActionButton mChatBfab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,16 +88,20 @@ public class MainActivity extends AppCompatActivity {
         mMessageBrb = getViewById(R.id.brb_main_message);
         mDiscoverBrb = getViewById(R.id.brb_main_discover);
         mMeBrb = getViewById(R.id.brb_main_me);
+
+        mChatBfab = getViewById(R.id.bfab_main_chat);
     }
 
     private void testBadgeView() {
         mTestBv.showTextBadge("9");
         mTestBv.getBadgeViewHelper().setBadgeTextSizeSp(15);
         mTestBv.getBadgeViewHelper().setBadgePaddingDp(8);
-        mTestBv.getBadgeViewHelper().setBadgeTextColorInt(Color.parseColor("#ff5c5e"));
-        mTestBv.getBadgeViewHelper().setBadgeBgColorInt(Color.parseColor("#70d551"));
+        mTestBv.getBadgeViewHelper().setBadgeTextColorInt(Color.parseColor("#FF0000"));
+        mTestBv.getBadgeViewHelper().setBadgeBgColorInt(Color.parseColor("#00FF00"));
         mTestBv.getBadgeViewHelper().setDragable(true);
-        mTestBv.getBadgeViewHelper().setBadgePaddingDp(5);
+        mTestBv.getBadgeViewHelper().setBadgePaddingDp(7);
+        mTestBv.getBadgeViewHelper().setBadgeBorderWidthDp(2);
+        mTestBv.getBadgeViewHelper().setBadgeBorderColorInt(Color.parseColor("#0000FF"));
 
         mTestBtv.showCirclePointBadge();
 
@@ -117,7 +124,15 @@ public class MainActivity extends AppCompatActivity {
 
         mTestBll.showDrawableBadge(avatorBadgeBitmap);
         mTestBrl.showTextBadge("LoveAndroid");
-        mTestBfl.showTextBadge("王浩");
+        mTestBfl.showTextBadge("8");
+
+        mChatBfab.showTextBadge("8");
+        mChatBfab.setDragDismissDelegage(new BGADragDismissDelegate() {
+            @Override
+            public void onDismiss(BGABadgeable badgeable) {
+                ToastUtil.show("清空聊天消息");
+            }
+        });
 
         new Handler().postDelayed(new Runnable() {
             @Override
