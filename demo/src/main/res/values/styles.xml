@@ -5,6 +5,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <!-- toolbar（actionbar）背景颜色 -->
         <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
         <!-- 底部导航栏的颜色 -->
         <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/navigationBarColor</item>
     </style>

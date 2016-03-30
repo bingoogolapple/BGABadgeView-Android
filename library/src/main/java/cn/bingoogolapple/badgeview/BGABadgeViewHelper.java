@@ -90,7 +90,14 @@ public class BGABadgeViewHelper {
      * 拖拽徽章超出轨迹范围后，再次放回到轨迹范围时，是否恢复轨迹
      */
     private boolean mIsResumeTravel;
-
+    /***
+     * 徽章描边宽度
+     */
+    private int mBadgeBorderWidth;
+    /***
+     * 徽章描边颜色
+     */
+    private int mBadgeBorderColor;
     /**
      * 拖动时的徽章控件
      */
@@ -140,6 +147,8 @@ public class BGABadgeViewHelper {
         mIsDraging = false;
 
         mDragable = false;
+
+        mBadgeBorderColor = Color.WHITE;
     }
 
     private void initCustomAttrs(Context context, AttributeSet attrs) {
@@ -169,8 +178,12 @@ public class BGABadgeViewHelper {
             mBadgeGravity = BadgeGravity.values()[ordinal];
         } else if (attr == R.styleable.BGABadgeView_badge_dragable) {
             mDragable = typedArray.getBoolean(attr, mDragable);
-        } else if (attr == R.styleable.BGABadgeView_badge_is_resume_travel) {
+        } else if (attr == R.styleable.BGABadgeView_badge_isResumeTravel) {
             mIsResumeTravel = typedArray.getBoolean(attr, mIsResumeTravel);
+        } else if (attr == R.styleable.BGABadgeView_badge_borderWidth) {
+            mBadgeBorderWidth = typedArray.getDimensionPixelSize(attr, mBadgeBorderWidth);
+        } else if (attr == R.styleable.BGABadgeView_badge_borderColor) {
+            mBadgeBorderColor = typedArray.getColor(attr, mBadgeBorderColor);
         }
     }
 
@@ -234,10 +247,22 @@ public class BGABadgeViewHelper {
         mBadgeable.postInvalidate();
     }
 
+    public void setBadgeBorderWidthDp(int badgeBorderWidthDp) {
+        if (badgeBorderWidthDp >= 0) {
+            mBadgeBorderWidth = BGABadgeViewUtil.dp2px(mBadgeable.getContext(), badgeBorderWidthDp);
+            mBadgeable.postInvalidate();
+        }
+    }
+
+    public void setBadgeBorderColorInt(int badgeBorderColor) {
+        mBadgeBorderColor = badgeBorderColor;
+        mBadgeable.postInvalidate();
+    }
+
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if (mDragable && mIsShowBadge && mBadgeRectF.contains(event.getX(), event.getY())) {
+                if ((mBadgeBorderWidth == 0 || mIsShowDrawable) && mDragable && mIsShowBadge && mBadgeRectF.contains(event.getX(), event.getY())) {
                     mIsDraging = true;
                     mBadgeable.getParent().requestDisallowInterceptTouchEvent(true);
 
@@ -361,10 +386,23 @@ public class BGABadgeViewHelper {
         mBadgeRectF.right = mBadgeable.getWidth() - mBadgeHorizontalMargin;
         mBadgeRectF.left = mBadgeRectF.right - badgeWidth;
 
-        // 设置徽章背景色
-        mBadgePaint.setColor(mBadgeBgColor);
-        // 绘制徽章背景
-        canvas.drawRoundRect(mBadgeRectF, badgeHeight / 2, badgeHeight / 2, mBadgePaint);
+        if (mBadgeBorderWidth > 0) {
+            // 设置徽章边框景色
+            mBadgePaint.setColor(mBadgeBorderColor);
+            // 绘制徽章边框背景
+            canvas.drawRoundRect(mBadgeRectF, badgeHeight / 2, badgeHeight / 2, mBadgePaint);
+
+            // 设置徽章背景色
+            mBadgePaint.setColor(mBadgeBgColor);
+            // 绘制徽章背景
+            canvas.drawRoundRect(new RectF(mBadgeRectF.left + mBadgeBorderWidth, mBadgeRectF.top + mBadgeBorderWidth, mBadgeRectF.right - mBadgeBorderWidth, mBadgeRectF.bottom - mBadgeBorderWidth), (badgeHeight - 2 * mBadgeBorderWidth) / 2, (badgeHeight - 2 * mBadgeBorderWidth) / 2, mBadgePaint);
+        } else {
+            // 设置徽章背景色
+            mBadgePaint.setColor(mBadgeBgColor);
+            // 绘制徽章背景
+            canvas.drawRoundRect(mBadgeRectF, badgeHeight / 2, badgeHeight / 2, mBadgePaint);
+        }
+
 
         if (!TextUtils.isEmpty(mBadgeText)) {
             // 设置徽章文本颜色

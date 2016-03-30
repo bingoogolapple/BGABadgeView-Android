@@ -22,6 +22,10 @@
         <!-- 是否可以拖拽删除徽章 -->
         <attr name="badge_dragable" format="boolean" />
         <!-- 拖拽徽章超出轨迹范围后，再次放回到轨迹范围时，是否恢复轨迹 -->
-        <attr name="badge_is_resume_travel" format="boolean" />
+        <attr name="badge_isResumeTravel" format="boolean" />
+        <!-- 徽章描边宽度 -->
+        <attr name="badge_borderWidth" format="reference|dimension" />
+        <!-- 徽章描边颜色 -->
+        <attr name="badge_borderColor" format="reference|color" />
     </declare-styleable>
 </resources>

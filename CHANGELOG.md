@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 1.1.1 *(2016-03-29)*
+----------------------------
+
+- 增加徽章描边，badge_borderWidth 徽章描边宽度，badge_borderColor 徽章描边颜色
+- 修改 badge_is_resume_travel 为 badge_isResumeTravel 拖拽徽章超出轨迹范围后，再次放回到轨迹范围时，是否恢复轨迹
+
 Version 1.1.0 *(2016-03-21)*
 ----------------------------
 
