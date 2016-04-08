@@ -13,15 +13,18 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:design:23.2.1'
-    compile 'com.android.support:appcompat-v7:23.2.1'
-    compile 'com.android.support:recyclerview-v7:23.2.1'
-    compile 'cn.bingoogolapple:bga-adapter:1.0.9@aar'
-
-
-
-//    compile project(':library')
-
+    // -------------------- 以下两个库是必须依赖的 ----------------------------
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'cn.bingoogolapple:bga-badgeview:1.1.1@aar'
+    // -------------------- 以上两个库是必须依赖的 ----------------------------
+
+
+
+
+    // 以下几个库是演示案例所使用到的
+//    compile project(':library')
+    compile 'com.android.support:design:23.3.0'
+    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:recyclerview-v7:23.3.0'
+    compile 'cn.bingoogolapple:bga-adapter:1.0.9@aar'
 }
