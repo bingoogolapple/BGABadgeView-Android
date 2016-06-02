@@ -27,5 +27,7 @@
         <attr name="badge_borderWidth" format="reference|dimension" />
         <!-- 徽章描边颜色 -->
         <attr name="badge_borderColor" format="reference|color" />
+        <!-- 触发开始拖拽徽章事件的扩展触摸距离 -->
+        <attr name="badge_dragExtra" format="reference|dimension" />
     </declare-styleable>
 </resources>

@@ -99,6 +99,14 @@ public class BGABadgeViewHelper {
      */
     private int mBadgeBorderColor;
     /**
+     * 触发开始拖拽徽章事件的扩展触摸距离
+     */
+    private int mDragExtra;
+    /**
+     * 整个徽章加上其触发开始拖拽区域所占区域
+     */
+    private RectF mBadgeDragExtraRectF;
+    /**
      * 拖动时的徽章控件
      */
     private BGADragBadgeView mDropBadgeView;
@@ -149,6 +157,9 @@ public class BGABadgeViewHelper {
         mDragable = false;
 
         mBadgeBorderColor = Color.WHITE;
+
+        mDragExtra = BGABadgeViewUtil.dp2px(context, 4);
+        mBadgeDragExtraRectF = new RectF();
     }
 
     private void initCustomAttrs(Context context, AttributeSet attrs) {
@@ -184,6 +195,8 @@ public class BGABadgeViewHelper {
             mBadgeBorderWidth = typedArray.getDimensionPixelSize(attr, mBadgeBorderWidth);
         } else if (attr == R.styleable.BGABadgeView_badge_borderColor) {
             mBadgeBorderColor = typedArray.getColor(attr, mBadgeBorderColor);
+        } else if (attr == R.styleable.BGABadgeView_badge_dragExtra) {
+            mDragExtra = typedArray.getDimensionPixelSize(attr, mDragExtra);
         }
     }
 
@@ -262,7 +275,12 @@ public class BGABadgeViewHelper {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if ((mBadgeBorderWidth == 0 || mIsShowDrawable) && mDragable && mIsShowBadge && mBadgeRectF.contains(event.getX(), event.getY())) {
+                mBadgeDragExtraRectF.left = mBadgeRectF.left - mDragExtra;
+                mBadgeDragExtraRectF.top = mBadgeRectF.top - mDragExtra;
+                mBadgeDragExtraRectF.right = mBadgeRectF.right + mDragExtra;
+                mBadgeDragExtraRectF.bottom = mBadgeRectF.bottom + mDragExtra;
+
+                if ((mBadgeBorderWidth == 0 || mIsShowDrawable) && mDragable && mIsShowBadge && mBadgeDragExtraRectF.contains(event.getX(), event.getY())) {
                     mIsDraging = true;
                     mBadgeable.getParent().requestDisallowInterceptTouchEvent(true);
 

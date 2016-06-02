@@ -22,6 +22,9 @@
 ### 效果图
 ![Demo](http://7xk9dj.com1.z0.glb.clouddn.com/badge/badge-v111.gif)
 
+### [点击下载 Apk](http://fir.im/BGABadgeViewDemo) 或扫描下方二维码安装体验
+![Demo](http://7xk9dj.com1.z0.glb.clouddn.com/badge/BGABadgeViewDemoQRCode.png)
+
 ### Gradle依赖
 
 ```groovy
@@ -99,6 +102,7 @@ badge_dragable         | 是否开启拖拽删除徽章        | false
 badge_isResumeTravel         | 拖拽徽章超出轨迹范围后，再次放回到轨迹范围时，是否恢复轨迹        | false
 badge_borderWidth         | 徽章描边宽度        | 0dp
 badge_borderColor         | 徽章描边颜色        | Color.WHITE
+badge_dragExtra         | 触发开始拖拽徽章事件的扩展触摸距离        | 4dp
 
 ### 扩展自己的BadgeView
 
@@ -106,9 +110,9 @@ badge_borderColor         | 徽章描边颜色        | Color.WHITE
 
 ### 关于我
 
-| 新浪微博 | 个人主页 | 邮箱 | BGA系列开源库QQ群 |
-| ------------ | ------------- | ------------ | ------------ |
-| <a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a> | <a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>  | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://7xk9dj.com1.z0.glb.clouddn.com/BGA_CODE_CLUB.png?imageView2/2/w/200) |
+| 新浪微博 | 个人主页 | 邮箱 | BGA系列开源库QQ群 | 如果你觉得这个库确实对你有帮助，可以考虑赞助我一块钱买机械键盘来撸代码 |
+| ------------ | ------------- | ------------ | ------------ | ------------ |
+| <a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a> | <a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>  | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://7xk9dj.com1.z0.glb.clouddn.com/BGA_CODE_CLUB.png?imageView2/2/w/200) | ![BGA_AliPay](http://7xk9dj.com1.z0.glb.clouddn.com/BGAAliPay.JPG?imageView2/2/w/300) |
 
 ## License
 

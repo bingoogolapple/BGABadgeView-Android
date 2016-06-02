@@ -15,7 +15,7 @@ android {
 dependencies {
     // -------------------- 以下两个库是必须依赖的 ----------------------------
     compile 'com.nineoldandroids:library:2.4.0'
-    compile 'cn.bingoogolapple:bga-badgeview:1.1.1@aar'
+    compile 'cn.bingoogolapple:bga-badgeview:1.1.2@aar'
     // -------------------- 以上两个库是必须依赖的 ----------------------------
 
 
