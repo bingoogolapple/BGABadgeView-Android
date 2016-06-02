@@ -99,6 +99,7 @@ badge_dragable         | The badge can be drag or not        | false
 badge_isResumeTravel         | When the badge is dragged out of path, if it can resume the path in case of put back        | false
 badge_borderWidth         | Border width of badge        | 0dp
 badge_borderColor         | Border color of badge        | Color.WHITE
+badge_dragExtra         | Extra distance of trigger drag event        | 4dp
 
 ### Extend your own BadgeView
 

@@ -6,6 +6,7 @@
     android:padding="10dp"
     app:badge_dragable="true"
     app:badge_horizontalMargin="10dp"
+    app:badge_dragExtra="12dp"
     app:badge_padding="6dp">
 
     <TextView
