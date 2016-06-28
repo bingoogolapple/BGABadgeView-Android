@@ -111,6 +111,14 @@ Extends one of widget above, override the method in interface [BGABadgeable](htt
 | ------------ | ------------- | ------------ | ------------ |
 | <a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a> | <a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>  | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://7xk9dj.com1.z0.glb.clouddn.com/BGA_CODE_CLUB.png?imageView2/2/w/200) |
 
+## Donate
+
+It takes much time and energy to maintain and improve this project. It BGA helps you, you may want to buy me a coffee :).
+
+<p align="center">
+  <img src="http://7xk9dj.com1.z0.glb.clouddn.com/bga_pay.png" width="450">
+</p>
+
 ## License
 
     Copyright 2015 bingoogolapple

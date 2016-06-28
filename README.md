@@ -108,11 +108,19 @@ badge_dragExtra         | 触发开始拖拽徽章事件的扩展触摸距离   
 
 继承特定的控件，实现[BGABadgeable](https://github.com/bingoogolapple/BGABadgeView-Android/blob/master/library/src/main/java/cn/bingoogolapple/badgeview/BGABadgeable.java)接口中相应的方法，并调用[BGABadgeViewHelper](https://github.com/bingoogolapple/BGABadgeView-Android/blob/master/library/src/main/java/cn/bingoogolapple/badgeview/BGABadgeViewHelper.java)中相应的方法，自定义控件实现方式请参考[BGABadgeRadioButton](https://github.com/bingoogolapple/BGABadgeView-Android/blob/master/library/src/main/java/cn/bingoogolapple/badgeview/BGABadgeRadioButton.java)，自定义组合控件实现方式请参考[BGABadgeLinearLayout](https://github.com/bingoogolapple/BGABadgeView-Android/blob/master/library/src/main/java/cn/bingoogolapple/badgeview/BGABadgeLinearLayout.java)
 
-### 关于我
+## 关于我
 
-| 新浪微博 | 个人主页 | 邮箱 | BGA系列开源库QQ群 | 如果你觉得这个库确实对你有帮助，可以考虑赞助我一块钱买机械键盘来撸代码 |
-| ------------ | ------------- | ------------ | ------------ | ------------ |
-| <a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a> | <a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>  | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://7xk9dj.com1.z0.glb.clouddn.com/BGA_CODE_CLUB.png?imageView2/2/w/200) | ![BGA_AliPay](http://7xk9dj.com1.z0.glb.clouddn.com/BGAAliPay.JPG?imageView2/2/w/300) |
+| 新浪微博 | 个人主页 | 邮箱 | BGA系列开源库QQ群
+| ------------ | ------------- | ------------ | ------------ |
+| <a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a> | <a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>  | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://7xk9dj.com1.z0.glb.clouddn.com/BGA_CODE_CLUB.png?imageView2/2/w/200) |
+
+## 打赏支持
+
+如果觉得 BGA 系列开源库对您有用，请随意打赏。
+
+<p align="center">
+  <img src="http://7xk9dj.com1.z0.glb.clouddn.com/bga_pay.png" width="450">
+</p>
 
 ## License
 
