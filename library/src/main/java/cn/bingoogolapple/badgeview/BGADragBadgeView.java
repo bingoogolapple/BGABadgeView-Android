@@ -16,6 +16,9 @@
 
 package cn.bingoogolapple.badgeview;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -32,9 +35,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.OvershootInterpolator;
 
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.AnimatorListenerAdapter;
-import com.nineoldandroids.animation.ValueAnimator;
+import java.lang.ref.WeakReference;
+
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -50,6 +52,7 @@ class BGADragBadgeView extends View {
     private int mStartX;
     private int mStartY;
     private BGAExplosionAnimator mExplosionAnimator;
+    private SetExplosionAnimatorNullTask mSetExplosionAnimatorNullTask;
 
     /**
      * 针圆切线的切点
@@ -109,6 +112,8 @@ class BGADragBadgeView extends View {
         initBadgePaint();
         initLayoutParams();
         initStick();
+
+        mSetExplosionAnimatorNullTask = new SetExplosionAnimatorNullTask(this);
     }
 
     private void initBadgePaint() {
@@ -406,9 +411,11 @@ class BGADragBadgeView extends View {
         if (getParent() != null) {
             mWindowManager.removeView(this);
         }
-        mExplosionAnimator = null;
         mDismissAble = false;
         mIsDragDisappear = false;
+
+        // 处理有时候爆炸效果结束后出现一瞬间的拖拽效果
+        postDelayed(mSetExplosionAnimatorNullTask, 60);
     }
 
     /**
@@ -450,6 +457,22 @@ class BGADragBadgeView extends View {
             mBadgeViewHelper.endDragWithDismiss();
         } else {
             mBadgeViewHelper.endDragWithoutDismiss();
+        }
+    }
+
+    private static class SetExplosionAnimatorNullTask implements Runnable {
+        private final WeakReference<BGADragBadgeView> mDragBadgeView;
+
+        public SetExplosionAnimatorNullTask(BGADragBadgeView dragBadgeView) {
+            mDragBadgeView = new WeakReference<>(dragBadgeView);
+        }
+
+        @Override
+        public void run() {
+            BGADragBadgeView dragBadgeView = mDragBadgeView.get();
+            if (dragBadgeView != null) {
+                dragBadgeView.mExplosionAnimator = null;
+            }
         }
     }
 }

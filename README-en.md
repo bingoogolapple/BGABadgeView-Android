@@ -26,7 +26,6 @@
 
 ```groovy
 dependencies {
-    compile 'com.nineoldandroids:library:2.4.0'
     compile 'cn.bingoogolapple:bga-badgeview:latestVersion@aar'
 }
 ```
