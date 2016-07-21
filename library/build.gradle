@@ -10,9 +10,5 @@ android {
     }
 }
 
-dependencies {
-    compile 'com.nineoldandroids:library:2.4.0'
-}
-
 // gradle uploadArchives
 //apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/central-publish.gradle'
