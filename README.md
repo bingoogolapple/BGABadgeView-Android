@@ -20,7 +20,7 @@
 ### 爆炸效果参考的 [ExplosionField](https://github.com/tyrantgit/ExplosionField) 改成了只有一个View的情况,只刷新徽章附近的区域
 
 ### 效果图
-![badge-v111](https://cloud.githubusercontent.com/assets/8949716/17475555/2520b3c4-5d8e-11e6-8502-7c06b1b83243.gif)
+![badgeview](https://cloud.githubusercontent.com/assets/8949716/17483429/8f5ab3aa-5db8-11e6-808c-6033f5d5c4ec.gif)
 
 ### [点击下载 Apk](http://fir.im/BGABadgeViewDemo) 或扫描下方二维码安装体验
 ![Demo](http://7xk9dj.com1.z0.glb.clouddn.com/badge/BGABadgeViewDemoQRCode.png)
