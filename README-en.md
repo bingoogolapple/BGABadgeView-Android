@@ -20,7 +20,7 @@
 ### The realization of explosion effect refers to [ExplosionField](https://github.com/tyrantgit/ExplosionField) with the modify of only retaining one View，and only refresh the field around of badge
 
 ### Screenshots
-![badge-v111](https://cloud.githubusercontent.com/assets/8949716/17475555/2520b3c4-5d8e-11e6-8502-7c06b1b83243.gif)
+![badgeview](https://cloud.githubusercontent.com/assets/8949716/17483429/8f5ab3aa-5db8-11e6-808c-6033f5d5c4ec.gif)
 
 ### Gradle Dependencies
 
