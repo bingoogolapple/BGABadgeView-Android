@@ -20,7 +20,7 @@ public class MessageModel {
         this.newMsgCount = newMsgCount;
     }
 
-    public static List<MessageModel> getTestDatas() {
+    public static List<MessageModel> getTestData() {
         List<MessageModel> messages = new ArrayList<>();
         Random random = new Random();
         for (int i = 0; i < 30; i++) {

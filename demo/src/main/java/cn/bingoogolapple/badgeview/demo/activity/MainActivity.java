@@ -107,22 +107,22 @@ public class MainActivity extends AppCompatActivity {
 
         mNormalBiv.showCirclePointBadge();
 
-        Bitmap avatorBadgeBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.avatar_vip);
+        Bitmap avatarBadgeBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.avatar_vip);
 
         RoundedBitmapDrawable roundedDrawable = RoundedBitmapDrawableFactory.create(getResources(), BitmapFactory.decodeResource(getResources(), R.mipmap.avator));
         roundedDrawable.getPaint().setAntiAlias(true);
         roundedDrawable.setCornerRadius(30);
         mRoundedBiv.setImageDrawable(roundedDrawable);
-        mRoundedBiv.showDrawableBadge(avatorBadgeBitmap);
+        mRoundedBiv.showDrawableBadge(avatarBadgeBitmap);
 
-        Bitmap avatorBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.avator);
-        RoundedBitmapDrawable circleDrawable = RoundedBitmapDrawableFactory.create(getResources(), avatorBitmap);
+        Bitmap avatarBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.avator);
+        RoundedBitmapDrawable circleDrawable = RoundedBitmapDrawableFactory.create(getResources(), avatarBitmap);
         circleDrawable.getPaint().setAntiAlias(true);
-        circleDrawable.setCornerRadius(Math.max(avatorBitmap.getWidth(), avatorBitmap.getHeight()) / 2.0f);
+        circleDrawable.setCornerRadius(Math.max(avatarBitmap.getWidth(), avatarBitmap.getHeight()) / 2.0f);
         mCircleBiv.setImageDrawable(circleDrawable);
-        mCircleBiv.showDrawableBadge(avatorBadgeBitmap);
+        mCircleBiv.showDrawableBadge(avatarBadgeBitmap);
 
-        mTestBll.showDrawableBadge(avatorBadgeBitmap);
+        mTestBll.showDrawableBadge(avatarBadgeBitmap);
         mTestBrl.showTextBadge("LoveAndroid");
         mTestBfl.showTextBadge("8");
 
@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         mRecyclerView.setAdapter(mMessageAdapter);
-        mMessageAdapter.setDatas(MessageModel.getTestDatas());
+        mMessageAdapter.setData(MessageModel.getTestData());
     }
 
     /**
