@@ -16,7 +16,7 @@
 
 package cn.bingoogolapple.badgeview;
 
-import android.animation.ValueAnimator;
+import com.nineoldandroids.animation.ValueAnimator;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
