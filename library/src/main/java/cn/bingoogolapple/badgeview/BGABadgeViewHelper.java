@@ -24,10 +24,14 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.support.annotation.IntDef;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -77,7 +81,9 @@ public class BGABadgeViewHelper {
     /**
      * 徽章在宿主控件中的位置
      */
-    private BadgeGravity mBadgeGravity;
+    private
+    @Gravity
+    int mBadgeGravity;
     /**
      * 整个徽章所占区域
      */
@@ -120,7 +126,7 @@ public class BGABadgeViewHelper {
     private BGADragDismissDelegate mDelegage;
     private boolean mIsShowDrawable = false;
 
-    public BGABadgeViewHelper(BGABadgeable badgeable, Context context, AttributeSet attrs, BadgeGravity defaultBadgeGravity) {
+    public BGABadgeViewHelper(BGABadgeable badgeable, Context context, AttributeSet attrs, @Gravity int defaultBadgeGravity) {
         mBadgeable = badgeable;
         initDefaultAttrs(context, defaultBadgeGravity);
         initCustomAttrs(context, attrs);
@@ -128,7 +134,7 @@ public class BGABadgeViewHelper {
         mDropBadgeView = new BGADragBadgeView(context, this);
     }
 
-    private void initDefaultAttrs(Context context, BadgeGravity defaultBadgeGravity) {
+    private void initDefaultAttrs(Context context, @Gravity int defaultBadgeGravity) {
         mBadgeNumberRect = new Rect();
         mBadgeRectF = new RectF();
         mBadgeBgColor = Color.RED;
@@ -185,8 +191,8 @@ public class BGABadgeViewHelper {
         } else if (attr == R.styleable.BGABadgeView_badge_padding) {
             mBadgePadding = typedArray.getDimensionPixelSize(attr, mBadgePadding);
         } else if (attr == R.styleable.BGABadgeView_badge_gravity) {
-            int ordinal = typedArray.getInt(attr, mBadgeGravity.ordinal());
-            mBadgeGravity = BadgeGravity.values()[ordinal];
+            @Gravity int ordinal = typedArray.getInt(attr, GRAVITY_RIGHT_TOP);
+            mBadgeGravity = ordinal;
         } else if (attr == R.styleable.BGABadgeView_badge_dragable) {
             mDragable = typedArray.getBoolean(attr, mDragable);
         } else if (attr == R.styleable.BGABadgeView_badge_isResumeTravel) {
@@ -243,8 +249,8 @@ public class BGABadgeViewHelper {
         }
     }
 
-    public void setBadgeGravity(BadgeGravity badgeGravity) {
-        if (badgeGravity != null) {
+    public void setBadgeGravity(@Gravity int badgeGravity) {
+        if (mBadgeGravity != badgeGravity) {
             mBadgeGravity = badgeGravity;
             mBadgeable.postInvalidate();
         }
@@ -343,13 +349,13 @@ public class BGABadgeViewHelper {
         mBadgeRectF.left = mBadgeable.getWidth() - mBadgeHorizontalMargin - mBitmap.getWidth();
         mBadgeRectF.top = mBadgeVerticalMargin;
         switch (mBadgeGravity) {
-            case RightTop:
+            case GRAVITY_RIGHT_TOP:
                 mBadgeRectF.top = mBadgeVerticalMargin;
                 break;
-            case RightCenter:
+            case GRAVITY_RIGHT_CENTER:
                 mBadgeRectF.top = (mBadgeable.getHeight() - mBitmap.getHeight()) / 2;
                 break;
-            case RightBottom:
+            case GRAVITY_RIGHT_BOTTOM:
                 mBadgeRectF.top = mBadgeable.getHeight() - mBitmap.getHeight() - mBadgeVerticalMargin;
                 break;
             default:
@@ -385,15 +391,22 @@ public class BGABadgeViewHelper {
         // 计算徽章背景上下的值
         mBadgeRectF.top = mBadgeVerticalMargin;
         mBadgeRectF.bottom = mBadgeable.getHeight() - mBadgeVerticalMargin;
+        //top & bottom计算方法相同
         switch (mBadgeGravity) {
-            case RightTop:
+            case GRAVITY_RIGHT_TOP:
+            case GRAVITY_MIDDLE_TOP:
+            case GRAVITY_LEFT_TOP:
                 mBadgeRectF.bottom = mBadgeRectF.top + badgeHeight;
                 break;
-            case RightCenter:
+            case GRAVITY_RIGHT_CENTER:
+            case GRAVITY_MIDDLE_CENTER:
+            case GRAVITY_LEFT_CENTER:
                 mBadgeRectF.top = (mBadgeable.getHeight() - badgeHeight) / 2;
                 mBadgeRectF.bottom = mBadgeRectF.top + badgeHeight;
                 break;
-            case RightBottom:
+            case GRAVITY_RIGHT_BOTTOM:
+            case GRAVITY_MIDDLE_BOTTOM:
+            case GRAVITY_LEFT_BOTTOM:
                 mBadgeRectF.top = mBadgeRectF.bottom - badgeHeight;
                 break;
             default:
@@ -401,8 +414,27 @@ public class BGABadgeViewHelper {
         }
 
         // 计算徽章背景左右的值
-        mBadgeRectF.right = mBadgeable.getWidth() - mBadgeHorizontalMargin;
-        mBadgeRectF.left = mBadgeRectF.right - badgeWidth;
+        switch (mBadgeGravity) {
+            case GRAVITY_RIGHT_BOTTOM:
+            case GRAVITY_RIGHT_CENTER:
+            case GRAVITY_RIGHT_TOP:
+                mBadgeRectF.right = mBadgeable.getWidth() - mBadgeHorizontalMargin;
+                mBadgeRectF.left = mBadgeRectF.right - badgeWidth;
+                break;
+            case GRAVITY_LEFT_BOTTOM:
+            case GRAVITY_LEFT_CENTER:
+            case GRAVITY_LEFT_TOP:
+                mBadgeRectF.right = mBadgeHorizontalMargin + badgeWidth;
+                mBadgeRectF.left = mBadgeHorizontalMargin;
+                break;
+            case GRAVITY_MIDDLE_BOTTOM:
+            case GRAVITY_MIDDLE_CENTER:
+            case GRAVITY_MIDDLE_TOP:
+                mBadgeRectF.right = (mBadgeable.getWidth() + badgeWidth) / 2 + mBadgeHorizontalMargin;
+                mBadgeRectF.left = (mBadgeable.getWidth() - badgeWidth) / 2 + mBadgeHorizontalMargin;
+                break;
+        }
+
 
         if (mBadgeBorderWidth > 0) {
             // 设置徽章边框景色
@@ -505,9 +537,23 @@ public class BGABadgeViewHelper {
         return mIsResumeTravel;
     }
 
-    public enum BadgeGravity {
-        RightTop,
-        RightCenter,
-        RightBottom
+
+    @IntDef({GRAVITY_RIGHT_TOP, GRAVITY_RIGHT_CENTER, GRAVITY_RIGHT_BOTTOM,
+            GRAVITY_LEFT_TOP, GRAVITY_LEFT_CENTER, GRAVITY_LEFT_BOTTOM,
+            GRAVITY_MIDDLE_TOP, GRAVITY_MIDDLE_CENTER, GRAVITY_MIDDLE_BOTTOM
+    })
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface Gravity {
     }
+
+    public static final int GRAVITY_RIGHT_TOP = 0;
+    public static final int GRAVITY_RIGHT_CENTER = 1;
+    public static final int GRAVITY_RIGHT_BOTTOM = 2;
+    public static final int GRAVITY_LEFT_TOP = 3;
+    public static final int GRAVITY_LEFT_CENTER = 4;
+    public static final int GRAVITY_LEFT_BOTTOM = 5;
+    public static final int GRAVITY_MIDDLE_TOP = 6;
+    public static final int GRAVITY_MIDDLE_CENTER = 7;
+    public static final int GRAVITY_MIDDLE_BOTTOM = 8;
+
 }

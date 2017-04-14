@@ -14,10 +14,16 @@
         <!-- 徽章文本边缘与徽章背景边缘间的距离 -->
         <attr name="badge_padding" format="reference|dimension" />
         <!-- 徽章在宿主控件中的位置 -->
-        <attr name="badge_gravity" format="enum">
+        <attr name="badge_gravity" format="integer">
             <enum name="rightTop" value="0" />
             <enum name="rightCenter" value="1" />
             <enum name="rightBottom" value="2" />
+            <enum name="leftTop" value="3" />
+            <enum name="leftCenter" value="4" />
+            <enum name="leftBottom" value="5" />
+            <enum name="middleTop" value="6" />
+            <enum name="middleCenter" value="7" />
+            <enum name="middleBottom" value="8" />
         </attr>
         <!-- 是否可以拖拽删除徽章 -->
         <attr name="badge_dragable" format="boolean" />
