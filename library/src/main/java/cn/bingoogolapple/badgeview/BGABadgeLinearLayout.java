@@ -37,7 +37,7 @@ public class BGABadgeLinearLayout extends LinearLayout implements BGABadgeable {
 
     public BGABadgeLinearLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mBadgeViewHeler = new BGABadgeViewHelper(this, context, attrs, BGABadgeViewHelper.BadgeGravity.RightCenter);
+        mBadgeViewHeler = new BGABadgeViewHelper(this, context, attrs, BGABadgeViewHelper.GRAVITY_RIGHT_CENTER);
     }
 
     @Override

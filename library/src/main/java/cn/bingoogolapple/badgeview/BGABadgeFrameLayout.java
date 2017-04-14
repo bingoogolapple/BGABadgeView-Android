@@ -41,7 +41,7 @@ public class BGABadgeFrameLayout extends FrameLayout implements BGABadgeable {
 
     public BGABadgeFrameLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mBadgeViewHeler = new BGABadgeViewHelper(this, context, attrs, BGABadgeViewHelper.BadgeGravity.RightCenter);
+        mBadgeViewHeler = new BGABadgeViewHelper(this, context, attrs, BGABadgeViewHelper.GRAVITY_RIGHT_CENTER);
     }
 
 

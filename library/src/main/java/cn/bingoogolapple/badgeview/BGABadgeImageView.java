@@ -41,7 +41,7 @@ public class BGABadgeImageView extends ImageView implements BGABadgeable {
 
     public BGABadgeImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mBadgeViewHeler = new BGABadgeViewHelper(this, context, attrs, BGABadgeViewHelper.BadgeGravity.RightTop);
+        mBadgeViewHeler = new BGABadgeViewHelper(this, context, attrs, BGABadgeViewHelper.GRAVITY_RIGHT_TOP);
     }
 
     @Override
