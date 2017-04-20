@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="BGABadgeView">
+    <declare-styleable name="BadgeView">
         <!-- 徽章背景色 -->
         <attr name="badge_bgColor" format="reference|color" />
         <!-- 徽章文本的颜色 -->
@@ -13,11 +13,20 @@
         <attr name="badge_horizontalMargin" format="reference|dimension" />
         <!-- 徽章文本边缘与徽章背景边缘间的距离 -->
         <attr name="badge_padding" format="reference|dimension" />
-        <!-- 徽章在宿主控件中的位置 -->
-        <attr name="badge_gravity" format="enum">
-            <enum name="rightTop" value="0" />
-            <enum name="rightCenter" value="1" />
-            <enum name="rightBottom" value="2" />
+
+        <!-- 徽章在宿主控件中的垂直位置 -->
+        <attr name="badge_gravityV" format="integer">
+            <enum name="top" value="0" />
+            <enum name="center" value="1" />
+            <enum name="bottom" value="2" />
+        </attr>
+
+        <!-- 徽章在宿主控件中的水平位置 -->
+        <attr name="badge_gravityH" format="integer">
+            <enum name="left" value="0" />
+            <enum name="center" value="1" />//居中
+            <enum name="center_start" value="2" />//以中线开始
+            <enum name="right" value="3" />
         </attr>
         <!-- 是否可以拖拽删除徽章 -->
         <attr name="badge_dragable" format="boolean" />

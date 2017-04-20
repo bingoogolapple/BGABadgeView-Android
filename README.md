@@ -1,3 +1,24 @@
+由于作者最近没空，我对原作者的库进行了简单的重构；
+
+#Release 1.2.0
+    支持更多的绘制位置，水平方向支持左中右，垂直方向支持上中下
+    更改控件兼容Appcompat
+## Gradle配置
+   ```
+   allprojects {
+       repositories {
+           jcenter()
+           //在工程的build.gradle文件中添加下述语句
+           maven { url 'https://dl.bintray.com/supluo/maven' }
+       }
+   }
+   ```
+
+   ```
+   //在Module的build.gradle文件中添加下述语句
+    compile 'ms.easy:badgeview:{latestVersion}'
+   ```
+
 :heartpulse:BGABadgeView-Android:heartpulse:
 ============
 

@@ -5,7 +5,7 @@ android {
     buildToolsVersion ANDROID_BUILD_TOOLS_VERSION
 
     defaultConfig {
-        minSdkVersion ANDROID_BUILD_MIN_SDK_VERSION as int
+        minSdkVersion 14
         targetSdkVersion ANDROID_BUILD_TARGET_SDK_VERSION as int
         versionCode VERSION_CODE as int
         versionName VERSION_NAME
@@ -21,8 +21,8 @@ dependencies {
     // -------------------- 以上一个库是必须依赖的 ----------------------------
 
     // 以下几个库是演示案例所使用到的
-    compile 'com.android.support:design:25.0.1'
-    compile 'com.android.support:appcompat-v7:25.0.1'
-    compile 'com.android.support:recyclerview-v7:25.0.1'
+    compile 'com.android.support:design:23.4.0'
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:recyclerview-v7:23.4.0'
     compile 'cn.bingoogolapple:bga-adapter:1.1.5@aar'
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cn.bingoogolapple.badgeview;
+package easy.badge;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -28,9 +28,9 @@ import android.view.View;
  * 创建时间:15/12/5 上午12:27
  * 描述:
  */
-public class BGABadgeViewUtil {
+public class BadgeViewUtil {
 
-    private BGABadgeViewUtil() {
+    private BadgeViewUtil() {
     }
 
     public static int dp2px(Context context, float dpValue) {
@@ -47,15 +47,15 @@ public class BGABadgeViewUtil {
         return rectangle.top;
     }
 
-    public static Bitmap createBitmapSafely(BGADragBadgeView dragBadgeView, Rect rect, int retryCount) {
+    public static Bitmap createBitmapSafely(View view, Rect rect, int retryCount) {
         try {
-            dragBadgeView.setDrawingCacheEnabled(true);
+            view.setDrawingCacheEnabled(true);
             // 只裁剪徽章区域,不然会很卡
-            return Bitmap.createBitmap(dragBadgeView.getDrawingCache(), rect.left < 0 ? 0 : rect.left, rect.top < 0 ? 0 : rect.top, rect.width(), rect.height());
+            return Bitmap.createBitmap(view.getDrawingCache(), rect.left < 0 ? 0 : rect.left, rect.top < 0 ? 0 : rect.top, rect.width(), rect.height());
         } catch (OutOfMemoryError e) {
             if (retryCount > 0) {
                 System.gc();
-                return createBitmapSafely(dragBadgeView, rect, retryCount - 1);
+                return createBitmapSafely(view, rect, retryCount - 1);
             }
             return null;
         }

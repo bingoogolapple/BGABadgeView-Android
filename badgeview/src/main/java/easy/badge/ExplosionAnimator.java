@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package cn.bingoogolapple.badgeview;
+package easy.badge;
 
-import android.animation.ValueAnimator;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -25,14 +24,17 @@ import android.graphics.Rect;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Interpolator;
 
+import com.nineoldandroids.animation.ValueAnimator;
+
 import java.util.Random;
+
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
  * 创建时间:15/12/5 上午12:21
  * 描述:参考https://github.com/tyrantgit/ExplosionField改成了只有一个View的情况,只刷新徽章附近的区域
  */
-public class BGAExplosionAnimator extends ValueAnimator {
+public class ExplosionAnimator extends ValueAnimator {
     public static final int ANIM_DURATION = 300;
     private static final Interpolator DEFAULT_INTERPOLATOR = new AccelerateInterpolator(0.6f);
     private static final float END_VALUE = 1.4f;
@@ -44,19 +46,19 @@ public class BGAExplosionAnimator extends ValueAnimator {
 
     private Particle[] mParticles;
     private Paint mPaint;
-    private BGADragBadgeView mDragBadgeView;
+    private BadgeDragView mDragBadgeView;
     private Rect mRect;
     private Rect mInvalidateRect;
 
-    public BGAExplosionAnimator(BGADragBadgeView dragBadgeView, Rect rect, Bitmap bitmap) {
+    public ExplosionAnimator(BadgeDragView dragBadgeView, Rect rect, Bitmap bitmap) {
         setFloatValues(0.0f, END_VALUE);
         setDuration(ANIM_DURATION);
         setInterpolator(DEFAULT_INTERPOLATOR);
 
-        X = BGABadgeViewUtil.dp2px(dragBadgeView.getContext(), 5);
-        Y = BGABadgeViewUtil.dp2px(dragBadgeView.getContext(), 20);
-        V = BGABadgeViewUtil.dp2px(dragBadgeView.getContext(), 2);
-        W = BGABadgeViewUtil.dp2px(dragBadgeView.getContext(), 1);
+        X = BadgeViewUtil.dp2px(dragBadgeView.getContext(), 5);
+        Y = BadgeViewUtil.dp2px(dragBadgeView.getContext(), 20);
+        V = BadgeViewUtil.dp2px(dragBadgeView.getContext(), 2);
+        W = BadgeViewUtil.dp2px(dragBadgeView.getContext(), 1);
 
         mPaint = new Paint();
         mDragBadgeView = dragBadgeView;
