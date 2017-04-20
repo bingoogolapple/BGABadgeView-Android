@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cn.bingoogolapple.badgeview;
+package easy.badge;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -24,23 +24,24 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.support.annotation.IntDef;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import easy.badge.impl.BadgeViewHelper;
+import easy.badge.impl.BadgeView;
+import easy.badge.impl.OnBadgeDragDismissListener;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
  * 创建时间:15/7/6 下午10:13
  * 描述:
  */
-public class BGABadgeViewHelper {
+class BadgeHelperImpl implements BadgeViewHelper {
+
     private Bitmap mBitmap;
-    private BGABadgeable mBadgeable;
+    private BadgeView mBadgeViewTarget;
     private Paint mBadgePaint;
     /**
      * 徽章背景色
@@ -81,9 +82,10 @@ public class BGABadgeViewHelper {
     /**
      * 徽章在宿主控件中的位置
      */
-    private
-    @Gravity
-    int mBadgeGravity;
+    @VerticalGravity
+    private int mBadgeGravityV;
+    @HorizontalGravity
+    private int mBadgeGravityH;
     /**
      * 整个徽章所占区域
      */
@@ -115,31 +117,31 @@ public class BGABadgeViewHelper {
     /**
      * 拖动时的徽章控件
      */
-    private BGADragBadgeView mDropBadgeView;
+    private BadgeDragView mDropBadgeView;
     /**
      * 是否正在拖动
      */
     private boolean mIsDraging;
     /**
-     * 拖动大于BGABadgeViewHelper.mMoveHiddenThreshold后抬起手指徽章消失的代理
+     * 拖动大于BadgeViewHelper.mMoveHiddenThreshold后抬起手指徽章消失的代理
      */
-    private BGADragDismissDelegate mDelegage;
+    private OnBadgeDragDismissListener mDragDismissListenner;
     private boolean mIsShowDrawable = false;
 
-    public BGABadgeViewHelper(BGABadgeable badgeable, Context context, AttributeSet attrs, @Gravity int defaultBadgeGravity) {
-        mBadgeable = badgeable;
-        initDefaultAttrs(context, defaultBadgeGravity);
+    public BadgeHelperImpl(BadgeView badgeable, Context context, AttributeSet attrs, @HorizontalGravity int defaultBadgeGravityH,@VerticalGravity int defaultBadgeGravityV) {
+        mBadgeViewTarget = badgeable;
+        initDefaultAttrs(context, defaultBadgeGravityH,defaultBadgeGravityV);
         initCustomAttrs(context, attrs);
         afterInitDefaultAndCustomAttrs();
-        mDropBadgeView = new BGADragBadgeView(context, this);
+        mDropBadgeView = Badge.createDragView(context, this);
     }
 
-    private void initDefaultAttrs(Context context, @Gravity int defaultBadgeGravity) {
+    private void initDefaultAttrs(Context context,@HorizontalGravity int defaultBadgeGravityH,@VerticalGravity int defaultBadgeGravityV) {
         mBadgeNumberRect = new Rect();
         mBadgeRectF = new RectF();
         mBadgeBgColor = Color.RED;
         mBadgeTextColor = Color.WHITE;
-        mBadgeTextSize = BGABadgeViewUtil.sp2px(context, 10);
+        mBadgeTextSize = BadgeViewUtil.sp2px(context, 10);
 
         mBadgePaint = new Paint();
         mBadgePaint.setAntiAlias(true);
@@ -147,11 +149,12 @@ public class BGABadgeViewHelper {
         // 设置mBadgeText居中，保证mBadgeText长度为1时，文本也能居中
         mBadgePaint.setTextAlign(Paint.Align.CENTER);
 
-        mBadgePadding = BGABadgeViewUtil.dp2px(context, 4);
-        mBadgeVerticalMargin = BGABadgeViewUtil.dp2px(context, 4);
-        mBadgeHorizontalMargin = BGABadgeViewUtil.dp2px(context, 4);
+        mBadgePadding = BadgeViewUtil.dp2px(context, 4);
+        mBadgeVerticalMargin = BadgeViewUtil.dp2px(context, 4);
+        mBadgeHorizontalMargin = BadgeViewUtil.dp2px(context, 4);
 
-        mBadgeGravity = defaultBadgeGravity;
+        mBadgeGravityH = defaultBadgeGravityH;
+        mBadgeGravityV = defaultBadgeGravityV;
         mIsShowBadge = false;
 
         mBadgeText = null;
@@ -164,12 +167,12 @@ public class BGABadgeViewHelper {
 
         mBadgeBorderColor = Color.WHITE;
 
-        mDragExtra = BGABadgeViewUtil.dp2px(context, 4);
+        mDragExtra = BadgeViewUtil.dp2px(context, 4);
         mBadgeDragExtraRectF = new RectF();
     }
 
     private void initCustomAttrs(Context context, AttributeSet attrs) {
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BGABadgeView);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BadgeView);
         final int N = typedArray.getIndexCount();
         for (int i = 0; i < N; i++) {
             initCustomAttr(typedArray.getIndex(i), typedArray);
@@ -178,30 +181,33 @@ public class BGABadgeViewHelper {
     }
 
     private void initCustomAttr(int attr, TypedArray typedArray) {
-        if (attr == R.styleable.BGABadgeView_badge_bgColor) {
+        if (attr == R.styleable.BadgeView_badge_bgColor) {
             mBadgeBgColor = typedArray.getColor(attr, mBadgeBgColor);
-        } else if (attr == R.styleable.BGABadgeView_badge_textColor) {
+        } else if (attr == R.styleable.BadgeView_badge_textColor) {
             mBadgeTextColor = typedArray.getColor(attr, mBadgeTextColor);
-        } else if (attr == R.styleable.BGABadgeView_badge_textSize) {
+        } else if (attr == R.styleable.BadgeView_badge_textSize) {
             mBadgeTextSize = typedArray.getDimensionPixelSize(attr, mBadgeTextSize);
-        } else if (attr == R.styleable.BGABadgeView_badge_verticalMargin) {
+        } else if (attr == R.styleable.BadgeView_badge_verticalMargin) {
             mBadgeVerticalMargin = typedArray.getDimensionPixelSize(attr, mBadgeVerticalMargin);
-        } else if (attr == R.styleable.BGABadgeView_badge_horizontalMargin) {
+        } else if (attr == R.styleable.BadgeView_badge_horizontalMargin) {
             mBadgeHorizontalMargin = typedArray.getDimensionPixelSize(attr, mBadgeHorizontalMargin);
-        } else if (attr == R.styleable.BGABadgeView_badge_padding) {
+        } else if (attr == R.styleable.BadgeView_badge_padding) {
             mBadgePadding = typedArray.getDimensionPixelSize(attr, mBadgePadding);
-        } else if (attr == R.styleable.BGABadgeView_badge_gravity) {
-            @Gravity int ordinal = typedArray.getInt(attr, GRAVITY_RIGHT_TOP);
-            mBadgeGravity = ordinal;
-        } else if (attr == R.styleable.BGABadgeView_badge_dragable) {
+        } else if (attr == R.styleable.BadgeView_badge_gravityH) {
+            @HorizontalGravity int ordinal = typedArray.getInt(attr, HorizontalGravity.RIGHT);
+            mBadgeGravityH = ordinal;
+        }else if (attr == R.styleable.BadgeView_badge_gravityV) {
+            @VerticalGravity int ordinal = typedArray.getInt(attr, VerticalGravity.TOP);
+            mBadgeGravityV = ordinal;
+        } else if (attr == R.styleable.BadgeView_badge_dragable) {
             mDragable = typedArray.getBoolean(attr, mDragable);
-        } else if (attr == R.styleable.BGABadgeView_badge_isResumeTravel) {
+        } else if (attr == R.styleable.BadgeView_badge_isResumeTravel) {
             mIsResumeTravel = typedArray.getBoolean(attr, mIsResumeTravel);
-        } else if (attr == R.styleable.BGABadgeView_badge_borderWidth) {
+        } else if (attr == R.styleable.BadgeView_badge_borderWidth) {
             mBadgeBorderWidth = typedArray.getDimensionPixelSize(attr, mBadgeBorderWidth);
-        } else if (attr == R.styleable.BGABadgeView_badge_borderColor) {
+        } else if (attr == R.styleable.BadgeView_badge_borderColor) {
             mBadgeBorderColor = typedArray.getColor(attr, mBadgeBorderColor);
-        } else if (attr == R.styleable.BGABadgeView_badge_dragExtra) {
+        } else if (attr == R.styleable.BadgeView_badge_dragExtra) {
             mDragExtra = typedArray.getDimensionPixelSize(attr, mDragExtra);
         }
     }
@@ -212,70 +218,77 @@ public class BGABadgeViewHelper {
 
     public void setBadgeBgColorInt(int badgeBgColor) {
         mBadgeBgColor = badgeBgColor;
-        mBadgeable.postInvalidate();
+        mBadgeViewTarget.postInvalidate();
     }
 
     public void setBadgeTextColorInt(int badgeTextColor) {
         mBadgeTextColor = badgeTextColor;
-        mBadgeable.postInvalidate();
+        mBadgeViewTarget.postInvalidate();
     }
 
     public void setBadgeTextSizeSp(int badgetextSize) {
         if (badgetextSize >= 0) {
-            mBadgeTextSize = BGABadgeViewUtil.sp2px(mBadgeable.getContext(), badgetextSize);
+            mBadgeTextSize = BadgeViewUtil.sp2px(mBadgeViewTarget.getContext(), badgetextSize);
             mBadgePaint.setTextSize(mBadgeTextSize);
-            mBadgeable.postInvalidate();
+            mBadgeViewTarget.postInvalidate();
         }
     }
 
     public void setBadgeVerticalMarginDp(int badgeVerticalMargin) {
         if (badgeVerticalMargin >= 0) {
-            mBadgeVerticalMargin = BGABadgeViewUtil.dp2px(mBadgeable.getContext(), badgeVerticalMargin);
-            mBadgeable.postInvalidate();
+            mBadgeVerticalMargin = BadgeViewUtil.dp2px(mBadgeViewTarget.getContext(), badgeVerticalMargin);
+            mBadgeViewTarget.postInvalidate();
         }
     }
 
     public void setBadgeHorizontalMarginDp(int badgeHorizontalMargin) {
         if (badgeHorizontalMargin >= 0) {
-            mBadgeHorizontalMargin = BGABadgeViewUtil.dp2px(mBadgeable.getContext(), badgeHorizontalMargin);
-            mBadgeable.postInvalidate();
+            mBadgeHorizontalMargin = BadgeViewUtil.dp2px(mBadgeViewTarget.getContext(), badgeHorizontalMargin);
+            mBadgeViewTarget.postInvalidate();
         }
     }
 
     public void setBadgePaddingDp(int badgePadding) {
         if (badgePadding >= 0) {
-            mBadgePadding = BGABadgeViewUtil.dp2px(mBadgeable.getContext(), badgePadding);
-            mBadgeable.postInvalidate();
+            mBadgePadding = BadgeViewUtil.dp2px(mBadgeViewTarget.getContext(), badgePadding);
+            mBadgeViewTarget.postInvalidate();
         }
     }
 
-    public void setBadgeGravity(@Gravity int badgeGravity) {
-        if (mBadgeGravity != badgeGravity) {
-            mBadgeGravity = badgeGravity;
-            mBadgeable.postInvalidate();
+    public void setBadgeHorizontalGravity(@HorizontalGravity int badgeGravity) {
+        if (mBadgeGravityH != badgeGravity) {
+            mBadgeGravityH = badgeGravity;
+            mBadgeViewTarget.postInvalidate();
+        }
+    }
+
+    public void setBadgeVerticalGravity(@VerticalGravity int badgeGravity) {
+        if (mBadgeGravityV != badgeGravity) {
+            mBadgeGravityV = badgeGravity;
+            mBadgeViewTarget.postInvalidate();
         }
     }
 
     public void setDragable(boolean dragable) {
         mDragable = dragable;
-        mBadgeable.postInvalidate();
+        mBadgeViewTarget.postInvalidate();
     }
 
     public void setIsResumeTravel(boolean isResumeTravel) {
         mIsResumeTravel = isResumeTravel;
-        mBadgeable.postInvalidate();
+        mBadgeViewTarget.postInvalidate();
     }
 
     public void setBadgeBorderWidthDp(int badgeBorderWidthDp) {
         if (badgeBorderWidthDp >= 0) {
-            mBadgeBorderWidth = BGABadgeViewUtil.dp2px(mBadgeable.getContext(), badgeBorderWidthDp);
-            mBadgeable.postInvalidate();
+            mBadgeBorderWidth = BadgeViewUtil.dp2px(mBadgeViewTarget.getContext(), badgeBorderWidthDp);
+            mBadgeViewTarget.postInvalidate();
         }
     }
 
     public void setBadgeBorderColorInt(int badgeBorderColor) {
         mBadgeBorderColor = badgeBorderColor;
-        mBadgeable.postInvalidate();
+        mBadgeViewTarget.postInvalidate();
     }
 
     public boolean onTouchEvent(MotionEvent event) {
@@ -288,14 +301,14 @@ public class BGABadgeViewHelper {
 
                 if ((mBadgeBorderWidth == 0 || mIsShowDrawable) && mDragable && mIsShowBadge && mBadgeDragExtraRectF.contains(event.getX(), event.getY())) {
                     mIsDraging = true;
-                    mBadgeable.getParent().requestDisallowInterceptTouchEvent(true);
+                    mBadgeViewTarget.getParent().requestDisallowInterceptTouchEvent(true);
 
                     Rect badgeableRect = new Rect();
-                    mBadgeable.getGlobalVisibleRect(badgeableRect);
+                    mBadgeViewTarget.getGlobalVisibleRect(badgeableRect);
                     mDropBadgeView.setStickCenter(badgeableRect.left + mBadgeRectF.left + mBadgeRectF.width() / 2, badgeableRect.top + mBadgeRectF.top + mBadgeRectF.height() / 2);
 
                     mDropBadgeView.onTouchEvent(event);
-                    mBadgeable.postInvalidate();
+                    mBadgeViewTarget.postInvalidate();
                     return true;
                 }
                 break;
@@ -316,18 +329,18 @@ public class BGABadgeViewHelper {
             default:
                 break;
         }
-        return mBadgeable.callSuperOnTouchEvent(event);
+        return mBadgeViewTarget.callSuperOnTouchEvent(event);
     }
 
     public void endDragWithDismiss() {
         hiddenBadge();
-        if (mDelegage != null) {
-            mDelegage.onDismiss(mBadgeable);
+        if (mDragDismissListenner != null) {
+            mDragDismissListenner.onBadgeDismiss(mBadgeViewTarget);
         }
     }
 
     public void endDragWithoutDismiss() {
-        mBadgeable.postInvalidate();
+        mBadgeViewTarget.postInvalidate();
     }
 
     public void drawBadge(Canvas canvas) {
@@ -346,24 +359,40 @@ public class BGABadgeViewHelper {
      * @param canvas
      */
     private void drawDrawableBadge(Canvas canvas) {
-        mBadgeRectF.left = mBadgeable.getWidth() - mBadgeHorizontalMargin - mBitmap.getWidth();
-        mBadgeRectF.top = mBadgeVerticalMargin;
-        switch (mBadgeGravity) {
-            case GRAVITY_RIGHT_TOP:
+        int badgeWidth = mBitmap.getWidth();
+        int badgeHeight = mBitmap.getHeight();
+
+        //计算上下位置
+        switch (mBadgeGravityV){
+            case VerticalGravity.TOP:
                 mBadgeRectF.top = mBadgeVerticalMargin;
                 break;
-            case GRAVITY_RIGHT_CENTER:
-                mBadgeRectF.top = (mBadgeable.getHeight() - mBitmap.getHeight()) / 2;
+            case VerticalGravity.CENTER:
+                mBadgeRectF.top = (mBadgeViewTarget.getHeight() - badgeHeight) / 2 + mBadgeVerticalMargin;
                 break;
-            case GRAVITY_RIGHT_BOTTOM:
-                mBadgeRectF.top = mBadgeable.getHeight() - mBitmap.getHeight() - mBadgeVerticalMargin;
+            case VerticalGravity.BOTTOM:
+                mBadgeRectF.top = mBadgeViewTarget.getHeight() - mBadgeVerticalMargin - badgeHeight;
                 break;
-            default:
+        }
+
+        // 计算徽章背景左右的值
+        switch (mBadgeGravityH) {
+            case HorizontalGravity.LEFT:
+                mBadgeRectF.left = mBadgeHorizontalMargin;
+                break;
+            case HorizontalGravity.CENTER:
+                mBadgeRectF.left = (mBadgeViewTarget.getWidth() - badgeWidth) / 2 + mBadgeHorizontalMargin;
+                break;
+            case HorizontalGravity.CENTER_START:
+                mBadgeRectF.left = mBadgeViewTarget.getWidth()  / 2 + mBadgeHorizontalMargin;
+                break;
+            case HorizontalGravity.RIGHT:
+                mBadgeRectF.left = mBadgeViewTarget.getWidth() - mBadgeHorizontalMargin - badgeWidth;
                 break;
         }
         canvas.drawBitmap(mBitmap, mBadgeRectF.left, mBadgeRectF.top, mBadgePaint);
-        mBadgeRectF.right = mBadgeRectF.left + mBitmap.getWidth();
-        mBadgeRectF.bottom = mBadgeRectF.top + mBitmap.getHeight();
+        mBadgeRectF.right = mBadgeRectF.left + badgeWidth;
+        mBadgeRectF.bottom = mBadgeRectF.top + badgeHeight;
     }
 
     /**
@@ -388,53 +417,37 @@ public class BGABadgeViewHelper {
             badgeWidth = mBadgeNumberRect.width() + mBadgePadding * 2;
         }
 
-        // 计算徽章背景上下的值
-        mBadgeRectF.top = mBadgeVerticalMargin;
-        mBadgeRectF.bottom = mBadgeable.getHeight() - mBadgeVerticalMargin;
-        //top & bottom计算方法相同
-        switch (mBadgeGravity) {
-            case GRAVITY_RIGHT_TOP:
-            case GRAVITY_MIDDLE_TOP:
-            case GRAVITY_LEFT_TOP:
-                mBadgeRectF.bottom = mBadgeRectF.top + badgeHeight;
+        //计算上下位置
+        switch (mBadgeGravityV){
+            case VerticalGravity.TOP:
+                mBadgeRectF.top = mBadgeVerticalMargin;
                 break;
-            case GRAVITY_RIGHT_CENTER:
-            case GRAVITY_MIDDLE_CENTER:
-            case GRAVITY_LEFT_CENTER:
-                mBadgeRectF.top = (mBadgeable.getHeight() - badgeHeight) / 2;
-                mBadgeRectF.bottom = mBadgeRectF.top + badgeHeight;
+            case VerticalGravity.CENTER:
+                mBadgeRectF.top = (mBadgeViewTarget.getHeight() - badgeHeight) / 2 + mBadgeVerticalMargin;
                 break;
-            case GRAVITY_RIGHT_BOTTOM:
-            case GRAVITY_MIDDLE_BOTTOM:
-            case GRAVITY_LEFT_BOTTOM:
-                mBadgeRectF.top = mBadgeRectF.bottom - badgeHeight;
-                break;
-            default:
+            case VerticalGravity.BOTTOM:
+                mBadgeRectF.top = mBadgeRectF.bottom - badgeHeight - mBadgeVerticalMargin;
                 break;
         }
+        mBadgeRectF.bottom = mBadgeRectF.top + badgeHeight;
+
 
         // 计算徽章背景左右的值
-        switch (mBadgeGravity) {
-            case GRAVITY_RIGHT_BOTTOM:
-            case GRAVITY_RIGHT_CENTER:
-            case GRAVITY_RIGHT_TOP:
-                mBadgeRectF.right = mBadgeable.getWidth() - mBadgeHorizontalMargin;
-                mBadgeRectF.left = mBadgeRectF.right - badgeWidth;
-                break;
-            case GRAVITY_LEFT_BOTTOM:
-            case GRAVITY_LEFT_CENTER:
-            case GRAVITY_LEFT_TOP:
-                mBadgeRectF.right = mBadgeHorizontalMargin + badgeWidth;
+        switch (mBadgeGravityH) {
+            case HorizontalGravity.LEFT:
                 mBadgeRectF.left = mBadgeHorizontalMargin;
                 break;
-            case GRAVITY_MIDDLE_BOTTOM:
-            case GRAVITY_MIDDLE_CENTER:
-            case GRAVITY_MIDDLE_TOP:
-                mBadgeRectF.right = (mBadgeable.getWidth() + badgeWidth) / 2 + mBadgeHorizontalMargin;
-                mBadgeRectF.left = (mBadgeable.getWidth() - badgeWidth) / 2 + mBadgeHorizontalMargin;
+            case HorizontalGravity.CENTER:
+                mBadgeRectF.left = (mBadgeViewTarget.getWidth() - badgeWidth) / 2 + mBadgeHorizontalMargin;
+                break;
+            case HorizontalGravity.CENTER_START:
+                mBadgeRectF.left = mBadgeViewTarget.getWidth()  / 2 + mBadgeHorizontalMargin;
+                break;
+            case HorizontalGravity.RIGHT:
+                mBadgeRectF.left = mBadgeViewTarget.getWidth() - mBadgeHorizontalMargin - badgeWidth;
                 break;
         }
-
+        mBadgeRectF.right = mBadgeRectF.left + badgeWidth;
 
         if (mBadgeBorderWidth > 0) {
             // 设置徽章边框景色
@@ -474,23 +487,23 @@ public class BGABadgeViewHelper {
         mIsShowDrawable = false;
         mBadgeText = badgeText;
         mIsShowBadge = true;
-        mBadgeable.postInvalidate();
+        mBadgeViewTarget.postInvalidate();
     }
 
     public void hiddenBadge() {
         mIsShowBadge = false;
-        mBadgeable.postInvalidate();
+        mBadgeViewTarget.postInvalidate();
     }
 
-    public boolean isShowBadge() {
+    public boolean isBadgeShow() {
         return mIsShowBadge;
     }
 
-    public void showDrawable(Bitmap bitmap) {
+    public void showDrawableBadge(Bitmap bitmap) {
         mBitmap = bitmap;
         mIsShowDrawable = true;
         mIsShowBadge = true;
-        mBadgeable.postInvalidate();
+        mBadgeViewTarget.postInvalidate();
     }
 
     public boolean isShowDrawable() {
@@ -525,35 +538,17 @@ public class BGABadgeViewHelper {
         return mBitmap;
     }
 
-    public void setDragDismissDelegage(BGADragDismissDelegate delegage) {
-        mDelegage = delegage;
+    public void setOnDragDismissListener(OnBadgeDragDismissListener delegage) {
+        mDragDismissListenner = delegage;
     }
 
     public View getRootView() {
-        return mBadgeable.getRootView();
+        return mBadgeViewTarget.getRootView();
     }
 
     public boolean isResumeTravel() {
         return mIsResumeTravel;
     }
 
-
-    @IntDef({GRAVITY_RIGHT_TOP, GRAVITY_RIGHT_CENTER, GRAVITY_RIGHT_BOTTOM,
-            GRAVITY_LEFT_TOP, GRAVITY_LEFT_CENTER, GRAVITY_LEFT_BOTTOM,
-            GRAVITY_MIDDLE_TOP, GRAVITY_MIDDLE_CENTER, GRAVITY_MIDDLE_BOTTOM
-    })
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface Gravity {
-    }
-
-    public static final int GRAVITY_RIGHT_TOP = 0;
-    public static final int GRAVITY_RIGHT_CENTER = 1;
-    public static final int GRAVITY_RIGHT_BOTTOM = 2;
-    public static final int GRAVITY_LEFT_TOP = 3;
-    public static final int GRAVITY_LEFT_CENTER = 4;
-    public static final int GRAVITY_LEFT_BOTTOM = 5;
-    public static final int GRAVITY_MIDDLE_TOP = 6;
-    public static final int GRAVITY_MIDDLE_CENTER = 7;
-    public static final int GRAVITY_MIDDLE_BOTTOM = 8;
 
 }

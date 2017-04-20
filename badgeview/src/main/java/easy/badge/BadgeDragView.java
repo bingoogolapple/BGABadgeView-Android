@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package cn.bingoogolapple.badgeview;
+package easy.badge;
 
-import com.nineoldandroids.animation.Animator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -33,6 +32,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.OvershootInterpolator;
 
+import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorListenerAdapter;
 import com.nineoldandroids.animation.ValueAnimator;
 
@@ -41,18 +41,17 @@ import java.lang.ref.WeakReference;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
- * 创建时间:15/7/12 下午3:23
- * 描述:
+ * 拖移控件
  */
-class BGADragBadgeView extends View {
-    private static final String TAG = BGADragBadgeView.class.getSimpleName();
-    private BGABadgeViewHelper mBadgeViewHelper;
+class BadgeDragView extends View {
+    private static final String TAG = BadgeDragView.class.getSimpleName();
+    private BadgeHelperImpl mBadgeViewHelper;
     private Paint mBadgePaint;
     private WindowManager mWindowManager;
     private WindowManager.LayoutParams mLayoutParams;
     private int mStartX;
     private int mStartY;
-    private BGAExplosionAnimator mExplosionAnimator;
+    private ExplosionAnimator mExplosionAnimator;
     private SetExplosionAnimatorNullTask mSetExplosionAnimatorNullTask;
 
     /**
@@ -106,7 +105,7 @@ class BGADragBadgeView extends View {
     private boolean mDismissAble;
     private boolean mIsDragDisappear;
 
-    public BGADragBadgeView(Context context, BGABadgeViewHelper badgeViewHelper) {
+    public BadgeDragView(Context context, BadgeHelperImpl badgeViewHelper) {
         super(context);
         mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         mBadgeViewHelper = badgeViewHelper;
@@ -137,8 +136,8 @@ class BGADragBadgeView extends View {
     }
 
     private void initStick() {
-        mMaxDragRadius = BGABadgeViewUtil.dp2px(getContext(), 10);
-        mDragStickRadiusDifference = BGABadgeViewUtil.dp2px(getContext(), 1);
+        mMaxDragRadius = BadgeViewUtil.dp2px(getContext(), 10);
+        mDragStickRadiusDifference = BadgeViewUtil.dp2px(getContext(), 1);
     }
 
     @Override
@@ -198,15 +197,15 @@ class BGADragBadgeView extends View {
             lineK = (double) (yOffset / xOffset);
         }
         // 通过几何图形工具获取交点坐标
-        mDragPoints = BGABadgeViewUtil.getIntersectionPoints(mDragCenter, mDragRadius, lineK);
-        mStickPoints = BGABadgeViewUtil.getIntersectionPoints(mStickCenter, currentStickRadius, lineK);
+        mDragPoints = BadgeViewUtil.getIntersectionPoints(mDragCenter, mDragRadius, lineK);
+        mStickPoints = BadgeViewUtil.getIntersectionPoints(mStickCenter, currentStickRadius, lineK);
 
         // 3. 获取控制点坐标
-        mControlPoint = BGABadgeViewUtil.getMiddlePoint(mDragCenter, mStickCenter);
+        mControlPoint = BadgeViewUtil.getMiddlePoint(mDragCenter, mStickCenter);
 
         // 保存画布状态
         canvas.save();
-        canvas.translate(0, -BGABadgeViewUtil.getStatusBarHeight(mBadgeViewHelper.getRootView()));
+        canvas.translate(0, -BadgeViewUtil.getStatusBarHeight(mBadgeViewHelper.getRootView()));
 
         if (!mIsDragDisappear) {
             if (!mDismissAble) {
@@ -247,10 +246,10 @@ class BGADragBadgeView extends View {
          * percent 0.0f -> 1.0f
          * currentStickRadius mStickRadius * 100% -> mStickRadius * 20%
          */
-        float distance = BGABadgeViewUtil.getDistanceBetween2Points(mDragCenter, mStickCenter);
+        float distance = BadgeViewUtil.getDistanceBetween2Points(mDragCenter, mStickCenter);
         distance = Math.min(distance, mDismissThreshold);
         float percent = distance / mDismissThreshold;
-        return BGABadgeViewUtil.evaluate(percent, mStickRadius, mStickRadius * 0.2f);
+        return BadgeViewUtil.evaluate(percent, mStickRadius, mStickRadius * 0.2f);
     }
 
     public void setStickCenter(float x, float y) {
@@ -299,7 +298,7 @@ class BGADragBadgeView extends View {
             updateDragPosition(event.getRawX(), event.getRawY());
 
             // 处理断开事件
-            if (BGABadgeViewUtil.getDistanceBetween2Points(mDragCenter, mStickCenter) > mDismissThreshold) {
+            if (BadgeViewUtil.getDistanceBetween2Points(mDragCenter, mStickCenter) > mDismissThreshold) {
                 mDismissAble = true;
                 postInvalidate();
             } else if (mBadgeViewHelper.isResumeTravel()) {
@@ -314,7 +313,7 @@ class BGADragBadgeView extends View {
 
         if (mDismissAble) {
             // 拖拽点超出过范围
-            if (BGABadgeViewUtil.getDistanceBetween2Points(mDragCenter, mStickCenter) > mDismissThreshold) {
+            if (BadgeViewUtil.getDistanceBetween2Points(mDragCenter, mStickCenter) > mDismissThreshold) {
                 // 现在也超出范围,消失
                 try {
                     mIsDragDisappear = true;
@@ -348,7 +347,7 @@ class BGADragBadgeView extends View {
             public void onAnimationUpdate(ValueAnimator mAnim) {
                 // 0.0 -> 1.0f
                 float percent = mAnim.getAnimatedFraction();
-                PointF p = BGABadgeViewUtil.getPointByPercent(startReleaseDragCenter, mStickCenter, percent);
+                PointF p = BadgeViewUtil.getPointByPercent(startReleaseDragCenter, mStickCenter, percent);
                 updateDragPosition(p.x, p.y);
             }
         });
@@ -369,7 +368,7 @@ class BGADragBadgeView extends View {
         springAnim.setInterpolator(new OvershootInterpolator(4));
         springAnim.setRepeatCount(1);
         springAnim.setRepeatMode(ValueAnimator.INFINITE);
-        springAnim.setDuration(BGAExplosionAnimator.ANIM_DURATION / 2);
+        springAnim.setDuration(ExplosionAnimator.ANIM_DURATION / 2);
         springAnim.start();
     }
 
@@ -378,7 +377,7 @@ class BGADragBadgeView extends View {
         int badgeHeight = (int) mBadgeViewHelper.getBadgeRectF().height();
         Rect rect = new Rect(newX - badgeWidth / 2, newY - badgeHeight / 2, newX + badgeWidth / 2, newY + badgeHeight / 2);
 
-        Bitmap badgeBitmap = BGABadgeViewUtil.createBitmapSafely(this, rect, 1);
+        Bitmap badgeBitmap = BadgeViewUtil.createBitmapSafely(this, rect, 1);
         if (badgeBitmap == null) {
             removeSelf();
             mBadgeViewHelper.endDragWithDismiss();
@@ -391,7 +390,7 @@ class BGADragBadgeView extends View {
             return;
         }
 
-        mExplosionAnimator = new BGAExplosionAnimator(this, rect, badgeBitmap);
+        mExplosionAnimator = new ExplosionAnimator(this, rect, badgeBitmap);
         mExplosionAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -448,13 +447,13 @@ class BGADragBadgeView extends View {
     private int getNewStartY(float rawY) {
         int badgeHeight = (int) mBadgeViewHelper.getBadgeRectF().height();
         int maxNewY = getHeight() - badgeHeight;
-        int newStartY = (int) rawY - badgeHeight / 2 - BGABadgeViewUtil.getStatusBarHeight(mBadgeViewHelper.getRootView());
+        int newStartY = (int) rawY - badgeHeight / 2 - BadgeViewUtil.getStatusBarHeight(mBadgeViewHelper.getRootView());
         return Math.min(Math.max(0, newStartY), maxNewY);
     }
 
     private void removeSelfWithException() {
         removeSelf();
-        if (BGABadgeViewUtil.getDistanceBetween2Points(mDragCenter, mStickCenter) > mDismissThreshold) {
+        if (BadgeViewUtil.getDistanceBetween2Points(mDragCenter, mStickCenter) > mDismissThreshold) {
             mBadgeViewHelper.endDragWithDismiss();
         } else {
             mBadgeViewHelper.endDragWithoutDismiss();
@@ -462,15 +461,15 @@ class BGADragBadgeView extends View {
     }
 
     private static class SetExplosionAnimatorNullTask implements Runnable {
-        private final WeakReference<BGADragBadgeView> mDragBadgeView;
+        private final WeakReference<BadgeDragView> mDragBadgeView;
 
-        public SetExplosionAnimatorNullTask(BGADragBadgeView dragBadgeView) {
+        public SetExplosionAnimatorNullTask(BadgeDragView dragBadgeView) {
             mDragBadgeView = new WeakReference<>(dragBadgeView);
         }
 
         @Override
         public void run() {
-            BGADragBadgeView dragBadgeView = mDragBadgeView.get();
+            BadgeDragView dragBadgeView = mDragBadgeView.get();
             if (dragBadgeView != null) {
                 dragBadgeView.mExplosionAnimator = null;
             }
