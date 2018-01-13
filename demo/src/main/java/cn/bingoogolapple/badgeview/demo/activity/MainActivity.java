@@ -5,7 +5,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.IdRes;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
-import cn.bingoogolapple.androidcommon.adapter.BGAOnRVItemClickListener;
 import cn.bingoogolapple.badgeview.BGABadgeFrameLayout;
 import cn.bingoogolapple.badgeview.BGABadgeImageView;
 import cn.bingoogolapple.badgeview.BGABadgeLinearLayout;
@@ -30,6 +28,7 @@ import cn.bingoogolapple.badgeview.demo.adapter.MessageAdapter;
 import cn.bingoogolapple.badgeview.demo.model.MessageModel;
 import cn.bingoogolapple.badgeview.demo.util.ToastUtil;
 import cn.bingoogolapple.badgeview.demo.widget.BadgeFloatingActionButton;
+import cn.bingoogolapple.baseadapter.BGAOnRVItemClickListener;
 
 public class MainActivity extends AppCompatActivity {
     private BGABadgeView mTestBv;
@@ -56,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
 
     private BadgeFloatingActionButton mChatBfab;
 
+    private boolean mHasRequestPermission = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,27 +70,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        mTestBv = getViewById(R.id.bv_main_test);
+        mTestBv = findViewById(R.id.bv_main_test);
 
-        mTestBtv = getViewById(R.id.btv_main_test);
+        mTestBtv = findViewById(R.id.btv_main_test);
 
-        mNormalBiv = getViewById(R.id.biv_main_normal);
-        mRoundedBiv = getViewById(R.id.biv_main_rounded);
-        mCircleBiv = getViewById(R.id.biv_main_circle);
+        mNormalBiv = findViewById(R.id.biv_main_normal);
+        mRoundedBiv = findViewById(R.id.biv_main_rounded);
+        mCircleBiv = findViewById(R.id.biv_main_circle);
 
-        mTestBll = getViewById(R.id.bll_main_test);
-        mTestBrl = getViewById(R.id.brl_main_test);
-        mTestBfl = getViewById(R.id.bfl_main_test);
+        mTestBll = findViewById(R.id.bll_main_test);
+        mTestBrl = findViewById(R.id.brl_main_test);
+        mTestBfl = findViewById(R.id.bfl_main_test);
 
-        mRecyclerView = getViewById(R.id.recyclerview);
+        mRecyclerView = findViewById(R.id.recyclerview);
 
-        mTabRg = getViewById(R.id.rg_main_tab);
-        mHomeBrb = getViewById(R.id.brb_main_home);
-        mMessageBrb = getViewById(R.id.brb_main_message);
-        mDiscoverBrb = getViewById(R.id.brb_main_discover);
-        mMeBrb = getViewById(R.id.brb_main_me);
+        mTabRg = findViewById(R.id.rg_main_tab);
+        mHomeBrb = findViewById(R.id.brb_main_home);
+        mMessageBrb = findViewById(R.id.brb_main_message);
+        mDiscoverBrb = findViewById(R.id.brb_main_discover);
+        mMeBrb = findViewById(R.id.brb_main_me);
 
-        mChatBfab = getViewById(R.id.bfab_main_chat);
+        mChatBfab = findViewById(R.id.bfab_main_chat);
     }
 
     private void testBadgeView() {
@@ -109,7 +110,8 @@ public class MainActivity extends AppCompatActivity {
 
         Bitmap avatarBadgeBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.avatar_vip);
 
-        RoundedBitmapDrawable roundedDrawable = RoundedBitmapDrawableFactory.create(getResources(), BitmapFactory.decodeResource(getResources(), R.mipmap.avator));
+        RoundedBitmapDrawable roundedDrawable = RoundedBitmapDrawableFactory.create(getResources(),
+                BitmapFactory.decodeResource(getResources(), R.mipmap.avator));
         roundedDrawable.getPaint().setAntiAlias(true);
         roundedDrawable.setCornerRadius(30);
         mRoundedBiv.setImageDrawable(roundedDrawable);
@@ -207,16 +209,5 @@ public class MainActivity extends AppCompatActivity {
         });
         mRecyclerView.setAdapter(mMessageAdapter);
         mMessageAdapter.setData(MessageModel.getTestData());
-    }
-
-    /**
-     * 查找View
-     *
-     * @param id   控件的id
-     * @param <VT> View类型
-     * @return
-     */
-    protected <VT extends View> VT getViewById(@IdRes int id) {
-        return (VT) findViewById(id);
     }
 }

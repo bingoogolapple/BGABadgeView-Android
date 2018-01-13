@@ -21,7 +21,6 @@ import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.util.TypedValue;
-import android.view.View;
 
 /**
  * 作者:王浩 邮件:bingoogolapple@gmail.com
@@ -39,12 +38,6 @@ public class BGABadgeViewUtil {
 
     public static int sp2px(Context context, float spValue) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue, context.getResources().getDisplayMetrics());
-    }
-
-    public static int getStatusBarHeight(View view) {
-        Rect rectangle = new Rect();
-        view.getRootView().getWindowVisibleDisplayFrame(rectangle);
-        return rectangle.top;
     }
 
     public static Bitmap createBitmapSafely(BGADragBadgeView dragBadgeView, Rect rect, int retryCount) {
