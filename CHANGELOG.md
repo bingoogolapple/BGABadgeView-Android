@@ -1,6 +1,49 @@
 Change Log
 ==========
 
+Version 1.1.5 *(2018-01-16)*
+----------------------------
+
+- 移除 Library 中的 BGABadgeXxxxView，改为 annotationProcessor 的形式
+
+[ ![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-badgeview-api/images/download.svg) ](https://bintray.com/bingoogolapple/maven/bga-badgeview-api/_latestVersion) bga-badgeview-api 后面的「latestVersion」指的是左边这个 Download 徽章后面的「数字」，请自行替换。
+
+```groovy
+dependencies {
+    implementation 'cn.bingoogolapple:bga-badgeview-api:latestVersion'
+    annotationProcessor "cn.bingoogolapple:bga-badgeview-compiler:latestVersion"
+}
+```
+
+```Java
+/**
+ * 作者:王浩 邮件:bingoogolapple@gmail.com
+ * 创建时间:2018/1/14
+ * 描述:初始化 BGABadgeView-Android
+ * 1.在项目任意一个类上面添加 BGABadge 注解
+ * 2.需要哪些类具有徽章功能，就把那些类的全限定名作为 BGABadge 注解的参数
+ * 3.再 AS 中执行 Build => Rebuild Project
+ * 4.经过前面三个步骤后就可以通过「cn.bingoogolapple.badgeview.BGABadge原始类名」来使用徽章控件了
+ */
+@BGABadge({
+        "android.view.View", // 对应 cn.bingoogolapple.badgeview.BGABadgeFloatingActionButton
+        "android.widget.ImageView", // 对应 cn.bingoogolapple.badgeview.BGABadgeImageView
+        "android.widget.TextView", // 对应 cn.bingoogolapple.badgeview.BGABadgeFloatingTextView
+        "android.widget.RadioButton", // 对应 cn.bingoogolapple.badgeview.BGABadgeRadioButton
+        "android.widget.LinearLayout", // 对应 cn.bingoogolapple.badgeview.BGABadgeLinearLayout
+        "android.widget.FrameLayout", // 对应 cn.bingoogolapple.badgeview.BGABadgeFrameLayout
+        "android.widget.RelativeLayout", // 对应 cn.bingoogolapple.badgeview.BGABadgeRelativeLayout
+        "android.support.design.widget.FloatingActionButton", // 对应 cn.bingoogolapple.badgeview.BGABadgeFloatingActionButton
+})
+public class BGABadgeInit {
+}
+```
+
+Version 1.1.4 *(2018-01-14)*
+----------------------------
+
+- 修改拖拽效果 Window 类型 TYPE_APPLICATION_PANEL
+
 Version 1.1.3 *(2016-07-22)*
 ----------------------------
 

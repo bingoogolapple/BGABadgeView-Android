@@ -66,7 +66,7 @@ public interface BGABadgeable {
      *
      * @param delegate
      */
-    void setDragDismissDelegage(BGADragDismissDelegate delegate);
+    void setDragDismissDelegate(BGADragDismissDelegate delegate);
 
     /**
      * 是否显示徽章

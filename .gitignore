@@ -42,3 +42,5 @@ proguard/
 .DS_Store
 
 *.keystore
+
+repo/

@@ -29,7 +29,7 @@ public class MessageAdapter extends BGARecyclerViewAdapter<MessageModel> {
         BGABadgeLinearLayout rootView = (BGABadgeLinearLayout) holderHelper.getConvertView();
         if (message.newMsgCount > 0) {
             rootView.showTextBadge("" + message.newMsgCount);
-            rootView.setDragDismissDelegage(new BGADragDismissDelegate() {
+            rootView.setDragDismissDelegate(new BGADragDismissDelegate() {
                 @Override
                 public void onDismiss(BGABadgeable badgeable) {
                     message.newMsgCount = 0;

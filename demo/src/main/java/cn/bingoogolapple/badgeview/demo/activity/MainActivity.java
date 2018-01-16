@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
+import cn.bingoogolapple.badgeview.BGABadgeFloatingActionButton;
 import cn.bingoogolapple.badgeview.BGABadgeFrameLayout;
 import cn.bingoogolapple.badgeview.BGABadgeImageView;
 import cn.bingoogolapple.badgeview.BGABadgeLinearLayout;
@@ -27,7 +28,6 @@ import cn.bingoogolapple.badgeview.demo.R;
 import cn.bingoogolapple.badgeview.demo.adapter.MessageAdapter;
 import cn.bingoogolapple.badgeview.demo.model.MessageModel;
 import cn.bingoogolapple.badgeview.demo.util.ToastUtil;
-import cn.bingoogolapple.badgeview.demo.widget.BadgeFloatingActionButton;
 import cn.bingoogolapple.baseadapter.BGAOnRVItemClickListener;
 
 public class MainActivity extends AppCompatActivity {
@@ -53,9 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private BGABadgeRadioButton mDiscoverBrb;
     private BGABadgeRadioButton mMeBrb;
 
-    private BadgeFloatingActionButton mChatBfab;
-
-    private boolean mHasRequestPermission = false;
+    private BGABadgeFloatingActionButton mChatBfab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         mTestBfl.showTextBadge("8");
 
         mChatBfab.showTextBadge("8");
-        mChatBfab.setDragDismissDelegage(new BGADragDismissDelegate() {
+        mChatBfab.setDragDismissDelegate(new BGADragDismissDelegate() {
             @Override
             public void onDismiss(BGABadgeable badgeable) {
                 ToastUtil.show("清空聊天消息");
@@ -170,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }, 5000);
 
-        mHomeBrb.setDragDismissDelegage(new BGADragDismissDelegate() {
+        mHomeBrb.setDragDismissDelegate(new BGADragDismissDelegate() {
             @Override
             public void onDismiss(BGABadgeable badgeable) {
                 ToastUtil.show("消息单选按钮徽章拖动消失");

@@ -3,7 +3,7 @@
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-BGABadgeView-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/2106)
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-badgeview/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-badgeview)
+[ ![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-badgeview-api/images/download.svg) ](https://bintray.com/bingoogolapple/maven/bga-badgeview-api/_latestVersion)
 
 ### [中文文档](https://github.com/bingoogolapple/BGABadgeView-Android/blob/master/README.md)
 
@@ -24,11 +24,37 @@
 
 ### Gradle Dependencies
 
+[ ![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-badgeview-api/images/download.svg) ](https://bintray.com/bingoogolapple/maven/bga-badgeview-api/_latestVersion)
+
 ```groovy
 dependencies {
-    compile 'cn.bingoogolapple:bga-badgeview:latestVersion@aar'
+    implementation 'cn.bingoogolapple:bga-badgeview-api:latestVersion'
+    annotationProcessor "cn.bingoogolapple:bga-badgeview-compiler:latestVersion"
 }
 ```
+
+### Initialize BGABadge
+
+Add BGABadge annotation to any class, such as newly created class BGABadgeInit
+
+```Java
+@BGABadge({
+        "android.view.View", // ===> cn.bingoogolapple.badgeview.BGABadgeFloatingActionButton，If you do not need, please delete this line
+        "android.widget.ImageView", // ===> cn.bingoogolapple.badgeview.BGABadgeImageView，If you do not need, please delete this line
+        "android.widget.TextView", // ===> cn.bingoogolapple.badgeview.BGABadgeFloatingTextView，If you do not need, please delete this line
+        "android.widget.RadioButton", // ===> cn.bingoogolapple.badgeview.BGABadgeRadioButton，If you do not need, please delete this line
+        "android.widget.LinearLayout", // ===> cn.bingoogolapple.badgeview.BGABadgeLinearLayout，If you do not need, please delete this line
+        "android.widget.RelativeLayout", // ===> cn.bingoogolapple.badgeview.BGABadgeRelativeLayout，If you do not need, please delete this line
+        "android.support.design.widget.FloatingActionButton", // ===> cn.bingoogolapple.badgeview.BGABadgeFloatingActionButton，If you do not need, please delete this line
+        ...
+        ...
+        ...
+
+})
+public class BGABadgeInit {
+}
+```
+
 
 ### Supported badge style for now
 
@@ -99,10 +125,6 @@ badge_isResumeTravel         | When the badge is dragged out of path, if it can 
 badge_borderWidth         | Border width of badge        | 0dp
 badge_borderColor         | Border color of badge        | Color.WHITE
 badge_dragExtra         | Extra distance of trigger drag event        | 4dp
-
-### Extend your own BadgeView
-
-Extends one of widget above, override the method in interface [BGABadgeable](https://github.com/bingoogolapple/BGABadgeView-Android/blob/master/library/src/main/java/cn/bingoogolapple/badgeview/BGABadgeable.java), then call the method in [BGABadgeViewHelper](https://github.com/bingoogolapple/BGABadgeView-Android/blob/master/library/src/main/java/cn/bingoogolapple/badgeview/BGABadgeViewHelper.java). More realization details of custom widget refer to [BGABadgeRadioButton](https://github.com/bingoogolapple/BGABadgeView-Android/blob/master/library/src/main/java/cn/bingoogolapple/badgeview/BGABadgeRadioButton.java), combination realization of custom widget refer to [BGABadgeLinearLayout](https://github.com/bingoogolapple/BGABadgeView-Android/blob/master/library/src/main/java/cn/bingoogolapple/badgeview/BGABadgeLinearLayout.java)
 
 ### About me
 
