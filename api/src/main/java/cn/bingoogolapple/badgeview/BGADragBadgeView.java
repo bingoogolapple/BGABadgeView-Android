@@ -130,7 +130,7 @@ class BGADragBadgeView extends View {
         mLayoutParams.gravity = Gravity.LEFT + Gravity.TOP;
         mLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         mLayoutParams.format = PixelFormat.TRANSLUCENT;
-        mLayoutParams.type = WindowManager.LayoutParams.TYPE_TOAST;
+        mLayoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_PANEL;
         mLayoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
         mLayoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
     }
@@ -146,7 +146,8 @@ class BGADragBadgeView extends View {
             if (mExplosionAnimator == null) {
                 if (mBadgeViewHelper.isShowDrawable()) {
                     if (mBadgeViewHelper.getBadgeBgColor() == Color.RED) {
-                        mBadgePaint.setColor(mBadgeViewHelper.getBitmap().getPixel(mBadgeViewHelper.getBitmap().getWidth() / 2, mBadgeViewHelper.getBitmap().getHeight() / 2));
+                        mBadgePaint.setColor(mBadgeViewHelper.getBitmap().getPixel(mBadgeViewHelper.getBitmap().getWidth() / 2,
+                                mBadgeViewHelper.getBitmap().getHeight() / 2));
                     } else {
                         mBadgePaint.setColor(mBadgeViewHelper.getBadgeBgColor());
                     }
@@ -174,7 +175,9 @@ class BGADragBadgeView extends View {
         // 设置徽章背景色
         mBadgePaint.setColor(mBadgeViewHelper.getBadgeBgColor());
         // 绘制徽章背景
-        canvas.drawRoundRect(new RectF(mStartX, mStartY, mStartX + mBadgeViewHelper.getBadgeRectF().width(), mStartY + mBadgeViewHelper.getBadgeRectF().height()), mBadgeViewHelper.getBadgeRectF().height() / 2, mBadgeViewHelper.getBadgeRectF().height() / 2, mBadgePaint);
+        canvas.drawRoundRect(
+                new RectF(mStartX, mStartY, mStartX + mBadgeViewHelper.getBadgeRectF().width(), mStartY + mBadgeViewHelper.getBadgeRectF().height()),
+                mBadgeViewHelper.getBadgeRectF().height() / 2, mBadgeViewHelper.getBadgeRectF().height() / 2, mBadgePaint);
 
         // 设置徽章文本颜色
         mBadgePaint.setColor(mBadgeViewHelper.getBadgeTextColor());
@@ -203,10 +206,6 @@ class BGADragBadgeView extends View {
         // 3. 获取控制点坐标
         mControlPoint = BGABadgeViewUtil.getMiddlePoint(mDragCenter, mStickCenter);
 
-        // 保存画布状态
-        canvas.save();
-        canvas.translate(0, -BGABadgeViewUtil.getStatusBarHeight(mBadgeViewHelper.getRootView()));
-
         if (!mIsDragDisappear) {
             if (!mDismissAble) {
 
@@ -230,15 +229,10 @@ class BGADragBadgeView extends View {
             // 1. 画拖拽圆
             canvas.drawCircle(mDragCenter.x, mDragCenter.y, mDragRadius, mBadgePaint);
         }
-
-        // 恢复上次的保存状态
-        canvas.restore();
     }
 
     /**
      * 获取针圆实时半径
-     *
-     * @return
      */
     private float getCurrentStickRadius() {
         /**
@@ -420,9 +414,6 @@ class BGADragBadgeView extends View {
 
     /**
      * 修改拖拽位置
-     *
-     * @param rawX
-     * @param rawY
      */
     private void updateDragPosition(float rawX, float rawY) {
         mStartX = getNewStartX(rawX);
@@ -447,7 +438,7 @@ class BGADragBadgeView extends View {
     private int getNewStartY(float rawY) {
         int badgeHeight = (int) mBadgeViewHelper.getBadgeRectF().height();
         int maxNewY = getHeight() - badgeHeight;
-        int newStartY = (int) rawY - badgeHeight / 2 - BGABadgeViewUtil.getStatusBarHeight(mBadgeViewHelper.getRootView());
+        int newStartY = (int) rawY - badgeHeight / 2;
         return Math.min(Math.max(0, newStartY), maxNewY);
     }
 

@@ -3,7 +3,7 @@
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-BGABadgeView-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/2106)
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-badgeview/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.bingoogolapple/bga-badgeview)
+[ ![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-badgeview-api/images/download.svg) ](https://bintray.com/bingoogolapple/maven/bga-badgeview-api/_latestVersion)
 
 ### [English Document](https://github.com/bingoogolapple/BGABadgeView-Android/blob/master/README-en.md)
 
@@ -27,22 +27,38 @@
 
 ### Gradle依赖
 
+[ ![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-badgeview-api/images/download.svg) ](https://bintray.com/bingoogolapple/maven/bga-badgeview-api/_latestVersion) bga-badgeview-api 后面的「latestVersion」指的是左边这个 Download 徽章后面的「数字」，请自行替换。
+
 ```groovy
 dependencies {
-    compile 'cn.bingoogolapple:bga-badgeview:latestVersion@aar'
+    implementation 'cn.bingoogolapple:bga-badgeview-api:latestVersion'
+    annotationProcessor "cn.bingoogolapple:bga-badgeview-compiler:latestVersion"
 }
 ```
 
-### 目前支持的徽章类
+### 初始化徽章控件
 
-类名 | 应用场景
-:----------- | :-----------
-BGABadgeRadioButton | 微博首页底部导航
-BGABadgeImageView | 微博列表用户头像
-BGABadgeTextView | 其实这个可以用BGABadgeCheckedTextView代替
-BGABadgeLinearLayout | 列表item右侧消息条数
-BGABadgeRelativeLayout | 列表item右侧消息条数
-BGABadgeFrameLayout | 列表item右侧消息条数
+1. 在项目任意一个类上面添加 BGABadge 注解，例如新建一个类 BGABadgeInit 专门用于初始化徽章控件
+2. 需要哪些类具有徽章功能，就把那些类的全限定名作为 BGABadge 注解的参数「下面的代码块给出了例子，不需要的可以删掉对应的行」
+```Java
+@BGABadge({
+        "android.view.View", // 对应 cn.bingoogolapple.badgeview.BGABadgeFloatingActionButton，不想用这个类的话就删了这一行
+        "android.widget.ImageView", // 对应 cn.bingoogolapple.badgeview.BGABadgeImageView，不想用这个类的话就删了这一行
+        "android.widget.TextView", // 对应 cn.bingoogolapple.badgeview.BGABadgeFloatingTextView，不想用这个类的话就删了这一行
+        "android.widget.RadioButton", // 对应 cn.bingoogolapple.badgeview.BGABadgeRadioButton，不想用这个类的话就删了这一行
+        "android.widget.LinearLayout", // 对应 cn.bingoogolapple.badgeview.BGABadgeLinearLayout，不想用这个类的话就删了这一行
+        "android.widget.FrameLayout", // 对应 cn.bingoogolapple.badgeview.BGABadgeFrameLayout，不想用这个类的话就删了这一行
+        "android.widget.RelativeLayout", // 对应 cn.bingoogolapple.badgeview.BGABadgeRelativeLayout，不想用这个类的话就删了这一行
+        "android.support.design.widget.FloatingActionButton", // 对应 cn.bingoogolapple.badgeview.BGABadgeFloatingActionButton，不想用这个类的话就删了这一行
+        ...
+        ...
+        ...
+})
+public class BGABadgeInit {
+}
+```
+3. 再 AS 中执行 Build => Rebuild Project
+4. 经过前面三个步骤后就可以通过「cn.bingoogolapple.badgeview.BGABadge原始类名」来使用徽章控件了
 
 ### 接口说明
 
@@ -102,10 +118,6 @@ badge_isResumeTravel         | 拖拽徽章超出轨迹范围后，再次放回�
 badge_borderWidth         | 徽章描边宽度        | 0dp
 badge_borderColor         | 徽章描边颜色        | Color.WHITE
 badge_dragExtra         | 触发开始拖拽徽章事件的扩展触摸距离        | 4dp
-
-### 扩展自己的BadgeView
-
-继承特定的控件，实现[BGABadgeable](https://github.com/bingoogolapple/BGABadgeView-Android/blob/master/library/src/main/java/cn/bingoogolapple/badgeview/BGABadgeable.java)接口中相应的方法，并调用[BGABadgeViewHelper](https://github.com/bingoogolapple/BGABadgeView-Android/blob/master/library/src/main/java/cn/bingoogolapple/badgeview/BGABadgeViewHelper.java)中相应的方法，自定义控件实现方式请参考[BGABadgeRadioButton](https://github.com/bingoogolapple/BGABadgeView-Android/blob/master/library/src/main/java/cn/bingoogolapple/badgeview/BGABadgeRadioButton.java)，自定义组合控件实现方式请参考[BGABadgeLinearLayout](https://github.com/bingoogolapple/BGABadgeView-Android/blob/master/library/src/main/java/cn/bingoogolapple/badgeview/BGABadgeLinearLayout.java)
 
 ## 关于我
 

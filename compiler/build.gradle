@@ -1,0 +1,23 @@
+apply plugin: 'java-library'
+
+dependencies {
+    // compiler 中用 implementation
+//    implementation project(':annotation')
+    // 发布完 annotation 后，改用依赖仓库里的 annotation 后再发布 compiler
+    implementation "cn.bingoogolapple:bga-badgeview-annotation:${VERSION_NAME}"
+
+    implementation 'com.google.auto.service:auto-service:1.0-rc4'
+    implementation 'com.squareup:javapoet:1.9.0'
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
+
+// gradle clean build uploadArchives -PpublishAar
+if (hasProperty("publishAar")) {
+    apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/local-release.gradle'
+}
+// gradle clean build bintrayUpload -PpublishAar
+if (hasProperty("publishAar")) {
+    apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/jcenter-release.gradle'
+}

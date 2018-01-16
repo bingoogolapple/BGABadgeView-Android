@@ -14,9 +14,9 @@
                     android:id="@+id/bv_main_test"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="5dp"
                     android:layout_marginRight="30dp"
-                    android:layout_marginTop="5dp" />
+                    android:layout_alignParentRight="true" />
             </RelativeLayout>
 
             <cn.bingoogolapple.badgeview.BGABadgeTextView
@@ -32,8 +32,8 @@
             <cn.bingoogolapple.badgeview.BGABadgeLinearLayout
                 android:id="@+id/bll_main_test"
                 style="@style/MatchWrap.Horizontal"
-                android:gravity="center_vertical"
                 android:padding="5dp"
+                android:gravity="center_vertical"
                 app:badge_dragable="true">
 
                 <cn.bingoogolapple.badgeview.BGABadgeImageView
@@ -166,12 +166,12 @@
         </RadioGroup>
     </LinearLayout>
 
-    <cn.bingoogolapple.badgeview.demo.widget.BadgeFloatingActionButton
+    <cn.bingoogolapple.badgeview.BGABadgeFloatingActionButton
         android:id="@+id/bfab_main_chat"
         style="@style/WrapWrap"
-        android:layout_gravity="bottom|left"
         android:layout_marginBottom="70dp"
         android:layout_marginLeft="16dp"
+        android:layout_gravity="bottom|left"
         android:src="@mipmap/chat_white"
         app:badge_dragable="true"
         app:badge_horizontalMargin="0dp"

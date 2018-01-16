@@ -2,8 +2,8 @@ package cn.bingoogolapple.badgeview.demo.adapter;
 
 import android.support.v7.widget.RecyclerView;
 
-import cn.bingoogolapple.androidcommon.adapter.BGARecyclerViewAdapter;
-import cn.bingoogolapple.androidcommon.adapter.BGAViewHolderHelper;
+import cn.bingoogolapple.baseadapter.BGARecyclerViewAdapter;
+import cn.bingoogolapple.baseadapter.BGAViewHolderHelper;
 import cn.bingoogolapple.badgeview.BGABadgeLinearLayout;
 import cn.bingoogolapple.badgeview.BGABadgeable;
 import cn.bingoogolapple.badgeview.BGADragDismissDelegate;
@@ -29,7 +29,7 @@ public class MessageAdapter extends BGARecyclerViewAdapter<MessageModel> {
         BGABadgeLinearLayout rootView = (BGABadgeLinearLayout) holderHelper.getConvertView();
         if (message.newMsgCount > 0) {
             rootView.showTextBadge("" + message.newMsgCount);
-            rootView.setDragDismissDelegage(new BGADragDismissDelegate() {
+            rootView.setDragDismissDelegate(new BGADragDismissDelegate() {
                 @Override
                 public void onDismiss(BGABadgeable badgeable) {
                     message.newMsgCount = 0;
