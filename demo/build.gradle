@@ -24,8 +24,8 @@ dependencies {
 //    annotationProcessor project(':compiler')
 
     // -------------------- 以下一个库是必须依赖的 ----------------------------
-    implementation 'cn.bingoogolapple:bga-badgeview-api:1.1.5'
-    annotationProcessor "cn.bingoogolapple:bga-badgeview-compiler:1.1.5"
+    implementation 'cn.bingoogolapple:bga-badgeview-api:1.1.6'
+    annotationProcessor "cn.bingoogolapple:bga-badgeview-compiler:1.1.6"
     // -------------------- 以上一个库是必须依赖的 ----------------------------
 
     // 以下几个库是演示案例所使用到的

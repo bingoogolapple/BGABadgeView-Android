@@ -18,11 +18,12 @@ android {
 dependencies {
     compileOnly 'com.android.support:appcompat-v7:27.0.2'
 
-    // 发布到 jcenter 时
-    // api 中用 compile 传递依赖，用 api 不会传递依赖
-//    api project(':annotation')
-    // 发布完 annotation 后，改用依赖仓库里的 annotation 后再发布 api
-    compile "cn.bingoogolapple:bga-badgeview-annotation:${VERSION_NAME}"
+    // 发布到 jcenter 时，api 中用 compile 传递依赖，用 api 不会传递依赖
+    if(hasProperty("publishAar")) {
+        compile "cn.bingoogolapple:bga-badgeview-annotation:${VERSION_NAME}"
+    } else {
+        api project(':annotation')
+    }
 }
 
 // gradle clean build uploadArchives -PpublishAar

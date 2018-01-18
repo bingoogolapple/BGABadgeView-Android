@@ -58,7 +58,6 @@ public class BGABadgeProcessor extends AbstractProcessor {
     private Filer mFileUtils;
     private Elements mElementUtils;
     private Messager mMessager;
-    private Set<String> mViewClassSet = new HashSet<>();
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnvironment) {
@@ -100,9 +99,10 @@ public class BGABadgeProcessor extends AbstractProcessor {
         }
         mMessager.printMessage(Diagnostic.Kind.NOTE,
                 "====================================== BGABadgeProcessor process START ======================================");
-        parseParams(elements);
+        Set<String> viewClassSet = new HashSet<>();
+        parseParams(elements, viewClassSet);
         try {
-            generate();
+            generate(viewClassSet);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -114,7 +114,7 @@ public class BGABadgeProcessor extends AbstractProcessor {
         return true;
     }
 
-    private void parseParams(Set<? extends Element> elements) {
+    private void parseParams(Set<? extends Element> elements, Set<String> viewClassSet) {
         for (Element element : elements) {
             checkAnnotationValid(element, BGABadge.class);
             TypeElement classElement = (TypeElement) element;
@@ -122,30 +122,42 @@ public class BGABadgeProcessor extends AbstractProcessor {
             BGABadge badgeAnnotation = classElement.getAnnotation(BGABadge.class);
             String[] classes = badgeAnnotation.value();
             for (String clazz : classes) {
-                mViewClassSet.add(clazz);
+                if (validateClass(clazz)) {
+                    viewClassSet.add(clazz);
+                }
             }
         }
     }
 
-    private void generate() throws IllegalAccessException, IOException {
-        mMessager.printMessage(Diagnostic.Kind.NOTE,"生成 " + mViewClassSet.size() + " 个");
-        for (String clazz : mViewClassSet) {
-            if (clazz == null || clazz.trim().length() == 0) {
-                continue;
-            }
+    private boolean validateClass(String clazz) {
+        if (clazz == null || clazz.trim().length() == 0) {
+            return false;
+        }
 
+        if (!isAssignable(clazz, "android.view.View")) {
+            String errorMsg = "给 BGABadge 注解传入的参数「" + clazz + "」格式不正确，传入的类必须是 android.view.View 的子类";
+            mMessager.printMessage(Diagnostic.Kind.ERROR, errorMsg);
+            throw new RuntimeException(errorMsg);
+        }
+
+        if (clazz.lastIndexOf(".") == -1) {
+            String errorMsg = "给 BGABadge 注解传入的参数「" + clazz + "」格式不正确，请传入类的全限定名";
+            mMessager.printMessage(Diagnostic.Kind.ERROR, errorMsg);
+            throw new RuntimeException(errorMsg);
+        }
+
+        return true;
+    }
+
+    private void generate(Set<String> viewClassSet) throws IllegalAccessException, IOException {
+        mMessager.printMessage(Diagnostic.Kind.NOTE, "生成 " + viewClassSet.size() + " 个");
+        for (String clazz : viewClassSet) {
             int lastDotIndex = clazz.lastIndexOf(".");
-            if (lastDotIndex == -1) {
-                String errorMsg = "给 BGABadge 注解传入的参数「" + clazz + "」格式不正确，请传入类的全限定名";
-                mMessager.printMessage(Diagnostic.Kind.ERROR, errorMsg);
-                throw new RuntimeException(errorMsg);
-            }
-
             String superPackageName = clazz.substring(0, lastDotIndex);
             String superClassName = clazz.substring(lastDotIndex + 1);
             String className = CLASS_PREFIX + superClassName;
 
-            mMessager.printMessage(Diagnostic.Kind.NOTE,clazz + " ====> " + className);
+            mMessager.printMessage(Diagnostic.Kind.NOTE, clazz + " ====> " + className);
 
             TypeSpec.Builder typeBuilder = TypeSpec.classBuilder(className)
                     .addJavadoc(CLASS_JAVA_DOC)
@@ -154,19 +166,22 @@ public class BGABadgeProcessor extends AbstractProcessor {
                     .addSuperinterface(ClassName.get(PACKAGE_NAME, "BGABadgeable"))
                     .addField(ClassName.get(PACKAGE_NAME, "BGABadgeViewHelper"), "mBadgeViewHelper", Modifier.PRIVATE);
 
-            generateMethod(typeBuilder);
+            generateMethod(typeBuilder, clazz);
 
             JavaFile javaFile = JavaFile.builder(PACKAGE_NAME, typeBuilder.build()).build();
             javaFile.writeTo(mFileUtils);
         }
     }
 
-    private void generateMethod(TypeSpec.Builder typeBuilder) {
-        constructor(typeBuilder);
+    private void generateMethod(TypeSpec.Builder typeBuilder, String clazz) {
+        constructor(typeBuilder, clazz);
         onTouchEvent(typeBuilder);
         callSuperOnTouchEvent(typeBuilder);
-        onDraw(typeBuilder);
-        dispatchDraw(typeBuilder);
+        if (isAssignable(clazz, "android.view.ViewGroup")) {
+            dispatchDraw(typeBuilder);
+        } else {
+            onDraw(typeBuilder);
+        }
         showCirclePointBadge(typeBuilder);
         showTextBadge(typeBuilder);
         hiddenBadge(typeBuilder);
@@ -176,7 +191,7 @@ public class BGABadgeProcessor extends AbstractProcessor {
         getBadgeViewHelper(typeBuilder);
     }
 
-    private void constructor(TypeSpec.Builder typeBuilder) {
+    private void constructor(TypeSpec.Builder typeBuilder, String clazz) {
         TypeName contextType = ClassName.get("android.content", "Context");
         TypeName attributeSetType = ClassName.get("android.util", "AttributeSet");
         MethodSpec constructorOne = MethodSpec.constructorBuilder()
@@ -190,22 +205,21 @@ public class BGABadgeProcessor extends AbstractProcessor {
                 .addParameter(attributeSetType, "attrs")
                 .addStatement("this(context, attrs, 0)")
                 .build();
-        MethodSpec constructorThree = MethodSpec.constructorBuilder()
+        MethodSpec.Builder constructorThreeBuilder = MethodSpec.constructorBuilder()
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter(contextType, "context")
                 .addParameter(attributeSetType, "attrs")
                 .addParameter(int.class, "defStyleAttr")
-                .addStatement("super(context, attrs, defStyleAttr)")
-                .beginControlFlow("if (android.widget.ImageView.class.isInstance(this) || android.widget.RadioButton.class.isInstance(this))")
-                .addStatement("mBadgeViewHelper = new BGABadgeViewHelper(this, context, attrs, BGABadgeViewHelper.BadgeGravity.RightTop)")
-                .nextControlFlow("else")
-                .addStatement("mBadgeViewHelper = new BGABadgeViewHelper(this, context, attrs, BGABadgeViewHelper.BadgeGravity.RightCenter)")
-                .endControlFlow()
-                .build();
+                .addStatement("super(context, attrs, defStyleAttr)");
+        if (isAssignable(clazz, "android.widget.ImageView") || isAssignable(clazz, "android.widget.RadioButton")) {
+            constructorThreeBuilder.addStatement("mBadgeViewHelper = new BGABadgeViewHelper(this, context, attrs, BGABadgeViewHelper.BadgeGravity.RightTop)");
+        } else {
+            constructorThreeBuilder.addStatement("mBadgeViewHelper = new BGABadgeViewHelper(this, context, attrs, BGABadgeViewHelper.BadgeGravity.RightCenter)");
+        }
 
         typeBuilder.addMethod(constructorOne)
                 .addMethod(constructorTwo)
-                .addMethod(constructorThree);
+                .addMethod(constructorThreeBuilder.build());
     }
 
     private void onTouchEvent(TypeSpec.Builder typeBuilder) {
@@ -236,9 +250,7 @@ public class BGABadgeProcessor extends AbstractProcessor {
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter(ClassName.get("android.graphics", "Canvas"), "canvas")
                 .addStatement("super.onDraw(canvas)")
-                .beginControlFlow("if (!android.view.ViewGroup.class.isInstance(this))")
                 .addStatement("mBadgeViewHelper.drawBadge(canvas)")
-                .endControlFlow()
                 .build();
         typeBuilder.addMethod(methodSpec);
     }
@@ -249,9 +261,7 @@ public class BGABadgeProcessor extends AbstractProcessor {
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter(ClassName.get("android.graphics", "Canvas"), "canvas")
                 .addStatement("super.dispatchDraw(canvas)")
-                .beginControlFlow("if (android.view.ViewGroup.class.isInstance(this))")
                 .addStatement("mBadgeViewHelper.drawBadge(canvas)")
-                .endControlFlow()
                 .build();
         typeBuilder.addMethod(methodSpec);
     }
@@ -331,7 +341,7 @@ public class BGABadgeProcessor extends AbstractProcessor {
         }
 
         if (annotatedElement.getModifiers().contains(Modifier.PRIVATE)) {
-            error(annotatedElement, "%s must can not be private.", ((TypeElement)annotatedElement).getQualifiedName());
+            error(annotatedElement, "%s must can not be private.", ((TypeElement) annotatedElement).getQualifiedName());
             return false;
         }
         return true;
@@ -342,5 +352,12 @@ public class BGABadgeProcessor extends AbstractProcessor {
             message = String.format(message, args);
         }
         mMessager.printMessage(Diagnostic.Kind.ERROR, message, element);
+    }
+
+    private boolean isAssignable(String childClazz, String superClazz) {
+        return processingEnv.getTypeUtils().isAssignable(
+                processingEnv.getElementUtils().getTypeElement(childClazz).asType(),
+                processingEnv.getElementUtils().getTypeElement(superClazz).asType());
+
     }
 }
