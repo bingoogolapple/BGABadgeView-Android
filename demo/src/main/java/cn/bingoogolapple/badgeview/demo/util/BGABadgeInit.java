@@ -12,7 +12,7 @@ import cn.bingoogolapple.badgeview.annotation.BGABadge;
  * 4.经过前面三个步骤后就可以通过「cn.bingoogolapple.badgeview.BGABadge原始类名」来使用徽章控件了
  */
 @BGABadge({
-        "android.view.View", // 对应 cn.bingoogolapple.badgeview.BGABadgeFloatingActionButton，不想用这个类的话就删了这一行
+        "android.view.View", // 对应 cn.bingoogolapple.badgeview.BGABadgeView，不想用这个类的话就删了这一行
         "android.widget.ImageView", // 对应 cn.bingoogolapple.badgeview.BGABadgeImageView，不想用这个类的话就删了这一行
         "android.widget.TextView", // 对应 cn.bingoogolapple.badgeview.BGABadgeFloatingTextView，不想用这个类的话就删了这一行
         "android.widget.RadioButton", // 对应 cn.bingoogolapple.badgeview.BGABadgeRadioButton，不想用这个类的话就删了这一行

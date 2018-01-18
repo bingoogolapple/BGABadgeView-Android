@@ -2,11 +2,14 @@ apply plugin: 'java-library'
 
 dependencies {
     // compiler 中用 implementation
-//    implementation project(':annotation')
-    // 发布完 annotation 后，改用依赖仓库里的 annotation 后再发布 compiler
-    implementation "cn.bingoogolapple:bga-badgeview-annotation:${VERSION_NAME}"
+    if(hasProperty("publishAar")) {
+        implementation "cn.bingoogolapple:bga-badgeview-annotation:${VERSION_NAME}"
+    } else {
+        implementation project(':annotation')
+    }
 
-    implementation 'com.google.auto.service:auto-service:1.0-rc4'
+    compileOnly 'com.google.auto.service:auto-service:1.0-rc4'
+    implementation 'com.google.auto:auto-common:0.10'
     implementation 'com.squareup:javapoet:1.9.0'
 }
 
