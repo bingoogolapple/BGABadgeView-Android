@@ -39,17 +39,16 @@ Add BGABadge annotation to any class, such as newly created class BGABadgeInit
 
 ```Java
 @BGABadge({
-        "android.view.View", // ===> cn.bingoogolapple.badgeview.BGABadgeFloatingActionButton，If you do not need, please delete this line
-        "android.widget.ImageView", // ===> cn.bingoogolapple.badgeview.BGABadgeImageView，If you do not need, please delete this line
-        "android.widget.TextView", // ===> cn.bingoogolapple.badgeview.BGABadgeFloatingTextView，If you do not need, please delete this line
-        "android.widget.RadioButton", // ===> cn.bingoogolapple.badgeview.BGABadgeRadioButton，If you do not need, please delete this line
-        "android.widget.LinearLayout", // ===> cn.bingoogolapple.badgeview.BGABadgeLinearLayout，If you do not need, please delete this line
-        "android.widget.RelativeLayout", // ===> cn.bingoogolapple.badgeview.BGABadgeRelativeLayout，If you do not need, please delete this line
-        "android.support.design.widget.FloatingActionButton", // ===> cn.bingoogolapple.badgeview.BGABadgeFloatingActionButton，If you do not need, please delete this line
+        View.class, // ===> cn.bingoogolapple.badgeview.BGABadgeView，If you do not need, please delete this line
+        ImageView.class, // ===> cn.bingoogolapple.badgeview.BGABadgeImageView，If you do not need, please delete this line
+        TextView.class, // ===> cn.bingoogolapple.badgeview.BGABadgeFloatingTextView，If you do not need, please delete this line
+        RadioButton.class, // ===> cn.bingoogolapple.badgeview.BGABadgeRadioButton，If you do not need, please delete this line
+        LinearLayout.class, // ===> cn.bingoogolapple.badgeview.BGABadgeLinearLayout，If you do not need, please delete this line
+        RelativeLayout.class, // ===> cn.bingoogolapple.badgeview.BGABadgeRelativeLayout，If you do not need, please delete this line
+        FloatingActionButton.class, // ===> cn.bingoogolapple.badgeview.BGABadgeFloatingActionButton，If you do not need, please delete this line
         ...
         ...
         ...
-
 })
 public class BGABadgeInit {
 }
