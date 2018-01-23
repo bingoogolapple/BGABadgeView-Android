@@ -39,17 +39,17 @@ dependencies {
 ### 初始化徽章控件
 
 1. 在项目任意一个类上面添加 BGABadge 注解，例如新建一个类 BGABadgeInit 专门用于初始化徽章控件
-2. 需要哪些类具有徽章功能，就把那些类的全限定名作为 BGABadge 注解的参数「下面的代码块给出了例子，不需要的可以删掉对应的行」
+2. 需要哪些类具有徽章功能，就把那些类的 Class 作为 BGABadge 注解的参数「下面的代码块给出了例子，不需要的可以删掉对应的行」
 ```Java
 @BGABadge({
-        "android.view.View", // 对应 cn.bingoogolapple.badgeview.BGABadgeFloatingActionButton，不想用这个类的话就删了这一行
-        "android.widget.ImageView", // 对应 cn.bingoogolapple.badgeview.BGABadgeImageView，不想用这个类的话就删了这一行
-        "android.widget.TextView", // 对应 cn.bingoogolapple.badgeview.BGABadgeFloatingTextView，不想用这个类的话就删了这一行
-        "android.widget.RadioButton", // 对应 cn.bingoogolapple.badgeview.BGABadgeRadioButton，不想用这个类的话就删了这一行
-        "android.widget.LinearLayout", // 对应 cn.bingoogolapple.badgeview.BGABadgeLinearLayout，不想用这个类的话就删了这一行
-        "android.widget.FrameLayout", // 对应 cn.bingoogolapple.badgeview.BGABadgeFrameLayout，不想用这个类的话就删了这一行
-        "android.widget.RelativeLayout", // 对应 cn.bingoogolapple.badgeview.BGABadgeRelativeLayout，不想用这个类的话就删了这一行
-        "android.support.design.widget.FloatingActionButton", // 对应 cn.bingoogolapple.badgeview.BGABadgeFloatingActionButton，不想用这个类的话就删了这一行
+        View.class, // 对应 cn.bingoogolapple.badgeview.BGABadgeView，不想用这个类的话就删了这一行
+        ImageView.class, // 对应 cn.bingoogolapple.badgeview.BGABadgeImageView，不想用这个类的话就删了这一行
+        TextView.class, // 对应 cn.bingoogolapple.badgeview.BGABadgeFloatingTextView，不想用这个类的话就删了这一行
+        RadioButton.class, // 对应 cn.bingoogolapple.badgeview.BGABadgeRadioButton，不想用这个类的话就删了这一行
+        LinearLayout.class, // 对应 cn.bingoogolapple.badgeview.BGABadgeLinearLayout，不想用这个类的话就删了这一行
+        FrameLayout.class, // 对应 cn.bingoogolapple.badgeview.BGABadgeFrameLayout，不想用这个类的话就删了这一行
+        RelativeLayout.class, // 对应 cn.bingoogolapple.badgeview.BGABadgeRelativeLayout，不想用这个类的话就删了这一行
+        FloatingActionButton.class, // 对应 cn.bingoogolapple.badgeview.BGABadgeFloatingActionButton，不想用这个类的话就删了这一行
         ...
         ...
         ...

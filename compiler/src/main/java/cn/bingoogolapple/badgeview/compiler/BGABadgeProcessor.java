@@ -26,6 +26,7 @@ import com.squareup.javapoet.TypeSpec;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -39,6 +40,9 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.MirroredTypesException;
+import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic;
 
@@ -120,33 +124,19 @@ public class BGABadgeProcessor extends AbstractProcessor {
             TypeElement classElement = (TypeElement) element;
             // 获取该注解的值
             BGABadge badgeAnnotation = classElement.getAnnotation(BGABadge.class);
-            String[] classes = badgeAnnotation.value();
-            for (String clazz : classes) {
-                if (validateClass(clazz)) {
-                    viewClassSet.add(clazz);
+            try {
+                badgeAnnotation.value();
+            } catch (MirroredTypesException e) {
+                List<? extends TypeMirror> typeMirrors = e.getTypeMirrors();
+                for (TypeMirror typeMirror : typeMirrors) {
+                    DeclaredType classTypeMirror = (DeclaredType) typeMirror;
+                    TypeElement classTypeElement = (TypeElement) classTypeMirror.asElement();
+                    String qualifiedName = classTypeElement.getQualifiedName().toString();
+
+                    viewClassSet.add(qualifiedName);
                 }
             }
         }
-    }
-
-    private boolean validateClass(String clazz) {
-        if (clazz == null || clazz.trim().length() == 0) {
-            return false;
-        }
-
-        if (!isAssignable(clazz, "android.view.View")) {
-            String errorMsg = "给 BGABadge 注解传入的参数「" + clazz + "」格式不正确，传入的类必须是 android.view.View 的子类";
-            mMessager.printMessage(Diagnostic.Kind.ERROR, errorMsg);
-            throw new RuntimeException(errorMsg);
-        }
-
-        if (clazz.lastIndexOf(".") == -1) {
-            String errorMsg = "给 BGABadge 注解传入的参数「" + clazz + "」格式不正确，请传入类的全限定名";
-            mMessager.printMessage(Diagnostic.Kind.ERROR, errorMsg);
-            throw new RuntimeException(errorMsg);
-        }
-
-        return true;
     }
 
     private void generate(Set<String> viewClassSet) throws IllegalAccessException, IOException {
@@ -214,7 +204,8 @@ public class BGABadgeProcessor extends AbstractProcessor {
         if (isAssignable(clazz, "android.widget.ImageView") || isAssignable(clazz, "android.widget.RadioButton")) {
             constructorThreeBuilder.addStatement("mBadgeViewHelper = new BGABadgeViewHelper(this, context, attrs, BGABadgeViewHelper.BadgeGravity.RightTop)");
         } else {
-            constructorThreeBuilder.addStatement("mBadgeViewHelper = new BGABadgeViewHelper(this, context, attrs, BGABadgeViewHelper.BadgeGravity.RightCenter)");
+            constructorThreeBuilder.addStatement(
+                    "mBadgeViewHelper = new BGABadgeViewHelper(this, context, attrs, BGABadgeViewHelper.BadgeGravity.RightCenter)");
         }
 
         typeBuilder.addMethod(constructorOne)

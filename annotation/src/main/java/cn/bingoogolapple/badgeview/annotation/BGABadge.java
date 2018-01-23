@@ -16,6 +16,8 @@
 
 package cn.bingoogolapple.badgeview.annotation;
 
+import android.view.View;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -29,5 +31,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.TYPE)
 public @interface BGABadge {
-    String[] value() default {};
+    Class<? extends View>[] value() default {};
 }
