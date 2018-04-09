@@ -85,7 +85,7 @@ public class BGABadgeViewHelper {
     /**
      * 是否可拖动
      */
-    private boolean mDragable;
+    private boolean mDraggable;
     /**
      * 拖拽徽章超出轨迹范围后，再次放回到轨迹范围时，是否恢复轨迹
      */
@@ -113,11 +113,11 @@ public class BGABadgeViewHelper {
     /**
      * 是否正在拖动
      */
-    private boolean mIsDraging;
+    private boolean mIsDragging;
     /**
      * 拖动大于BGABadgeViewHelper.mMoveHiddenThreshold后抬起手指徽章消失的代理
      */
-    private BGADragDismissDelegate mDelegage;
+    private BGADragDismissDelegate mDelegate;
     private boolean mIsShowDrawable = false;
 
     public BGABadgeViewHelper(BGABadgeable badgeable, Context context, AttributeSet attrs, BadgeGravity defaultBadgeGravity) {
@@ -152,9 +152,9 @@ public class BGABadgeViewHelper {
 
         mBitmap = null;
 
-        mIsDraging = false;
+        mIsDragging = false;
 
-        mDragable = false;
+        mDraggable = false;
 
         mBadgeBorderColor = Color.WHITE;
 
@@ -187,8 +187,8 @@ public class BGABadgeViewHelper {
         } else if (attr == R.styleable.BGABadgeView_badge_gravity) {
             int ordinal = typedArray.getInt(attr, mBadgeGravity.ordinal());
             mBadgeGravity = BadgeGravity.values()[ordinal];
-        } else if (attr == R.styleable.BGABadgeView_badge_dragable) {
-            mDragable = typedArray.getBoolean(attr, mDragable);
+        } else if (attr == R.styleable.BGABadgeView_badge_draggable) {
+            mDraggable = typedArray.getBoolean(attr, mDraggable);
         } else if (attr == R.styleable.BGABadgeView_badge_isResumeTravel) {
             mIsResumeTravel = typedArray.getBoolean(attr, mIsResumeTravel);
         } else if (attr == R.styleable.BGABadgeView_badge_borderWidth) {
@@ -250,8 +250,8 @@ public class BGABadgeViewHelper {
         }
     }
 
-    public void setDragable(boolean dragable) {
-        mDragable = dragable;
+    public void setDraggable(boolean draggable) {
+        mDraggable = draggable;
         mBadgeable.postInvalidate();
     }
 
@@ -280,8 +280,8 @@ public class BGABadgeViewHelper {
                 mBadgeDragExtraRectF.right = mBadgeRectF.right + mDragExtra;
                 mBadgeDragExtraRectF.bottom = mBadgeRectF.bottom + mDragExtra;
 
-                if ((mBadgeBorderWidth == 0 || mIsShowDrawable) && mDragable && mIsShowBadge && mBadgeDragExtraRectF.contains(event.getX(), event.getY())) {
-                    mIsDraging = true;
+                if ((mBadgeBorderWidth == 0 || mIsShowDrawable) && mDraggable && mIsShowBadge && mBadgeDragExtraRectF.contains(event.getX(), event.getY())) {
+                    mIsDragging = true;
                     mBadgeable.getParent().requestDisallowInterceptTouchEvent(true);
 
                     Rect badgeableRect = new Rect();
@@ -294,16 +294,16 @@ public class BGABadgeViewHelper {
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (mIsDraging) {
+                if (mIsDragging) {
                     mDropBadgeView.onTouchEvent(event);
                     return true;
                 }
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                if (mIsDraging) {
+                if (mIsDragging) {
                     mDropBadgeView.onTouchEvent(event);
-                    mIsDraging = false;
+                    mIsDragging = false;
                     return true;
                 }
                 break;
@@ -315,8 +315,8 @@ public class BGABadgeViewHelper {
 
     public void endDragWithDismiss() {
         hiddenBadge();
-        if (mDelegage != null) {
-            mDelegage.onDismiss(mBadgeable);
+        if (mDelegate != null) {
+            mDelegate.onDismiss(mBadgeable);
         }
     }
 
@@ -325,7 +325,7 @@ public class BGABadgeViewHelper {
     }
 
     public void drawBadge(Canvas canvas) {
-        if (mIsShowBadge && !mIsDraging) {
+        if (mIsShowBadge && !mIsDragging) {
             if (mIsShowDrawable) {
                 drawDrawableBadge(canvas);
             } else {
@@ -493,8 +493,8 @@ public class BGABadgeViewHelper {
         return mBitmap;
     }
 
-    public void setDragDismissDelegage(BGADragDismissDelegate delegage) {
-        mDelegage = delegage;
+    public void setDragDismissDelegate(BGADragDismissDelegate delegate) {
+        mDelegate = delegate;
     }
 
     public View getRootView() {
@@ -503,6 +503,14 @@ public class BGABadgeViewHelper {
 
     public boolean isResumeTravel() {
         return mIsResumeTravel;
+    }
+
+    public boolean isDragging() {
+        return mIsDragging;
+    }
+
+    public boolean isDraggable() {
+        return mDraggable;
     }
 
     public enum BadgeGravity {

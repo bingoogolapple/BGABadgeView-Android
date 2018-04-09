@@ -75,6 +75,20 @@ public interface BGABadgeable {
      */
     boolean isShowBadge();
 
+    /**
+     * 是否可拖动
+     *
+     * @return
+     */
+    boolean isDraggable();
+
+    /**
+     * 是否正在拖动
+     *
+     * @return
+     */
+    boolean isDragging();
+
     BGABadgeViewHelper getBadgeViewHelper();
 
     int getWidth();

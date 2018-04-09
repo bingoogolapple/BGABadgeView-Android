@@ -100,6 +100,20 @@ void setDragDismissDelegage(BGADragDismissDelegate delegate);
  * @return
  */
 boolean isShowBadge();
+
+/**
+ * 是否可拖动
+ *
+ * @return
+ */
+boolean isDraggable();
+
+/**
+ * 是否正在拖动
+ *
+ * @return
+ */
+boolean isDragging();
 ```
 
 ### 自定义属性说明
@@ -113,7 +127,7 @@ badge_verticalMargin         | 徽章背景与宿主控件上下边缘间距离 
 badge_horizontalMargin         | 徽章背景与宿主控件左右边缘间距离        | 4dp
 badge_padding         | 徽章文本边缘与徽章背景边缘间的距离        | 4dp
 badge_gravity         | 徽章在宿主控件中的位置        | BGABadgeImageView和BGABadgeRadioButton是右上方，其他控件是右边垂直居中
-badge_dragable         | 是否开启拖拽删除徽章        | false
+badge_draggable         | 是否开启拖拽删除徽章        | false
 badge_isResumeTravel         | 拖拽徽章超出轨迹范围后，再次放回到轨迹范围时，是否恢复轨迹        | false
 badge_borderWidth         | 徽章描边宽度        | 0dp
 badge_borderColor         | 徽章描边颜色        | Color.WHITE
@@ -121,13 +135,15 @@ badge_dragExtra         | 触发开始拖拽徽章事件的扩展触摸距离   
 
 ## 关于我
 
-| 新浪微博 | 个人主页 | 邮箱 | BGA系列开源库QQ群
-| ------------ | ------------- | ------------ | ------------ |
-| <a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a> | <a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>  | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://7xk9dj.com1.z0.glb.clouddn.com/BGA_CODE_CLUB.png?imageView2/2/w/200) |
+| 个人主页 | 邮箱 | BGA系列开源库QQ群
+| ------------- | ------------ | ------------ |
+| <a href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a> | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://7xk9dj.com1.z0.glb.clouddn.com/BGA_CODE_CLUB.png?imageView2/2/w/200) |
 
 ## 打赏支持
 
-如果觉得 BGA 系列开源库对您有用，请随意打赏。
+如果您觉得 BGA 系列开源库帮你节省了大量的开发时间，请扫描下方的二维码随意打赏，要是能打赏个 10.24 :monkey_face:就太:thumbsup:了。您的支持将鼓励我继续创作:octocat:
+
+如果您目前正打算购买通往墙外的梯子，可以使用我的邀请码「YFQ9Q3B」购买 [Lantern](https://github.com/getlantern/forum)，双方都赠送三个月的专业版使用时间:beers:
 
 <p align="center">
   <img src="http://7xk9dj.com1.z0.glb.clouddn.com/bga_pay.png" width="450">

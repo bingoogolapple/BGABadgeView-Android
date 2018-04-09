@@ -106,6 +106,20 @@ void setDragDismissDelegage(BGADragDismissDelegate delegate);
  * @return
  */
 boolean isShowBadge();
+
+/**
+ * Can it be dragged
+ *
+ * @return
+ */
+boolean isDraggable();
+
+/**
+ * Whether being dragged
+ *
+ * @return
+ */
+boolean isDragging();
 ```
 
 ### The customed attribution
@@ -119,7 +133,7 @@ badge_verticalMargin         | The distance in pixels from the top edge of badge
 badge_horizontalMargin         | The distance in pixels from the edge of badge’s background to the left or right edge of the host        | 4dp
 badge_padding         | Badge’s padding        | 4dp
 badge_gravity         | Badge’s gravity, it’s layout direction        | For BGABadgeImageView and BGABadgeRadioButton, upper right.For others, the default is the right side of the vertical center
-badge_dragable         | The badge can be drag or not        | false
+badge_draggable         | The badge can be drag or not        | false
 badge_isResumeTravel         | When the badge is dragged out of path, if it can resume the path in case of put back        | false
 badge_borderWidth         | Border width of badge        | 0dp
 badge_borderColor         | Border color of badge        | Color.WHITE
@@ -127,9 +141,9 @@ badge_dragExtra         | Extra distance of trigger drag event        | 4dp
 
 ### About me
 
-| Sina weibo | Personal homepage | email |  QQ for the BGA funs |
-| ------------ | ------------- | ------------ | ------------ |
-| <a href="http://weibo.com/bingoogol" target="_blank">bingoogolapple</a> | <a  href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a>  | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://7xk9dj.com1.z0.glb.clouddn.com/BGA_CODE_CLUB.png?imageView2/2/w/200) |
+| Personal homepage | email |  QQ for the BGA funs |
+| ------------- | ------------ | ------------ |
+| <a href="http://www.bingoogolapple.cn" target="_blank">bingoogolapple.cn</a> | <a href="mailto:bingoogolapple@gmail.com" target="_blank">bingoogolapple@gmail.com</a> | ![BGA_CODE_CLUB](http://7xk9dj.com1.z0.glb.clouddn.com/BGA_CODE_CLUB.png?imageView2/2/w/200) |
 
 ## Donate
 
