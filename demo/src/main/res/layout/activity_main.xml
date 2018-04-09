@@ -26,7 +26,7 @@
                 android:padding="5dp"
                 android:text="BGABadgeTextView"
                 android:textColor="@android:color/black"
-                app:badge_dragable="true"
+                app:badge_draggable="true"
                 app:badge_padding="5dp" />
 
             <cn.bingoogolapple.badgeview.BGABadgeLinearLayout
@@ -34,7 +34,7 @@
                 style="@style/MatchWrap.Horizontal"
                 android:padding="5dp"
                 android:gravity="center_vertical"
-                app:badge_dragable="true">
+                app:badge_draggable="true">
 
                 <cn.bingoogolapple.badgeview.BGABadgeImageView
                     android:id="@+id/biv_main_normal"
@@ -48,7 +48,7 @@
                     android:layout_margin="3dp"
                     android:padding="7dp"
                     app:badge_bgColor="@color/colorPrimary"
-                    app:badge_dragable="true"
+                    app:badge_draggable="true"
                     app:badge_gravity="rightBottom"
                     app:badge_horizontalMargin="0dp"
                     app:badge_verticalMargin="0dp" />
@@ -57,7 +57,7 @@
                     android:id="@+id/biv_main_circle"
                     style="@style/WrapWrap"
                     android:padding="7dp"
-                    app:badge_dragable="true"
+                    app:badge_draggable="true"
                     app:badge_gravity="rightBottom"
                     app:badge_horizontalMargin="0dp"
                     app:badge_verticalMargin="0dp" />
@@ -72,7 +72,7 @@
                 android:id="@+id/brl_main_test"
                 style="@style/MatchWrap"
                 android:padding="5dp"
-                app:badge_dragable="true"
+                app:badge_draggable="true"
                 app:badge_padding="7dp">
 
                 <TextView
@@ -124,7 +124,7 @@
                 android:checked="true"
                 android:drawableTop="@drawable/selector_tab_home"
                 android:text="首页"
-                app:badge_dragable="true"
+                app:badge_draggable="true"
                 app:badge_isResumeTravel="true"
                 app:badge_padding="6dp" />
 
@@ -173,7 +173,7 @@
         android:layout_marginLeft="16dp"
         android:layout_gravity="bottom|left"
         android:src="@mipmap/chat_white"
-        app:badge_dragable="true"
+        app:badge_draggable="true"
         app:badge_horizontalMargin="0dp"
         app:badge_padding="6dp"
         app:badge_textSize="12sp"

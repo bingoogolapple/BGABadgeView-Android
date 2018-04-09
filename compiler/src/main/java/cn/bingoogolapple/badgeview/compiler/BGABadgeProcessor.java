@@ -178,6 +178,8 @@ public class BGABadgeProcessor extends AbstractProcessor {
         showDrawableBadge(typeBuilder);
         setDragDismissDelegate(typeBuilder);
         isShowBadge(typeBuilder);
+        isDraggable(typeBuilder);
+        isDragging(typeBuilder);
         getBadgeViewHelper(typeBuilder);
     }
 
@@ -300,7 +302,7 @@ public class BGABadgeProcessor extends AbstractProcessor {
                 .addAnnotation(Override.class)
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter(ClassName.get(PACKAGE_NAME, "BGADragDismissDelegate"), "delegate")
-                .addStatement("mBadgeViewHelper.setDragDismissDelegage(delegate)")
+                .addStatement("mBadgeViewHelper.setDragDismissDelegate(delegate)")
                 .build();
         typeBuilder.addMethod(methodSpec);
     }
@@ -310,6 +312,26 @@ public class BGABadgeProcessor extends AbstractProcessor {
                 .addAnnotation(Override.class)
                 .addModifiers(Modifier.PUBLIC)
                 .addStatement("return mBadgeViewHelper.isShowBadge()")
+                .returns(boolean.class)
+                .build();
+        typeBuilder.addMethod(methodSpec);
+    }
+
+    private void isDraggable(TypeSpec.Builder typeBuilder) {
+        MethodSpec methodSpec = MethodSpec.methodBuilder("isDraggable")
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PUBLIC)
+                .addStatement("return mBadgeViewHelper.isDraggable()")
+                .returns(boolean.class)
+                .build();
+        typeBuilder.addMethod(methodSpec);
+    }
+
+    private void isDragging(TypeSpec.Builder typeBuilder) {
+        MethodSpec methodSpec = MethodSpec.methodBuilder("isDragging")
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PUBLIC)
+                .addStatement("return mBadgeViewHelper.isDragging()")
                 .returns(boolean.class)
                 .build();
         typeBuilder.addMethod(methodSpec);

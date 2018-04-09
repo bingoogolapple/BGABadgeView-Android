@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         mTestBv.getBadgeViewHelper().setBadgePaddingDp(8);
         mTestBv.getBadgeViewHelper().setBadgeTextColorInt(Color.parseColor("#FF0000"));
         mTestBv.getBadgeViewHelper().setBadgeBgColorInt(Color.parseColor("#00FF00"));
-        mTestBv.getBadgeViewHelper().setDragable(true);
+        mTestBv.getBadgeViewHelper().setDraggable(true);
         mTestBv.getBadgeViewHelper().setBadgePaddingDp(7);
         mTestBv.getBadgeViewHelper().setBadgeBorderWidthDp(2);
         mTestBv.getBadgeViewHelper().setBadgeBorderColorInt(Color.parseColor("#0000FF"));

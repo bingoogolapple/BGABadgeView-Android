@@ -4,7 +4,7 @@
     style="@style/MatchWrap.Vertical"
     android:background="@drawable/selector_item"
     android:padding="10dp"
-    app:badge_dragable="true"
+    app:badge_draggable="true"
     app:badge_horizontalMargin="10dp"
     app:badge_dragExtra="12dp"
     app:badge_padding="6dp">

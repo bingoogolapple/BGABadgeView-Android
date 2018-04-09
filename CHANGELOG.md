@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 1.1.8 *(2018-04-09)*
+----------------------------
+
+- fix #49
+- badge_dragable 变为 badge_draggable
+- BadgeViewHelper 的 setDragable 方法变为 setDraggable
+
 Version 1.1.7 *(2018-01-24)*
 ----------------------------
 
