@@ -3,7 +3,7 @@
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-BGABadgeView-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/2106)
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-[ ![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-badgeview-api/images/download.svg) ](https://bintray.com/bingoogolapple/maven/bga-badgeview-api/_latestVersion)
+[![Download](https://jitpack.io/v/bingoogolapple/BGABadgeView-Android.svg)](https://jitpack.io/#bingoogolapple/BGABadgeView-Android)
 
 ### [English Document](https://github.com/bingoogolapple/BGABadgeView-Android/blob/master/README-en.md)
 
@@ -27,12 +27,12 @@
 
 ### Gradle依赖
 
-[ ![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-badgeview-api/images/download.svg) ](https://bintray.com/bingoogolapple/maven/bga-badgeview-api/_latestVersion) bga-badgeview-api 后面的「latestVersion」指的是左边这个 Download 徽章后面的「数字」，请自行替换。
+[![Download](https://jitpack.io/v/bingoogolapple/BGABadgeView-Android.svg)](https://jitpack.io/#bingoogolapple/BGABadgeView-Android) 末尾的「latestVersion」指的是左边这个徽章后面的「数字」，请自行替换。
 
 ```groovy
 dependencies {
-    implementation 'cn.bingoogolapple:bga-badgeview-api:latestVersion'
-    annotationProcessor "cn.bingoogolapple:bga-badgeview-compiler:latestVersion"
+    implementation 'com.github.bingoogolapple.BGABadgeView-Android:api:latestVersion'
+    annotationProcessor 'com.github.bingoogolapple.BGABadgeView-Android:compiler:latestVersion'
 }
 ```
 

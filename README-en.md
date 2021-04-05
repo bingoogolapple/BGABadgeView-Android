@@ -3,7 +3,7 @@
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-BGABadgeView-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/2106)
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-[ ![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-badgeview-api/images/download.svg) ](https://bintray.com/bingoogolapple/maven/bga-badgeview-api/_latestVersion)
+[![Download](https://jitpack.io/v/bingoogolapple/BGABadgeView-Android.svg)](https://jitpack.io/#bingoogolapple/BGABadgeView-Android)
 
 ### [中文文档](https://github.com/bingoogolapple/BGABadgeView-Android/blob/master/README.md)
 
@@ -24,12 +24,12 @@
 
 ### Gradle Dependencies
 
-[ ![Download](https://api.bintray.com/packages/bingoogolapple/maven/bga-badgeview-api/images/download.svg) ](https://bintray.com/bingoogolapple/maven/bga-badgeview-api/_latestVersion)
+[![Download](https://jitpack.io/v/bingoogolapple/BGABadgeView-Android.svg)](https://jitpack.io/#bingoogolapple/BGABadgeView-Android)
 
 ```groovy
 dependencies {
-    implementation 'cn.bingoogolapple:bga-badgeview-api:latestVersion'
-    annotationProcessor "cn.bingoogolapple:bga-badgeview-compiler:latestVersion"
+    implementation 'com.github.bingoogolapple.BGABadgeView-Android:api:latestVersion'
+    annotationProcessor 'com.github.bingoogolapple.BGABadgeView-Android:compiler:latestVersion'
 }
 ```
 
