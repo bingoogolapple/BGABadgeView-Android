@@ -1,17 +1,9 @@
 apply plugin: 'java-library'
+apply plugin: 'maven'
 
 sourceCompatibility = JavaVersion.VERSION_1_7
 targetCompatibility = JavaVersion.VERSION_1_7
 
 dependencies {
     compileOnly 'com.google.android:android:4.1.1.4'
-}
-
-// gradle clean build uploadArchives -PpublishAar
-if (hasProperty("publishAar")) {
-    apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/local-release.gradle'
-}
-// gradle clean build bintrayUpload -PpublishAar
-if (hasProperty("publishAar")) {
-    apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/jcenter-release.gradle'
 }
