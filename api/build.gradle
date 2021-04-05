@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
 
 android {
     compileSdkVersion ANDROID_BUILD_SDK_VERSION as int
@@ -17,20 +18,5 @@ android {
 
 dependencies {
     compileOnly 'com.android.support:appcompat-v7:27.0.2'
-
-    // 发布到 jcenter 时，api 中用 compile 传递依赖，用 api 不会传递依赖
-    if(hasProperty("publishAar")) {
-        compile "cn.bingoogolapple:bga-badgeview-annotation:${VERSION_NAME}"
-    } else {
-        api project(':annotation')
-    }
-}
-
-// gradle clean build uploadArchives -PpublishAar
-if (hasProperty("publishAar")) {
-    apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/local-release.gradle'
-}
-// gradle clean build bintrayUpload -PpublishAar
-if (hasProperty("publishAar")) {
-    apply from: 'https://raw.githubusercontent.com/bingoogolapple/PublishAar/master/jcenter-release.gradle'
+    api project(':annotation')
 }
