@@ -191,11 +191,17 @@ public class BGABadgeProcessor extends AbstractProcessor {
                 .addParameter(contextType, "context")
                 .addStatement("this(context, null)")
                 .build();
+        String defStyleAttr = "0";
+        if (isAssignable(clazz, "android.widget.RadioButton")) {
+            defStyleAttr = "android.R.attr.radioButtonStyle";
+        } else if (isAssignable(clazz, "android.widget.TextView")) {
+            defStyleAttr = "android.R.attr.textViewStyle";
+        }
         MethodSpec constructorTwo = MethodSpec.constructorBuilder()
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter(contextType, "context")
                 .addParameter(attributeSetType, "attrs")
-                .addStatement("this(context, attrs, 0)")
+                .addStatement("this(context, attrs, " + defStyleAttr + ")")
                 .build();
         MethodSpec.Builder constructorThreeBuilder = MethodSpec.constructorBuilder()
                 .addModifiers(Modifier.PUBLIC)
