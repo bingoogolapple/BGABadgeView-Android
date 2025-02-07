@@ -1,13 +1,21 @@
 apply plugin: 'java-library'
-apply plugin: 'maven'
+//apply plugin: 'maven'
 
 dependencies {
     implementation project(':annotation')
 
-    compileOnly 'com.google.auto.service:auto-service:1.0-rc4'
+    annotationProcessor 'com.google.auto.service:auto-service:1.0.1'
+    implementation  'com.google.auto.service:auto-service:1.0.1'
     implementation 'com.google.auto:auto-common:0.10'
     implementation 'com.squareup:javapoet:1.9.0'
+
+
+
+    // Generates the required META-INF descriptor to make the processor incremental.
+    def incap = '0.2'
+    compileOnly "net.ltgt.gradle.incap:incap:$incap"
+    annotationProcessor "net.ltgt.gradle.incap:incap-processor:$incap"
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_7
-targetCompatibility = JavaVersion.VERSION_1_7
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
